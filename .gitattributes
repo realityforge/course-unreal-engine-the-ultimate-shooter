@@ -1,3 +1,8 @@
+# DO NOT EDIT: File is auto-generated
+* -text
+*.md text
+*.txt text
+.gitignore text
 *.uasset !text !filter !merge !diff
 **/*.umap !text !filter !merge !diff
 *.umap !text !filter !merge !diff
