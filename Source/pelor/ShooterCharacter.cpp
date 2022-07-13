@@ -14,40 +14,6 @@ AShooterCharacter::AShooterCharacter()
 void AShooterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
-	UE_LOG(LogTemp, Warning, TEXT("AShooterCharacter::BeginPlay() has been invoked!"));
-
-	int myInt{3};
-
-	UE_LOG(LogTemp, Warning, TEXT(" myInt = %d"), myInt);
-
-	float myFloat{3.0F};
-
-	UE_LOG(LogTemp, Warning, TEXT(" myFloat = %f"), myFloat);
-
-	double myDouble{3.333};
-	UE_LOG(LogTemp, Warning, TEXT(" myDouble = %lf"), myDouble);
-
-	char myChar{'x'};
-	UE_LOG(LogTemp, Warning, TEXT(" myChar = %c"), myChar);
-
-	wchar_t myWideChar{L'Ê'};
-	UE_LOG(LogTemp, Warning, TEXT(" myWideChar = %lc"), myWideChar);
-
-	bool myBool{true};
-	UE_LOG(LogTemp, Warning, TEXT(" myBool = %d"), myBool);
-
-	FString myString{TEXT("Some String")};
-
-	// The * operator converts FString to a C-String
-	UE_LOG(LogTemp, Warning, TEXT(" myString = %s"), *myString);
-
-	// The * operator converts FString returned from GetName() to a C-String
-	// GetName returns the name of the class
-	UE_LOG(LogTemp, Warning, TEXT(" GetName() = %s"), *GetName());
-
-
-	UE_LOG(LogTemp, Warning, TEXT("AShooterCharacter::BeginPlay() has been invoked.....!"));
 }
 
 // Called every frame
