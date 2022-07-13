@@ -4,6 +4,8 @@ Intermediate
 Saved
 .vscode
 .vs
+/cmake-build-debug/
+/.idea/
 *.VC.db
 *.opensdf
 *.opendb
