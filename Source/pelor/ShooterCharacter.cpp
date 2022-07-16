@@ -2,6 +2,7 @@
 
 
 #include "ShooterCharacter.h"
+#include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
 // Sets default values
@@ -23,6 +24,19 @@ AShooterCharacter::AShooterCharacter()
 
 		// rotate the arm to match the controller
 		CameraBoom->bUsePawnControlRotation = true;
+	}
+
+	// Create a Camera, attach it to the boom so it can follow the character
+	{
+		// Create new ActorSubobject named "FollowCamera" of type UCameraComponent
+		FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
+
+		// Attaches the Camera to the CameraBoom at the "socket" with the name specified by USpringArmComponent::SocketName
+		// This is the name of the socket at the end of the spring arm (looking back towards the spring arm origin)
+		FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
+
+		// camera does not rotate relative to arm
+		FollowCamera->bUsePawnControlRotation = false;
 	}
 }
 
