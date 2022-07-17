@@ -46,6 +46,50 @@ void AShooterCharacter::BeginPlay()
 	Super::BeginPlay();
 }
 
+void AShooterCharacter::MoveForward(float value)
+{
+	// The controller indicates the direction we are facing.
+	// So we check have a controller and also check we have input that is not 0 
+	if (nullptr != Controller && 0 != value)
+	{
+		// find out which way is forward
+		// A rotator is a "float" specialisation of TRotator. TRotator indicates yaw/pitch/roll
+		const FRotator Rotation{Controller->GetControlRotation()};
+		// We zero out the pitch and roll (so no looking up or down and no tilting head)
+		const FRotator YawRotation{0, Rotation.Yaw, 0};
+		// Create a rotation matrix from the rotator
+		const FRotationMatrix RotationMatrix = FRotationMatrix(YawRotation);
+
+		// extract the direction in world-space of x axis (i.e. the forward vector)
+		const FVector Direction{RotationMatrix.GetUnitAxis(EAxis::X)};
+
+		// Add movement input along 'Direction' vector scaled by 'value'. If 'value' < 0, movement will be in the opposite direction.
+		// Base Pawn classes won't automatically apply movement, it's up to the user to do so in a Tick event.
+		// Subclasses such as Character and DefaultPawn automatically handle this input and move.
+
+		// Our movement component will translate this according to its internal rules (i.e. max walk speed,
+		// whether there is a blocker in front etc) and then apply the position update to Actor
+		AddMovementInput(Direction, value);
+	}
+}
+
+void AShooterCharacter::MoveRight(float value)
+{
+	// See comments for MoveForward as it is basically the same thing
+	if (nullptr != Controller && 0 != value)
+	{
+		const FRotator Rotation{Controller->GetControlRotation()};
+		const FRotator YawRotation{0, Rotation.Yaw, 0};
+		const FRotationMatrix RotationMatrix = FRotationMatrix(YawRotation);
+
+		// extract the direction in world-space of y axis (i.e. the right vector)
+		// This is the only thing that differs from MoveForward
+		const FVector Direction{RotationMatrix.GetUnitAxis(EAxis::Y)};
+
+		AddMovementInput(Direction, value);
+	}
+}
+
 // Called every frame
 void AShooterCharacter::Tick(float DeltaTime)
 {
@@ -56,4 +100,13 @@ void AShooterCharacter::Tick(float DeltaTime)
 void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+	// assert that PlayerInputComponent is not NULL
+	check(PlayerInputComponent);
+
+	// Bind the axis input to the MoveForward function in context of "this"
+	PlayerInputComponent->BindAxis("MoveForward", this, &AShooterCharacter::MoveForward);
+
+	// Same but with right-left axis
+	PlayerInputComponent->BindAxis("MoveRight", this, &AShooterCharacter::MoveRight);
 }
