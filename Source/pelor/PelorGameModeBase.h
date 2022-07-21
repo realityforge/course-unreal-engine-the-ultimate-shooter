@@ -7,11 +7,10 @@
 #include "PelorGameModeBase.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class PELOR_API APelorGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
-	
 };

@@ -1,14 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "ShooterCharacter.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
 // Sets default values
 AShooterCharacter::AShooterCharacter()
-	: BaseLookRightRate(45.F),
-	  BaseLookUpRate(45.F)
+	: BaseLookRightRate(45.F), BaseLookUpRate(45.F)
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -51,19 +49,19 @@ void AShooterCharacter::BeginPlay()
 void AShooterCharacter::MoveForward(float value)
 {
 	// The controller indicates the direction we are facing.
-	// So we check have a controller and also check we have input that is not 0 
+	// So we check have a controller and also check we have input that is not 0
 	if (nullptr != Controller && 0 != value)
 	{
 		// find out which way is forward
 		// A rotator is a "float" specialisation of TRotator. TRotator indicates yaw/pitch/roll
-		const FRotator Rotation{Controller->GetControlRotation()};
+		const FRotator Rotation{ Controller->GetControlRotation() };
 		// We zero out the pitch and roll (so no looking up or down and no tilting head)
-		const FRotator YawRotation{0, Rotation.Yaw, 0};
+		const FRotator YawRotation{ 0, Rotation.Yaw, 0 };
 		// Create a rotation matrix from the rotator
 		const FRotationMatrix RotationMatrix = FRotationMatrix(YawRotation);
 
 		// extract the direction in world-space of x axis (i.e. the forward vector)
-		const FVector Direction{RotationMatrix.GetUnitAxis(EAxis::X)};
+		const FVector Direction{ RotationMatrix.GetUnitAxis(EAxis::X) };
 
 		// Add movement input along 'Direction' vector scaled by 'value'. If 'value' < 0, movement will be in the opposite direction.
 		// Base Pawn classes won't automatically apply movement, it's up to the user to do so in a Tick event.
@@ -80,13 +78,13 @@ void AShooterCharacter::MoveRight(float value)
 	// See comments for MoveForward as it is basically the same thing
 	if (nullptr != Controller && 0 != value)
 	{
-		const FRotator Rotation{Controller->GetControlRotation()};
-		const FRotator YawRotation{0, Rotation.Yaw, 0};
+		const FRotator Rotation{ Controller->GetControlRotation() };
+		const FRotator YawRotation{ 0, Rotation.Yaw, 0 };
 		const FRotationMatrix RotationMatrix = FRotationMatrix(YawRotation);
 
 		// extract the direction in world-space of y axis (i.e. the right vector)
 		// This is the only thing that differs from MoveForward
-		const FVector Direction{RotationMatrix.GetUnitAxis(EAxis::Y)};
+		const FVector Direction{ RotationMatrix.GetUnitAxis(EAxis::Y) };
 
 		AddMovementInput(Direction, value);
 	}
