@@ -6,7 +6,8 @@
 
 // Sets default values
 AShooterCharacter::AShooterCharacter()
-	: BaseLookRightRate(45.F), BaseLookUpRate(45.F)
+	: BaseLookRightRate(45.F)
+	, BaseLookUpRate(45.F)
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
