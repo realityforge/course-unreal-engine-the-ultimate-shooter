@@ -7,6 +7,8 @@
 
 // Sets default values
 AShooterCharacter::AShooterCharacter()
+	: BaseLookRightRate(45.F),
+	  BaseLookUpRate(45.F)
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -90,6 +92,22 @@ void AShooterCharacter::MoveRight(float value)
 	}
 }
 
+void AShooterCharacter::LookRight(const float Rate)
+{
+	// Time since last tick in seconds per frame
+	const float DeltaSeconds = GetWorld()->GetDeltaSeconds();
+	// rate is 0 -> 1. A less than 1 value is possible from game controller thumbstick s that may record degree of push
+	AddControllerYawInput(Rate * BaseLookRightRate * DeltaSeconds);
+}
+
+void AShooterCharacter::LookUp(const float Rate)
+{
+	// Time since last tick in seconds per frame
+	const float DeltaSeconds = GetWorld()->GetDeltaSeconds();
+	// rate is 0 -> 1. A less than 1 value is possible from game controller thumbstick s that may record degree of push
+	AddControllerPitchInput(Rate * BaseLookUpRate * DeltaSeconds);
+}
+
 // Called every frame
 void AShooterCharacter::Tick(float DeltaTime)
 {
@@ -104,9 +122,9 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	// assert that PlayerInputComponent is not NULL
 	check(PlayerInputComponent);
 
-	// Bind the axis input to the MoveForward function in context of "this"
+	// Bind the axis input to the a function in context of "this"
 	PlayerInputComponent->BindAxis("MoveForward", this, &AShooterCharacter::MoveForward);
-
-	// Same but with right-left axis
 	PlayerInputComponent->BindAxis("MoveRight", this, &AShooterCharacter::MoveRight);
+	PlayerInputComponent->BindAxis("LookUp", this, &AShooterCharacter::LookUp);
+	PlayerInputComponent->BindAxis("LookRight", this, &AShooterCharacter::LookRight);
 }
