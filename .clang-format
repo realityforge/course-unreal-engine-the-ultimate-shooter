@@ -13,17 +13,17 @@
 # For documentation on how to edit this file see https://clang.llvm.org/docs/ClangFormatStyleOptions.html
 # and to experiment you can use https://zed0.co.uk/clang-format-configurator/
 
----
 Language: Cpp
 BasedOnStyle: LLVM
 AccessModifierOffset: -4
 AlignAfterOpenBracket: DontAlign
 AlignEscapedNewlines: Left
-AlignOperands: false
+AlignOperands: DontAlign
+AlignTrailingComments: true
 AllowShortBlocksOnASingleLine: Empty
 AllowShortEnumsOnASingleLine: false
 AllowShortFunctionsOnASingleLine: Inline
-AllowShortIfStatementsOnASingleLine: false
+AllowShortLambdasOnASingleLine: All
 BraceWrapping:
   AfterCaseLabel: true
   AfterClass: true
@@ -31,6 +31,7 @@ BraceWrapping:
   AfterEnum: true
   AfterFunction: true
   AfterNamespace: true
+  AfterObjCDeclaration: true
   AfterStruct: true
   AfterUnion: true
   AfterExternBlock: true
@@ -39,34 +40,23 @@ BraceWrapping:
   BeforeLambdaBody: false
   BeforeWhile: true
   IndentBraces: false
-  SplitEmptyFunction: false
-  SplitEmptyRecord: false
-  SplitEmptyNamespace: false
 BreakBeforeBinaryOperators: NonAssignment
 BreakBeforeBraces: Custom
-BreakConstructorInitializers: BeforeComma
 BreakInheritanceList: AfterColon
+BreakBeforeTernaryOperators: true
+BreakConstructorInitializers: BeforeComma
 BreakStringLiterals: false
 ColumnLimit: 0
 ConstructorInitializerAllOnOneLineOrOnePerLine: true
 Cpp11BracedListStyle: false
 EmptyLineBeforeAccessModifier: LogicalBlock
-IncludeCategories:
-  - Regex: '^<.*'
-    Priority: 1
-  - Regex: '^".*'
-    Priority: 2
-  - Regex: '.*'
-    Priority: 3
-IncludeIsMainRegex: '([-_](test|unittest))?$'
+IndentCaseBlocks: false
 IndentCaseLabels: true
 IndentPPDirectives: BeforeHash
 IndentWidth: 4
-MacroBlockBegin: ''
-MacroBlockEnd: ''
 NamespaceIndentation: All
 PointerAlignment: Left
-SortIncludes: false
+SortIncludes: true
 SpaceBeforeCaseColon: false
 StatementMacros:
   - UPROPERTY
@@ -78,4 +68,16 @@ StatementMacros:
   - GENERATED_BODY
 TabWidth: 4
 UseTab: Always
-...
+IncludeBlocks:   Merge
+IncludeCategories:
+  - Regex:           '.*\.generated\.h'
+    Priority:        5
+  - Regex:           '.*(PCH).*'
+    Priority:        -1
+  - Regex:           '".*"'
+    Priority:        1
+  - Regex:           '^<.*\.(h)>'
+    Priority:        3
+  - Regex:           '^<.*>'
+    Priority:        4
+IncludeIsMainRegex: '([-_](test|unittest))?$'
