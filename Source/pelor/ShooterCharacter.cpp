@@ -127,4 +127,12 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAxis("MoveRight", this, &AShooterCharacter::MoveRight);
 	PlayerInputComponent->BindAxis("LookUp", this, &AShooterCharacter::LookUp);
 	PlayerInputComponent->BindAxis("LookRight", this, &AShooterCharacter::LookRight);
+
+	// The mouse controller directly routes inputs to functions inherited from base class
+	PlayerInputComponent->BindAxis("MouseLookRight", this, &APawn::AddControllerYawInput);
+	PlayerInputComponent->BindAxis("MouseLookUp", this, &APawn::AddControllerPitchInput);
+
+	// Jump function inherited from character class
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &AShooterCharacter::Jump);
+	PlayerInputComponent->BindAction("Jump", IE_Released, this, &AShooterCharacter::StopJumping);
 }
