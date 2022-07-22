@@ -40,6 +40,11 @@ protected:
 	 */
 	void LookUp(float Rate);
 
+	/**
+	 * Called by Input when the FireWeapon button is pressed.
+	 */
+	void FireWeapon();
+
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
