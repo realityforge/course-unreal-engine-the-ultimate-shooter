@@ -2,6 +2,7 @@
 
 #include "ShooterCharacter.h"
 #include "Camera/CameraComponent.h"
+#include "Engine/SkeletalMeshSocket.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -136,6 +137,15 @@ void AShooterCharacter::FireWeapon()
 	if (nullptr != FireSound)
 	{
 		UGameplayStatics::PlaySound2D(this, FireSound);
+	}
+	if (MuzzleFlash)
+	{
+		const USkeletalMeshSocket* BarrelExitSocket = GetMesh()->GetSocketByName("BarrelExitSocket");
+		if (nullptr != BarrelExitSocket)
+		{
+			const FTransform SocketTransform = BarrelExitSocket->GetSocketTransform(GetMesh());
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), MuzzleFlash, SocketTransform);
+		}
 	}
 }
 
