@@ -138,13 +138,27 @@ void AShooterCharacter::FireWeapon()
 	{
 		UGameplayStatics::PlaySound2D(this, FireSound);
 	}
-	if (MuzzleFlash)
+	if (nullptr != MuzzleFlash)
 	{
+		// This socket indicates where the particle emitter is set to be anchored
 		const USkeletalMeshSocket* BarrelExitSocket = GetMesh()->GetSocketByName("BarrelExitSocket");
 		if (nullptr != BarrelExitSocket)
 		{
+			// The transform relative to the mesh where the socket is located
 			const FTransform SocketTransform = BarrelExitSocket->GetSocketTransform(GetMesh());
+			// Actually attach the emitter
 			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), MuzzleFlash, SocketTransform);
+		}
+	}
+	if (nullptr != HipFireMontage)
+	{
+		// Get our current animation manager
+		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+		if (nullptr != AnimInstance)
+		{
+			// Merge in the HipFire Animation Montage
+			AnimInstance->Montage_Play(HipFireMontage);
+			AnimInstance->Montage_JumpToSection("StartFire");
 		}
 	}
 }
