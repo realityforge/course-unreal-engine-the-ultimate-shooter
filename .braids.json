@@ -1,0 +1,10 @@
+{
+  "config_version": 1,
+  "mirrors": {
+    "vendor/UE4-CPP-Shooter-Series": {
+      "url": "https://github.com/DruidMech/UE4-CPP-Shooter-Series.git",
+      "branch": "master",
+      "revision": "9fab6e5b1f80839490a8326ae382f5287e58782c"
+    }
+  }
+}
