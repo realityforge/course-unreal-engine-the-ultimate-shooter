@@ -2,6 +2,7 @@ Binaries
 DerivedDataCache
 Intermediate
 Saved
+Gemfile.lock
 .vscode
 .vs
 /cmake-build-debug/
