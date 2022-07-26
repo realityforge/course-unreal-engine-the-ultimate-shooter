@@ -158,7 +158,7 @@ void AShooterCharacter::FireWeapon()
 		const FVector RotationAxis{ SocketTransform.GetRotation().GetAxisX() };
 		const FVector End{ Start + RotationAxis * 50'000.0F };
 
-		if (GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECollisionChannel::ECC_Visibility))
+		if (GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_Visibility))
 		{
 			// LineTraceSingleByChannel returns true on blocking hit so the next line should be true
 			assert(HitResult.bBlockingHit);
