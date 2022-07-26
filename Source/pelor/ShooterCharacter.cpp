@@ -164,6 +164,11 @@ void AShooterCharacter::FireWeapon()
 			assert(HitResult.bBlockingHit);
 			DrawDebugLine(GetWorld(), Start, HitResult.ImpactPoint, FColor::Red, false, 2.F);
 			DrawDebugPoint(GetWorld(), HitResult.Location, 5.F, FColor::Blue, false, 2.F);
+
+			if (nullptr != ImpactParticles)
+			{
+				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticles, HitResult.ImpactPoint);
+			}
 		}
 	}
 	if (nullptr != HipFireMontage)
