@@ -138,16 +138,32 @@ void AShooterCharacter::FireWeapon()
 	{
 		UGameplayStatics::PlaySound2D(this, FireSound);
 	}
-	if (nullptr != MuzzleFlash)
+	// This socket indicates where the particle emitter is set to be anchored
+	const USkeletalMeshSocket* BarrelExitSocket = GetMesh()->GetSocketByName("BarrelExitSocket");
+	if (nullptr != BarrelExitSocket)
 	{
-		// This socket indicates where the particle emitter is set to be anchored
-		const USkeletalMeshSocket* BarrelExitSocket = GetMesh()->GetSocketByName("BarrelExitSocket");
-		if (nullptr != BarrelExitSocket)
+		// The transform relative to the mesh where the socket is located
+		const FTransform SocketTransform = BarrelExitSocket->GetSocketTransform(GetMesh());
+		if (nullptr != MuzzleFlash)
 		{
-			// The transform relative to the mesh where the socket is located
-			const FTransform SocketTransform = BarrelExitSocket->GetSocketTransform(GetMesh());
 			// Actually attach the emitter
 			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), MuzzleFlash, SocketTransform);
+		}
+		FHitResult HitResult;
+		const FVector Start{ SocketTransform.GetLocation() };
+		// const FQuat Rotation{ SocketTransform.GetRotation() };
+		// const FVector RotationAxis{ Rotation.GetAxisX() };
+
+		// X Axis points out of the gun ... not sure why this is not SocketTransform.GetUnitAxis(EAxis::X)
+		const FVector RotationAxis{ SocketTransform.GetRotation().GetAxisX() };
+		const FVector End{ Start + RotationAxis * 50'000.0F };
+
+		if (GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECollisionChannel::ECC_Visibility))
+		{
+			// LineTraceSingleByChannel returns true on blocking hit so the next line should be true
+			assert(HitResult.bBlockingHit);
+			DrawDebugLine(GetWorld(), Start, HitResult.ImpactPoint, FColor::Red, false, 2.F);
+			DrawDebugPoint(GetWorld(), HitResult.Location, 5.F, FColor::Blue, false, 2.F);
 		}
 	}
 	if (nullptr != HipFireMontage)
