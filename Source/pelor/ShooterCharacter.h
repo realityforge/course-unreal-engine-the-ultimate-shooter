@@ -50,7 +50,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
 private:
 	// Using "class USpringArmComponent*" rather than
@@ -60,7 +60,7 @@ private:
 	// UProperty puts it in "section" camera and allows access even though it is private etc
 	/** Camera Boom positioning the camera behind the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	class USpringArmComponent* CameraBoom;
+	USpringArmComponent* CameraBoom;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FollowCamera;
@@ -79,15 +79,19 @@ private:
 
 	/** Particle Effect when fire occurs */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
-	class UParticleSystem* MuzzleFlash;
+	UParticleSystem* MuzzleFlash;
 
 	/** Animation when fire occurs */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
-	class UAnimMontage* HipFireMontage;
+	UAnimMontage* HipFireMontage;
 
 	/** Particle Effect when bullet impact occurs */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
 	UParticleSystem* ImpactParticles;
+
+	/** Smoke trail for bullets */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
+	UParticleSystem* BeamParticles;
 
 public:
 	FORCEINLINE USpringArmComponent* getCameraBoom() const { return CameraBoom; }

@@ -6,6 +6,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Particles/ParticleSystemComponent.h"
 #include "Sound/SoundCue.h"
 
 // Sets default values
@@ -157,17 +158,31 @@ void AShooterCharacter::FireWeapon()
 		// X Axis points out of the gun ... not sure why this is not SocketTransform.GetUnitAxis(EAxis::X)
 		const FVector RotationAxis{ SocketTransform.GetRotation().GetAxisX() };
 		const FVector End{ Start + RotationAxis * 50'000.0F };
+		FVector SmokeBeamEnd{ End };
 
 		if (GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_Visibility))
 		{
 			// LineTraceSingleByChannel returns true on blocking hit so the next line should be true
 			assert(HitResult.bBlockingHit);
-			DrawDebugLine(GetWorld(), Start, HitResult.ImpactPoint, FColor::Red, false, 2.F);
-			DrawDebugPoint(GetWorld(), HitResult.Location, 5.F, FColor::Blue, false, 2.F);
 
+			// No longer need debug as we have actual effects now
+			// DrawDebugLine(GetWorld(), Start, HitResult.ImpactPoint, FColor::Red, false, 2.F);
+			// DrawDebugPoint(GetWorld(), HitResult.Location, 5.F, FColor::Blue, false, 2.F);
+			SmokeBeamEnd = HitResult.Location;
 			if (nullptr != ImpactParticles)
 			{
 				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticles, HitResult.ImpactPoint);
+			}
+		}
+		if (nullptr != BeamParticles)
+		{
+			// The smoke trail particle system starts at the end of the gun (designated by SocketTransform) and goes to
+			// SmokeBeamEnd which is either our impact point or way off into the distance
+			UParticleSystemComponent* Beam = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), BeamParticles, SocketTransform);
+			if (nullptr != Beam)
+			{
+				// "Target" is a parameter specified in the particle system definition
+				Beam->SetVectorParameter("Target", SmokeBeamEnd);
 			}
 		}
 	}
