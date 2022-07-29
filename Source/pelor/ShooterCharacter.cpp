@@ -156,6 +156,63 @@ void AShooterCharacter::FireWeapon()
 			// Actually attach the emitter
 			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), MuzzleFlash, SocketTransform);
 		}
+
+		FVector2D ViewportSize;
+
+		if (nullptr != GEngine && nullptr != GEngine->GameViewport)
+		{
+			// Get the size of the viewport
+			GEngine->GameViewport->GetViewportSize(ViewportSize);
+			// This does the same calculations as appears in the blueprint ... :(
+			FVector2D CrossHairLocation(ViewportSize.X / 2.f, ViewportSize.Y / 2.f - 50.F);
+
+			// PlayerIndex is always 0 in this game as there are no other players
+			const int PlayerIndex = 0;
+
+			FVector CrosshairWorldPosition;
+			FVector CrosshairWorldDirection;
+
+			// CrossHairLocation is in screen coordinates and now we need world space coordinates
+			const bool bScreenToWorldSuccess =
+				UGameplayStatics::DeprojectScreenToWorld(UGameplayStatics::GetPlayerController(this, PlayerIndex), CrossHairLocation, CrosshairWorldPosition, CrosshairWorldDirection);
+
+			if (bScreenToWorldSuccess)
+			{
+				const FVector End{ CrosshairWorldPosition + CrosshairWorldDirection * 50'000.0F };
+				FVector SmokeBeamEnd{ End };
+
+				FHitResult HitResult;
+				if (GetWorld()->LineTraceSingleByChannel(HitResult, CrosshairWorldPosition, End, ECC_Visibility))
+				{
+					// LineTraceSingleByChannel returns true on blocking hit so the next line should be true
+					assert(HitResult.bBlockingHit);
+
+					// No longer need debug as we have actual effects now
+					// DrawDebugLine(GetWorld(), Start, HitResult.ImpactPoint, FColor::Red, false, 2.F);
+					// DrawDebugPoint(GetWorld(), HitResult.Location, 5.F, FColor::Blue, false, 2.F);
+					SmokeBeamEnd = HitResult.Location;
+					if (nullptr != ImpactParticles)
+					{
+						UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticles, HitResult.ImpactPoint);
+					}
+				}
+				if (nullptr != BeamParticles)
+				{
+					// The smoke trail particle system starts at the end of the gun (designated by SocketTransform) and goes to
+					// SmokeBeamEnd which is either our impact point or way off into the distance
+					UParticleSystemComponent* Beam = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), BeamParticles, SocketTransform);
+					if (nullptr != Beam)
+					{
+						// "Target" is a parameter specified in the particle system definition
+						Beam->SetVectorParameter("Target", SmokeBeamEnd);
+					}
+				}
+			}
+		}
+
+		// Below is commented out the code that traces from the end of the gun barrel wherever it was pointing.
+		// This was how we did it initially before moving onto the "correct" way of doing things
+		/*
 		FHitResult HitResult;
 		const FVector Start{ SocketTransform.GetLocation() };
 		// const FQuat Rotation{ SocketTransform.GetRotation() };
@@ -191,6 +248,7 @@ void AShooterCharacter::FireWeapon()
 				Beam->SetVectorParameter("Target", SmokeBeamEnd);
 			}
 		}
+		*/
 	}
 	if (nullptr != HipFireMontage)
 	{
