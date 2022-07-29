@@ -30,6 +30,10 @@ AShooterCharacter::AShooterCharacter()
 
 		// rotate the arm to match the controller
 		CameraBoom->bUsePawnControlRotation = true;
+
+		// Move the camera to the right and up so that the center of the screen is not the character.
+		// This will allow us to put the cross-hair in the center
+		CameraBoom->SocketOffset = FVector(0.F, 50.F, 50.F);
 	}
 
 	// Create a Camera, attach it to the boom so it can follow the character
@@ -46,14 +50,16 @@ AShooterCharacter::AShooterCharacter()
 	}
 
 	{
-		// Don't rotate character when controller rotates.
-		// Let the controller only rotate camera
-		bUseControllerRotationYaw = false;
+		// Rotate character yaw when controller rotates.
+		bUseControllerRotationYaw = true;
+
+		// The controller only rotates cameras pitch and roll
 		bUseControllerRotationPitch = false;
 		bUseControllerRotationRoll = false;
 
-		GetCharacterMovement()->bOrientRotationToMovement = true;		  // Character moved in the direction of input
-		GetCharacterMovement()->RotationRate = FRotator(0.F, 540.F, 0.F); // at this rotation rate
+		GetCharacterMovement()->bOrientRotationToMovement = false;
+
+		GetCharacterMovement()->RotationRate = FRotator(0.F, 540.F, 0.F);
 
 		// Values that are derived from experimentation
 
