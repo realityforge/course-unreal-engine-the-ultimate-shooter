@@ -181,6 +181,7 @@ void AShooterCharacter::FireWeapon()
 				const FVector End{ CrosshairWorldPosition + CrosshairWorldDirection * 50'000.0F };
 				FVector SmokeBeamEnd{ End };
 
+				// Trace a line from CrossHair to world to see whether a hit occurred
 				FHitResult HitResult;
 				if (GetWorld()->LineTraceSingleByChannel(HitResult, CrosshairWorldPosition, End, ECC_Visibility))
 				{
@@ -191,11 +192,32 @@ void AShooterCharacter::FireWeapon()
 					// DrawDebugLine(GetWorld(), Start, HitResult.ImpactPoint, FColor::Red, false, 2.F);
 					// DrawDebugPoint(GetWorld(), HitResult.Location, 5.F, FColor::Blue, false, 2.F);
 					SmokeBeamEnd = HitResult.Location;
-					if (nullptr != ImpactParticles)
+				}
+
+				// Perform a second trace from the barrel to the SmokeBeamEnd to see if we can actually
+				// hit it from where the gun is position or if it would hit intermediate gemoetry
+				{
+					const FVector WeaponTraceStart{ SocketTransform.GetLocation() };
+
+					// This is where out smoke beam would have terminated
+					const FVector WeaponTraceEnd{ SmokeBeamEnd };
+					FHitResult WeaponTraceHit;
+					if (GetWorld()->LineTraceSingleByChannel(WeaponTraceHit, WeaponTraceStart, WeaponTraceEnd, ECC_Visibility))
 					{
-						UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticles, HitResult.ImpactPoint);
+						// LineTraceSingleByChannel returns true on blocking hit so the next line should be true
+						assert(WeaponTraceHit.bBlockingHit);
+
+						// No longer need debug as we have actual effects now
+						// DrawDebugLine(GetWorld(), Start, HitResult.ImpactPoint, FColor::Red, false, 2.F);
+						// DrawDebugPoint(GetWorld(), HitResult.Location, 5.F, FColor::Blue, false, 2.F);
+						SmokeBeamEnd = WeaponTraceHit.Location;
+						if (nullptr != ImpactParticles)
+						{
+							UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticles, SmokeBeamEnd);
+						}
 					}
 				}
+
 				if (nullptr != BeamParticles)
 				{
 					// The smoke trail particle system starts at the end of the gun (designated by SocketTransform) and goes to
