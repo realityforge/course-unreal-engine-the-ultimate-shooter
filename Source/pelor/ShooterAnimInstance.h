@@ -34,4 +34,8 @@ private:
 	/** Is the character moving? */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	bool bIsMoving;
+
+	/** Yaw offset between aim and direction of movement */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Movement, meta = (AllowPrivateAccess = "true"))
+	float MovementOffsetYaw;
 };
