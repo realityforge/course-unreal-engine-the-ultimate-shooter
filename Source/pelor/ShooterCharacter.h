@@ -45,6 +45,15 @@ protected:
 	 */
 	void FireWeapon();
 
+	/**
+	 * Trace a line from the MuzzleEndLocation to where the crosshair is aiming.
+	 *
+	 * @param MuzzleEndLocation the start of the line to trace
+	 * @param OutBeamLocation the location where the weapon weapon hit or when the weapon shot dissipated depending on whether the return result is true or false..
+	 * @return true if a hit occurs, false if no hit occurs
+	 */
+	bool GetBeamEndLocation(const FVector& MuzzleEndLocation, FVector& OutBeamLocation);
+
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
