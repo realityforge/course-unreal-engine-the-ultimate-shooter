@@ -12,7 +12,6 @@ void UShooterAnimInstance::UpdateAnimationProperties(float DeltaTime)
 	{
 		// Does the same thing as occurs in initializer. Unclear why this is needed
 		ShooterCharacter = Cast<AShooterCharacter>(TryGetPawnOwner());
-		UE_LOG(LogTemp, Warning, TEXT("Linking up ShooterCharacter in UpdateAnimationProperties ... why?"));
 	}
 	// Ensure ShooterCharacter is present ... unsure why this would not be the case?
 	if (nullptr != ShooterCharacter)
