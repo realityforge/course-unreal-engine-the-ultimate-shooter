@@ -17,7 +17,7 @@ void UShooterAnimInstance::UpdateAnimationProperties(float DeltaTime)
 	// Ensure ShooterCharacter is present ... unsure why this would not be the case?
 	if (nullptr != ShooterCharacter)
 	{
-		// Extract the lateral velocity and place in Speed varaible
+		// Extract the lateral velocity and place in Speed variable
 		{
 			FVector Velocity{ ShooterCharacter->GetVelocity() };
 
