@@ -10,7 +10,7 @@ void UShooterAnimInstance::UpdateAnimationProperties(float DeltaTime)
 {
 	if (nullptr == ShooterCharacter)
 	{
-		// Does the same thing as occurs in initializer. Unclear why this is needed
+		// Does the same thing as occurs in initializer. Unclear why this is needed ... but it certainly is...
 		ShooterCharacter = Cast<AShooterCharacter>(TryGetPawnOwner());
 	}
 	// Ensure ShooterCharacter is present ... unsure why this would not be the case?
