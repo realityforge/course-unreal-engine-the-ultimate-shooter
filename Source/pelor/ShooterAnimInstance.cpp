@@ -42,6 +42,10 @@ void UShooterAnimInstance::UpdateAnimationProperties(float DeltaTime)
 			const FRotator MovementRotation = UKismetMathLibrary::MakeRotFromX(ShooterCharacter->GetVelocity());
 			// What is the difference in yaw in degrees
 			MovementOffsetYaw = UKismetMathLibrary::NormalizedDeltaRotator(MovementRotation, AimRotation).Yaw;
+			if (0.F != ShooterCharacter->GetVelocity().Size())
+			{
+				LastMovementOffsetYaw = MovementOffsetYaw;
+			}
 		}
 	}
 }
