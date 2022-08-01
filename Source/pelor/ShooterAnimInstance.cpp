@@ -43,15 +43,6 @@ void UShooterAnimInstance::UpdateAnimationProperties(float DeltaTime)
 			const FRotator MovementRotation = UKismetMathLibrary::MakeRotFromX(ShooterCharacter->GetVelocity());
 			// What is the difference in yaw in degrees
 			MovementOffsetYaw = UKismetMathLibrary::NormalizedDeltaRotator(MovementRotation, AimRotation).Yaw;
-			// if (nullptr != GEngine)
-			// {
-			// const FString RotationMessage = FString::Printf(TEXT("Base Aim Rotation: %f"), AimRotation.Yaw);
-			// 	GEngine->AddOnScreenDebugMessage(1, 0.F, FColor::White, RotationMessage);
-			// const FString MovementRotationMessage = FString::Printf(TEXT("Base Movement Rotation: %f"), MovementRotation.Yaw);
-			// 	GEngine->AddOnScreenDebugMessage(1, 0.F, FColor::Green, MovementRotationMessage);
-			// 	const FString MovementOffsetYawMessage = FString::Printf(TEXT("Movement Offset Yaw: %f"), MovementOffsetYaw);
-			// 	GEngine->AddOnScreenDebugMessage(1, 0.F, FColor::White, MovementOffsetYawMessage);
-			// }
 		}
 	}
 }
