@@ -115,6 +115,15 @@ private:
 	/** FOV for camera when Zoomed in/Aiming */
 	float CameraZoomedFOV;
 
+	/** FOV for camera in current frame */
+	float CameraCurrentFOV;
+
+	/** Zoom interpolation speed during aiming/un-aiming */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
+	float CameraFOVInterpolationSpeed; // Note that this defaults to 20 in code but set to 30 in Blueprint
+
+	void UpdateFovBasedOnAimingStatus(float DeltaTime);
+
 public:
 	FORCEINLINE USpringArmComponent* getCameraBoom() const { return CameraBoom; }
 	FORCEINLINE UCameraComponent* getFollowCamera() const { return FollowCamera; }

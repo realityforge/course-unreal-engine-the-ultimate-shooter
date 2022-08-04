@@ -15,7 +15,9 @@ AShooterCharacter::AShooterCharacter()
 	, BaseLookUpRate(45.F)
 	, bAiming(false)
 	, DefaultCameraFOV(0.F) // Will be set in BeginPlay so 0 is just a placeholder
-	, CameraZoomedFOV(60.F)
+	, CameraZoomedFOV(35.F)
+	, CameraCurrentFOV(0.F)
+	, CameraFOVInterpolationSpeed(20.F)
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -28,15 +30,15 @@ AShooterCharacter::AShooterCharacter()
 		// Attaches the CameraBoom to this character
 		CameraBoom->SetupAttachment(RootComponent);
 
-		// Attempt to keep 300 units behind the character (will shorten to avoid collisions)
-		CameraBoom->TargetArmLength = 300.0F;
+		// Attempt to keep 180 units behind the character (will shorten to avoid collisions)
+		CameraBoom->TargetArmLength = 180.0F;
 
 		// rotate the arm to match the controller
 		CameraBoom->bUsePawnControlRotation = true;
 
 		// Move the camera to the right and up so that the center of the screen is not the character.
 		// This will allow us to put the cross-hair in the center
-		CameraBoom->SocketOffset = FVector(0.F, 50.F, 50.F);
+		CameraBoom->SocketOffset = FVector(0.F, 50.F, 70.F);
 	}
 
 	// Create a Camera, attach it to the boom so it can follow the character
@@ -82,6 +84,7 @@ void AShooterCharacter::BeginPlay()
 	if (nullptr != FollowCamera)
 	{
 		DefaultCameraFOV = FollowCamera->FieldOfView;
+		CameraCurrentFOV = DefaultCameraFOV;
 	}
 }
 
@@ -257,18 +260,23 @@ bool AShooterCharacter::GetBeamEndLocation(const FVector& MuzzleEndLocation, FVe
 void AShooterCharacter::AimingButtonPressed()
 {
 	bAiming = true;
-	if (nullptr != FollowCamera)
-	{
-		FollowCamera->SetFieldOfView(CameraZoomedFOV);
-	}
 }
 
 void AShooterCharacter::AimingButtonReleased()
 {
 	bAiming = false;
-	if (nullptr != FollowCamera)
+}
+
+void AShooterCharacter::UpdateFovBasedOnAimingStatus(const float DeltaTime)
+{
+	const float TargetFOV = bAiming ? CameraZoomedFOV : DefaultCameraFOV;
+	if (CameraCurrentFOV != TargetFOV)
 	{
-		FollowCamera->SetFieldOfView(DefaultCameraFOV);
+		// Interpolate float from Current to Target. Scaled by distance to Target, so it has a strong start speed and ease out.
+		CameraCurrentFOV = FMath::FInterpTo(CameraCurrentFOV, TargetFOV, DeltaTime, CameraFOVInterpolationSpeed);
+		// UE_LOG(LogTemp, Warning, TEXT("Zoom CurrentFOV=%f TargetFOV=%f"), CameraCurrentFOV, TargetFOV);
+		// GEngine->AddOnScreenDebugMessage(1, 0, FColor::Green, FString("FOV Set"));
+		getFollowCamera()->SetFieldOfView(CameraCurrentFOV);
 	}
 }
 
@@ -276,6 +284,7 @@ void AShooterCharacter::AimingButtonReleased()
 void AShooterCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	UpdateFovBasedOnAimingStatus(DeltaTime);
 }
 
 // Called to bind functionality to input
