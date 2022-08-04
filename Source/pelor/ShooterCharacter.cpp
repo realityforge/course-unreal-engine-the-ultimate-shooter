@@ -13,6 +13,9 @@
 AShooterCharacter::AShooterCharacter()
 	: BaseLookRightRate(45.F)
 	, BaseLookUpRate(45.F)
+	, bAiming(false)
+	, DefaultCameraFOV(0.F) // Will be set in BeginPlay so 0 is just a placeholder
+	, CameraZoomedFOV(60.F)
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -76,6 +79,10 @@ AShooterCharacter::AShooterCharacter()
 void AShooterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	if (nullptr != FollowCamera)
+	{
+		DefaultCameraFOV = FollowCamera->FieldOfView;
+	}
 }
 
 void AShooterCharacter::MoveForward(float value)
@@ -247,6 +254,24 @@ bool AShooterCharacter::GetBeamEndLocation(const FVector& MuzzleEndLocation, FVe
 	return false;
 }
 
+void AShooterCharacter::AimingButtonPressed()
+{
+	bAiming = true;
+	if (nullptr != FollowCamera)
+	{
+		FollowCamera->SetFieldOfView(CameraZoomedFOV);
+	}
+}
+
+void AShooterCharacter::AimingButtonReleased()
+{
+	bAiming = false;
+	if (nullptr != FollowCamera)
+	{
+		FollowCamera->SetFieldOfView(DefaultCameraFOV);
+	}
+}
+
 // Called every frame
 void AShooterCharacter::Tick(float DeltaTime)
 {
@@ -276,4 +301,8 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &AShooterCharacter::StopJumping);
 
 	PlayerInputComponent->BindAction("FireWeapon", IE_Pressed, this, &AShooterCharacter::FireWeapon);
+
+	// Aiming Button to zoom in and aim
+	PlayerInputComponent->BindAction("AimingButton", IE_Pressed, this, &AShooterCharacter::AimingButtonPressed);
+	PlayerInputComponent->BindAction("AimingButton", IE_Released, this, &AShooterCharacter::AimingButtonReleased);
 }
