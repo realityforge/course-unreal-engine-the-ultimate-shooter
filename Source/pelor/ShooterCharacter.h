@@ -142,7 +142,7 @@ private:
 	void UpdateLookRateBasedOnAimingStatus();
 
 public:
-	FORCEINLINE USpringArmComponent* getCameraBoom() const { return CameraBoom; }
-	FORCEINLINE UCameraComponent* getFollowCamera() const { return FollowCamera; }
+	FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
+	FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 	FORCEINLINE bool GetAiming() const { return bAiming; }
 };

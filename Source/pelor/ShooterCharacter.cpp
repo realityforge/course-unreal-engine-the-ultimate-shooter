@@ -285,7 +285,7 @@ void AShooterCharacter::UpdateFovBasedOnAimingStatus(const float DeltaTime)
 		CameraCurrentFOV = FMath::FInterpTo(CameraCurrentFOV, TargetFOV, DeltaTime, CameraFOVInterpolationSpeed);
 		// UE_LOG(LogTemp, Warning, TEXT("Zoom CurrentFOV=%f TargetFOV=%f"), CameraCurrentFOV, TargetFOV);
 		// GEngine->AddOnScreenDebugMessage(1, 0, FColor::Green, FString("FOV Set"));
-		getFollowCamera()->SetFieldOfView(CameraCurrentFOV);
+		GetFollowCamera()->SetFieldOfView(CameraCurrentFOV);
 	}
 }
 
