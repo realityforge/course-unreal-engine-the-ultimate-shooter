@@ -12,6 +12,7 @@
 // Sets default values
 AShooterCharacter::AShooterCharacter()
 	: bAiming(false)
+
 	// Turning properties
 	, BaseLookRightRate(45.F)
 	, BaseLookUpRate(45.F)
