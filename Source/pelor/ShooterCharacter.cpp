@@ -16,6 +16,10 @@ AShooterCharacter::AShooterCharacter()
 	// Turning properties
 	, BaseLookRightRate(45.F)
 	, BaseLookUpRate(45.F)
+	, HipLookRightRate(90.F)
+	, HipLookUpRate(90.F)
+	, AimingLookRightRate(20.F)
+	, AimingLookUpRate(20.F)
 
 	// Camera FOV properties
 	, DefaultCameraFOV(0.F) // Will be set in BeginPlay so 0 is just a placeholder
@@ -285,11 +289,28 @@ void AShooterCharacter::UpdateFovBasedOnAimingStatus(const float DeltaTime)
 	}
 }
 
+void AShooterCharacter::UpdateLookRateBasedOnAimingStatus()
+{
+	// Note that these only change rates of looking for button press inputs such as
+	// GamePads or keyboard
+	if (bAiming)
+	{
+		BaseLookRightRate = AimingLookRightRate;
+		BaseLookUpRate = AimingLookUpRate;
+	}
+	else
+	{
+		BaseLookRightRate = HipLookRightRate;
+		BaseLookUpRate = HipLookUpRate;
+	}
+}
+
 // Called every frame
 void AShooterCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	UpdateFovBasedOnAimingStatus(DeltaTime);
+	UpdateLookRateBasedOnAimingStatus();
 }
 
 // Called to bind functionality to input

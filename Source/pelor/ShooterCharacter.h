@@ -89,6 +89,22 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	float BaseLookUpRate;
 
+	/** turn rate in deg/sec when not aiming. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	float HipLookRightRate;
+
+	/** look up/down rate in deg/sec when not aiming. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	float HipLookUpRate;
+
+	/** turn rate in deg/sec when not aiming. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	float AimingLookRightRate;
+
+	/** look up/down rate in deg/sec when not aiming. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	float AimingLookUpRate;
+
 	/** Randomized gun shot sound */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
 	class USoundCue* FireSound;
@@ -123,6 +139,7 @@ private:
 	float CameraFOVInterpolationSpeed; // Note that this defaults to 20 in code but set to 30 in Blueprint
 
 	void UpdateFovBasedOnAimingStatus(float DeltaTime);
+	void UpdateLookRateBasedOnAimingStatus();
 
 public:
 	FORCEINLINE USpringArmComponent* getCameraBoom() const { return CameraBoom; }
