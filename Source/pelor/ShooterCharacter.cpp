@@ -225,18 +225,12 @@ bool AShooterCharacter::GetBeamEndLocation(const FVector& MuzzleEndLocation, FVe
 		const int PlayerIndex = 0;
 		APlayerController* Player = UGameplayStatics::GetPlayerController(this, PlayerIndex);
 
-		FVector CrosshairWorldPosition;
-		FVector CrosshairWorldDirection;
-		const bool bScreenToWorldSuccess =
-			UGameplayStatics::DeprojectScreenToWorld(Player, CrossHairLocation, CrosshairWorldPosition, CrosshairWorldDirection);
-
-		if (bScreenToWorldSuccess)
+		if (FVector CrosshairWorldPosition, FVector CrosshairWorldDirection; UGameplayStatics::DeprojectScreenToWorld(Player, CrossHairLocation, CrosshairWorldPosition, CrosshairWorldDirection))
 		{
 			const FVector End{ CrosshairWorldPosition + CrosshairWorldDirection * 50'000.0F };
 
 			// Trace a line from CrossHair to world to find the target location
-			FHitResult TargetHitResult;
-			if (GetWorld()->LineTraceSingleByChannel(TargetHitResult, CrosshairWorldPosition, End, ECC_Visibility))
+			if (FHitResult TargetHitResult; GetWorld()->LineTraceSingleByChannel(TargetHitResult, CrosshairWorldPosition, End, ECC_Visibility))
 			{
 				OutBeamLocation = TargetHitResult.Location;
 			}
@@ -246,8 +240,7 @@ bool AShooterCharacter::GetBeamEndLocation(const FVector& MuzzleEndLocation, FVe
 			}
 
 			// Trace a line from Muzzle to target and see if we hit anything along the way
-			FHitResult WeaponTraceHit;
-			if (GetWorld()->LineTraceSingleByChannel(WeaponTraceHit, MuzzleEndLocation, OutBeamLocation, ECC_Visibility))
+			if (FHitResult WeaponTraceHit; GetWorld()->LineTraceSingleByChannel(WeaponTraceHit, MuzzleEndLocation, OutBeamLocation, ECC_Visibility))
 			{
 				OutBeamLocation = WeaponTraceHit.Location;
 				return true;
@@ -278,8 +271,7 @@ void AShooterCharacter::AimingButtonReleased()
 
 void AShooterCharacter::UpdateFovBasedOnAimingStatus(const float DeltaTime)
 {
-	const float TargetFOV = bAiming ? CameraZoomedFOV : DefaultCameraFOV;
-	if (CameraCurrentFOV != TargetFOV)
+	if (const float TargetFOV = bAiming ? CameraZoomedFOV : DefaultCameraFOV; CameraCurrentFOV != TargetFOV)
 	{
 		// Interpolate float from Current to Target. Scaled by distance to Target, so it has a strong start speed and ease out.
 		CameraCurrentFOV = FMath::FInterpTo(CameraCurrentFOV, TargetFOV, DeltaTime, CameraFOVInterpolationSpeed);
