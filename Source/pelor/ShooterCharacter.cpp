@@ -222,7 +222,7 @@ bool AShooterCharacter::GetBeamEndLocation(const FVector& MuzzleEndLocation, FVe
 		FVector2D CrossHairLocation(ViewportSize.X / 2.f, ViewportSize.Y / 2.f - 50.F);
 
 		// PlayerIndex is always 0 in this game as there are no other players
-		const int PlayerIndex = 0;
+		constexpr int PlayerIndex = 0;
 		APlayerController* Player = UGameplayStatics::GetPlayerController(this, PlayerIndex);
 
 		if (FVector CrosshairWorldPosition, FVector CrosshairWorldDirection; UGameplayStatics::DeprojectScreenToWorld(Player, CrossHairLocation, CrosshairWorldPosition, CrosshairWorldDirection))
