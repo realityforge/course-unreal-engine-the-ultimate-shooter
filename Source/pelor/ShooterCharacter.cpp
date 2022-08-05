@@ -225,7 +225,7 @@ bool AShooterCharacter::GetBeamEndLocation(const FVector& MuzzleEndLocation, FVe
 		constexpr int PlayerIndex = 0;
 		APlayerController* Player = UGameplayStatics::GetPlayerController(this, PlayerIndex);
 
-		if (FVector CrosshairWorldPosition, FVector CrosshairWorldDirection; UGameplayStatics::DeprojectScreenToWorld(Player, CrossHairLocation, CrosshairWorldPosition, CrosshairWorldDirection))
+		if (FVector CrosshairWorldPosition, CrosshairWorldDirection; UGameplayStatics::DeprojectScreenToWorld(Player, CrossHairLocation, CrosshairWorldPosition, CrosshairWorldDirection))
 		{
 			const FVector End{ CrosshairWorldPosition + CrosshairWorldDirection * 50'000.0F };
 
