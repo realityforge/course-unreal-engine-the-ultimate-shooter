@@ -168,7 +168,7 @@ void AShooterCharacter::FireWeapon()
 		}
 
 		FVector HitLocation;
-		FVector MuzzleEndLocation = SocketTransform.GetLocation();
+		const FVector MuzzleEndLocation = SocketTransform.GetLocation();
 		if (GetBeamEndLocation(MuzzleEndLocation, HitLocation))
 		{
 			if (nullptr != ImpactParticles)
