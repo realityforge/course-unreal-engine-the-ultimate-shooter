@@ -11,9 +11,12 @@
 
 // Sets default values
 AShooterCharacter::AShooterCharacter()
-	: BaseLookRightRate(45.F)
+	: bAiming(false)
+	// Turning properties
+	, BaseLookRightRate(45.F)
 	, BaseLookUpRate(45.F)
-	, bAiming(false)
+
+	// Camera FOV properties
 	, DefaultCameraFOV(0.F) // Will be set in BeginPlay so 0 is just a placeholder
 	, CameraZoomedFOV(35.F)
 	, CameraCurrentFOV(0.F)

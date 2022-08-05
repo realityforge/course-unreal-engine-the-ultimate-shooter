@@ -65,6 +65,10 @@ public:
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
 private:
+	/** True when in Aim mode */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Combat, meta = (AllowPrivateAccess = "true"))
+	bool bAiming;
+
 	// Using "class USpringArmComponent*" rather than
 	// "USpringArmComponent*" forward declares the type.
 	// which means we do not need to include header to declare
@@ -104,10 +108,6 @@ private:
 	/** Smoke trail for bullets */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
 	UParticleSystem* BeamParticles;
-
-	/** True when in Aim mode */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Combat, meta = (AllowPrivateAccess = "true"))
-	bool bAiming;
 
 	/** Default FOV for camera */
 	float DefaultCameraFOV;
