@@ -52,7 +52,7 @@ protected:
 	 * @param OutBeamLocation the location where the weapon weapon hit or when the weapon shot dissipated depending on whether the return result is true or false..
 	 * @return true if a hit occurs, false if no hit occurs
 	 */
-	bool GetBeamEndLocation(const FVector& MuzzleEndLocation, FVector& OutBeamLocation);
+	bool GetBeamEndLocation(const FVector& MuzzleEndLocation, FVector& OutBeamLocation) const;
 
 	void AimingButtonPressed();
 	void AimingButtonReleased();
