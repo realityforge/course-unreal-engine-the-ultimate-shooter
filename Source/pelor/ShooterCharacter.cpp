@@ -96,11 +96,11 @@ void AShooterCharacter::BeginPlay()
 	}
 }
 
-void AShooterCharacter::MoveForward(float value)
+void AShooterCharacter::MoveForward(float Value)
 {
 	// The controller indicates the direction we are facing.
 	// So we check have a controller and also check we have input that is not 0
-	if (nullptr != Controller && 0 != value)
+	if (nullptr != Controller && 0 != Value)
 	{
 		// find out which way is forward
 		// A rotator is a "float" specialisation of TRotator. TRotator indicates yaw/pitch/roll
@@ -119,7 +119,7 @@ void AShooterCharacter::MoveForward(float value)
 
 		// Our movement component will translate this according to its internal rules (i.e. max walk speed,
 		// whether there is a blocker in front etc) and then apply the position update to Actor
-		AddMovementInput(Direction, value);
+		AddMovementInput(Direction, Value);
 	}
 }
 

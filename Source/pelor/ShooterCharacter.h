@@ -21,7 +21,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	// Called for the move forwards/backwards input
-	void MoveForward(float value);
+	void MoveForward(float Value);
 
 	// Called for the move right/left input
 	void MoveRight(float Value);
