@@ -210,10 +210,9 @@ void AShooterCharacter::FireWeapon()
 
 bool AShooterCharacter::GetBeamEndLocation(const FVector& MuzzleEndLocation, FVector& OutBeamLocation) const
 {
-	FVector2D ViewportSize;
-
 	if (nullptr != GEngine && nullptr != GEngine->GameViewport)
 	{
+		FVector2D ViewportSize;
 		GEngine->GameViewport->GetViewportSize(ViewportSize);
 
 		// CrossHairLocation is in screen coordinates and now we need world space coordinates
