@@ -96,7 +96,7 @@ void AShooterCharacter::BeginPlay()
 	}
 }
 
-void AShooterCharacter::MoveForward(float Value)
+void AShooterCharacter::MoveForward(const float Value)
 {
 	// The controller indicates the direction we are facing.
 	// So we check have a controller and also check we have input that is not 0
@@ -123,7 +123,7 @@ void AShooterCharacter::MoveForward(float Value)
 	}
 }
 
-void AShooterCharacter::MoveRight(float Value)
+void AShooterCharacter::MoveRight(const float Value)
 {
 	// See comments for MoveForward as it is basically the same thing
 	if (nullptr != Controller && 0 != Value)
