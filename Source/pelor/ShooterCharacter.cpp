@@ -21,6 +21,14 @@ AShooterCharacter::AShooterCharacter()
 	, AimingLookRightRate(20.F)
 	, AimingLookUpRate(20.F)
 
+	// MouseTurning properties
+	, BaseMouseLookRightRate(0.F)
+	, BaseMouseLookUpRate(0.F)
+	, HipMouseLookRightRate(1.F)
+	, HipMouseLookUpRate(1.F)
+	, AimingMouseLookRightRate(0.4F)
+	, AimingMouseLookUpRate(0.4F)
+
 	// Camera FOV properties
 	, DefaultCameraFOV(0.F) // Will be set in BeginPlay so 0 is just a placeholder
 	, CameraZoomedFOV(35.F)
@@ -98,12 +106,12 @@ void AShooterCharacter::BeginPlay()
 
 void AShooterCharacter::MouseLookRight(float Value)
 {
-	AddControllerYawInput(Value);
+	AddControllerYawInput(Value * BaseMouseLookRightRate);
 }
 
 void AShooterCharacter::MouseLookUp(float Value)
 {
-	AddControllerPitchInput(Value);
+	AddControllerPitchInput(Value * BaseMouseLookUpRate);
 }
 
 void AShooterCharacter::MoveForward(const float Value)
@@ -297,11 +305,15 @@ void AShooterCharacter::UpdateLookRateBasedOnAimingStatus()
 	{
 		BaseLookRightRate = AimingLookRightRate;
 		BaseLookUpRate = AimingLookUpRate;
+		BaseMouseLookRightRate = AimingMouseLookRightRate;
+		BaseMouseLookUpRate = AimingMouseLookUpRate;
 	}
 	else
 	{
 		BaseLookRightRate = HipLookRightRate;
 		BaseLookUpRate = HipLookUpRate;
+		BaseMouseLookRightRate = HipMouseLookRightRate;
+		BaseMouseLookUpRate = HipMouseLookUpRate;
 	}
 }
 

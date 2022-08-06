@@ -111,6 +111,30 @@ private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	float AimingLookUpRate;
 
+	/** Base turn rate in deg/sec. Other scaling may effect final turn rate. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	float BaseMouseLookRightRate;
+
+	/** Base look up/down rate in deg/sec. Other scaling may effect final turn rate. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	float BaseMouseLookUpRate;
+
+	/** turn rate in deg/sec when not aiming. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	float HipMouseLookRightRate;
+
+	/** look up/down rate in deg/sec when not aiming. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	float HipMouseLookUpRate;
+
+	/** turn rate in deg/sec when not aiming. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	float AimingMouseLookRightRate;
+
+	/** look up/down rate in deg/sec when not aiming. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	float AimingMouseLookUpRate;
+
 	/** Randomized gun shot sound */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
 	class USoundCue* FireSound;
