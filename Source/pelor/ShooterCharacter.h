@@ -20,6 +20,12 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	// Called for the mouse input on x input
+	void MouseLookRight(float Value);
+
+	// Called for the mouse input on y input
+	void MouseLookUp(float Value);
+
 	// Called for the move forwards/backwards input
 	void MoveForward(float Value);
 

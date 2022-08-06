@@ -96,6 +96,16 @@ void AShooterCharacter::BeginPlay()
 	}
 }
 
+void AShooterCharacter::MouseLookRight(float Value)
+{
+	AddControllerYawInput(Value);
+}
+
+void AShooterCharacter::MouseLookUp(float Value)
+{
+	AddControllerPitchInput(Value);
+}
+
 void AShooterCharacter::MoveForward(const float Value)
 {
 	// The controller indicates the direction we are facing.
@@ -318,8 +328,8 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAxis("LookRight", this, &AShooterCharacter::LookRight);
 
 	// The mouse controller directly routes inputs to functions inherited from base class
-	PlayerInputComponent->BindAxis("MouseLookRight", this, &APawn::AddControllerYawInput);
-	PlayerInputComponent->BindAxis("MouseLookUp", this, &APawn::AddControllerPitchInput);
+	PlayerInputComponent->BindAxis("MouseLookRight", this, &AShooterCharacter::MouseLookRight);
+	PlayerInputComponent->BindAxis("MouseLookUp", this, &AShooterCharacter::MouseLookUp);
 
 	// Jump function inherited from character class
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &AShooterCharacter::Jump);
