@@ -43,7 +43,7 @@ protected:
 	/**
 	 * Called by Input when the FireWeapon button is pressed.
 	 */
-	void FireWeapon() const;
+	void FireWeapon();
 
 	/**
 	 * Trace a line from the MuzzleEndLocation to where the crosshair is aiming.
