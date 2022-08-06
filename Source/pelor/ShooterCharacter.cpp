@@ -317,11 +317,32 @@ void AShooterCharacter::UpdateLookRateBasedOnAimingStatus()
 	}
 }
 
+void AShooterCharacter::CalculateCrosshairSpreadMultiplier(const float DeltaTime)
+{
+	// We want to map current walk value in  WalkSpeedRange wot equivalent in CrosshairVelocityFactorRange
+	const FVector2d WalkSpeedRange(0.f, 600.f);
+	const FVector2d CrosshairVelocityFactorRange(0.f, 1.f);
+
+	// Get the lateral velocity
+	FVector3d Velocity{ GetVelocity() };
+	Velocity.Z = 0;
+
+	CrosshairVelocityFactor = FMath::GetMappedRangeValueClamped(WalkSpeedRange, CrosshairVelocityFactorRange, Velocity.Size());
+
+	CrosshairSpreadMultiplier = 0.5F + CrosshairVelocityFactor; // * ;
+}
+
+float AShooterCharacter::GetCrosshairSpreadMultiplier() const
+{
+	return CrosshairSpreadMultiplier;
+}
+
 // Called every frame
 void AShooterCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	UpdateFovBasedOnAimingStatus(DeltaTime);
+	CalculateCrosshairSpreadMultiplier(DeltaTime);
 	UpdateLookRateBasedOnAimingStatus();
 }
 
