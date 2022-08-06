@@ -123,10 +123,10 @@ void AShooterCharacter::MoveForward(float value)
 	}
 }
 
-void AShooterCharacter::MoveRight(float value)
+void AShooterCharacter::MoveRight(float Value)
 {
 	// See comments for MoveForward as it is basically the same thing
-	if (nullptr != Controller && 0 != value)
+	if (nullptr != Controller && 0 != Value)
 	{
 		const FRotator Rotation{ Controller->GetControlRotation() };
 		const FRotator YawRotation{ 0, Rotation.Yaw, 0 };
@@ -136,7 +136,7 @@ void AShooterCharacter::MoveRight(float value)
 		// This is the only thing that differs from MoveForward
 		const FVector Direction{ RotationMatrix.GetUnitAxis(EAxis::Y) };
 
-		AddMovementInput(Direction, value);
+		AddMovementInput(Direction, Value);
 	}
 }
 

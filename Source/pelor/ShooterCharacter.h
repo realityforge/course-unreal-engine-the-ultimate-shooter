@@ -24,7 +24,7 @@ protected:
 	void MoveForward(float value);
 
 	// Called for the move right/left input
-	void MoveRight(float value);
+	void MoveRight(float Value);
 
 	/**
 	 * Called by Input to turn right/left at a given rate.
