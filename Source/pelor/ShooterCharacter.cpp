@@ -156,7 +156,7 @@ void AShooterCharacter::LookUp(const float Rate)
 	AddControllerPitchInput(Rate * BaseLookUpRate * DeltaSeconds);
 }
 
-void AShooterCharacter::FireWeapon()
+void AShooterCharacter::FireWeapon() const
 {
 	UE_LOG(LogTemp, Warning, TEXT("Fire Weapon! Pew Pew!"));
 	if (nullptr != FireSound)
