@@ -198,8 +198,7 @@ void AShooterCharacter::FireWeapon()
 	if (nullptr != HipFireMontage)
 	{
 		// Get our current animation manager
-		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-		if (nullptr != AnimInstance)
+		if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance(); nullptr != AnimInstance)
 		{
 			// Merge in the HipFire Animation Montage
 			AnimInstance->Montage_Play(HipFireMontage);
