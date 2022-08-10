@@ -245,9 +245,7 @@ bool AShooterCharacter::GetBeamEndLocation(const FVector& MuzzleEndLocation, FVe
 		GEngine->GameViewport->GetViewportSize(ViewportSize);
 
 		// CrossHairLocation is in screen coordinates and now we need world space coordinates
-		// We recalculate this in the same way as we do in the the blueprint code ... :(
-		// TODO: Should this 50 be 70?
-		FVector2D CrossHairLocation(ViewportSize.X / 2.f, ViewportSize.Y / 2.f - 50.F);
+		FVector2D CrossHairLocation(ViewportSize.X / 2.f, ViewportSize.Y / 2.f);
 
 		// PlayerIndex is always 0 in this game as there are no other players
 		constexpr int PlayerIndex = 0;
