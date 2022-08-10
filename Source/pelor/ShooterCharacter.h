@@ -195,9 +195,26 @@ private:
 	/** The timer used to control the duration that CrosshairShootingFactor is impacted by weapon fire */
 	FTimerHandle WeaponFireTimer;
 
+	/** Weapon fire button is depressed */
+	bool bFireButtonPressed;
+	/** True when can fire, false when for weapon to get ready to fire again */
+	bool bShouldFire;
+	/** Rate of automatic gun fire. This should be bigger than WeaponFireDuration as that controls spread of cross hair*/
+	float AutomaticFireRate;
+	/** A timer between weapon firing */
+	FTimerHandle AutomaticFireTimer;
+
 	void UpdateFovBasedOnAimingStatus(float DeltaTime);
 	void UpdateLookRateBasedOnAimingStatus();
 	void CalculateCrosshairSpreadMultiplier(float DeltaTime);
+
+	void FireButtonPressed();
+	void FireButtonReleased();
+
+	void StartAutoFireTimer();
+
+	UFUNCTION()
+	void AutoFireReset();
 
 	void StartWeaponFireTimer();
 

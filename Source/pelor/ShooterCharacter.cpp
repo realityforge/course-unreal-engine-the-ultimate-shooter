@@ -45,6 +45,11 @@ AShooterCharacter::AShooterCharacter()
 	// Variables used in managing Crosshair spread due to firing
 	, WeaponFireDuration(0.05F)
 	, bWeaponFiring(false)
+
+	// Automatic fire variables
+	, bFireButtonPressed(false)
+	, bShouldFire(true)
+	, AutomaticFireRate(0.1F)
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -377,6 +382,40 @@ void AShooterCharacter::CalculateCrosshairSpreadMultiplier(const float DeltaTime
 	// GEngine->AddOnScreenDebugMessage(5, 0, FColor::Green, FString(FString::Printf(TEXT("CrosshairSpreadMultiplier=%f"), CrosshairSpreadMultiplier)));
 }
 
+void AShooterCharacter::FireButtonPressed()
+{
+	bFireButtonPressed = true;
+	StartAutoFireTimer();
+}
+
+void AShooterCharacter::FireButtonReleased()
+{
+	bFireButtonPressed = false;
+}
+
+void AShooterCharacter::StartAutoFireTimer()
+{
+	GEngine->AddOnScreenDebugMessage(1, 0, FColor::Red, FString(FString::Printf(TEXT("StartAutoWeaponFireTimer bShouldFire=%d"), bShouldFire)));
+	UE_LOG(LogTemp, Warning, TEXT("StartAutoWeaponFireTimer bShouldFire=%d"), bShouldFire);
+	if (bShouldFire)
+	{
+		FireWeapon();
+		bShouldFire = false;
+		GEngine->AddOnScreenDebugMessage(2, 0, FColor::Red, FString(FString::Printf(TEXT("ScheduleAutoFireShot AutomaticFireRate=%f"), AutomaticFireRate)));
+		GetWorldTimerManager().SetTimer(AutomaticFireTimer, this, &AShooterCharacter::AutoFireReset, AutomaticFireRate);
+	}
+}
+
+void AShooterCharacter::AutoFireReset()
+{
+	bShouldFire = true;
+	if (bFireButtonPressed)
+	{
+		// If we are still holding button then fire again
+		StartAutoFireTimer();
+	}
+}
+
 void AShooterCharacter::StartWeaponFireTimer()
 {
 	bWeaponFiring = true;
@@ -424,7 +463,8 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &AShooterCharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &AShooterCharacter::StopJumping);
 
-	PlayerInputComponent->BindAction("FireWeapon", IE_Pressed, this, &AShooterCharacter::FireWeapon);
+	PlayerInputComponent->BindAction("FireWeapon", IE_Pressed, this, &AShooterCharacter::FireButtonPressed);
+	PlayerInputComponent->BindAction("FireWeapon", IE_Released, this, &AShooterCharacter::FireButtonReleased);
 
 	// Aiming Button to zoom in and aim
 	PlayerInputComponent->BindAction("AimingButton", IE_Pressed, this, &AShooterCharacter::AimingButtonPressed);
