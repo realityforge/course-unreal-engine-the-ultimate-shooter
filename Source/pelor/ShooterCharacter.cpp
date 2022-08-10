@@ -346,8 +346,18 @@ void AShooterCharacter::CalculateCrosshairSpreadMultiplier(const float DeltaTime
 		// If character has landed then we want to rapidly interpolate CrosshairInAirFactor to 0
 		CrosshairInAirFactor = FMath::FInterpTo(CrosshairInAirFactor, 0.F, DeltaTime, 30.F);
 	}
+	if (bAiming)
+	{
+		// If character is Aiming we want to slowly decrease CrosshairAimFactor
+		CrosshairAimFactor = FMath::FInterpTo(CrosshairAimFactor, 0.6F, DeltaTime, 2.F);
+	}
+	else
+	{
+		// If character is not aiming then we want to rapidly interpolate CrosshairAimFactor to 0
+		CrosshairAimFactor = FMath::FInterpTo(CrosshairAimFactor, 0.F, DeltaTime, 30.F);
+	}
 
-	CrosshairSpreadMultiplier = 0.5F + CrosshairVelocityFactor + CrosshairInAirFactor;
+	CrosshairSpreadMultiplier = 0.5F + CrosshairVelocityFactor + CrosshairInAirFactor - CrosshairAimFactor;
 }
 
 float AShooterCharacter::GetCrosshairSpreadMultiplier() const
