@@ -358,6 +358,10 @@ void AShooterCharacter::CalculateCrosshairSpreadMultiplier(const float DeltaTime
 	}
 
 	CrosshairSpreadMultiplier = 0.5F + CrosshairVelocityFactor + CrosshairInAirFactor - CrosshairAimFactor;
+	// GEngine->AddOnScreenDebugMessage(1, 0, FColor::Red, FString(FString::Printf(TEXT("CrosshairVelocityFactor=%f"), CrosshairVelocityFactor)));
+	// GEngine->AddOnScreenDebugMessage(2, 0, FColor::Red, FString(FString::Printf(TEXT("CrosshairInAirFactor=%f"), CrosshairInAirFactor)));
+	// GEngine->AddOnScreenDebugMessage(3, 0, FColor::Red, FString(FString::Printf(TEXT("CrosshairAimFactor=%f"), CrosshairAimFactor)));
+	// GEngine->AddOnScreenDebugMessage(4, 0, FColor::Red, FString(FString::Printf(TEXT("CrosshairSpreadMultiplier=%f"), CrosshairSpreadMultiplier)));
 }
 
 float AShooterCharacter::GetCrosshairSpreadMultiplier() const
