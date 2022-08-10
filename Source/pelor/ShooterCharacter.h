@@ -188,8 +188,11 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Crosshairs, meta = (AllowPrivateAccess = "true"))
 	float CrosshairShootingFactor;
 
+	/** The duration that the CrosshairShootingFactor is increased after firing */
 	float WeaponFireDuration;
+	/** Is the crosshair shooting factor still increasing */
 	bool bWeaponFiring;
+	/** The timer used to control the duration that CrosshairShootingFactor is impacted by weapon fire */
 	FTimerHandle WeaponFireTimer;
 
 	void UpdateFovBasedOnAimingStatus(float DeltaTime);
