@@ -329,7 +329,18 @@ void AShooterCharacter::CalculateCrosshairSpreadMultiplier(const float DeltaTime
 
 	CrosshairVelocityFactor = FMath::GetMappedRangeValueClamped(WalkSpeedRange, CrosshairVelocityFactorRange, Velocity.Size());
 
-	CrosshairSpreadMultiplier = 0.5F + CrosshairVelocityFactor;
+	if (GetCharacterMovement()->IsFalling())
+	{
+		// If character is falling we want to slowly increase CrosshairInAirFactor
+		CrosshairInAirFactor = FMath::FInterpTo(CrosshairInAirFactor, 2.25F, DeltaTime, 2.25F);
+	}
+	else
+	{
+		// If character has landed then we want to rapidly interpolate CrosshairInAirFactor to 0
+		CrosshairInAirFactor = FMath::FInterpTo(CrosshairInAirFactor, 0.F, DeltaTime, 30.F);
+	}
+
+	CrosshairSpreadMultiplier = 0.5F + CrosshairVelocityFactor + CrosshairInAirFactor;
 }
 
 float AShooterCharacter::GetCrosshairSpreadMultiplier() const
