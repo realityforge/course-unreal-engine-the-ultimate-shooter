@@ -189,11 +189,11 @@ private:
 	float CrosshairShootingFactor;
 
 	/** The duration that the CrosshairShootingFactor is increased after firing */
-	float WeaponFireDuration;
+	float CrosshairShootingImpactDuration;
 	/** Is the crosshair shooting factor still increasing */
-	bool bWeaponFiring;
+	bool bCrosshairShootingImpactActive;
 	/** The timer used to control the duration that CrosshairShootingFactor is impacted by weapon fire */
-	FTimerHandle WeaponFireTimer;
+	FTimerHandle CrosshairShootingImpactTimer;
 
 	/** Weapon fire button is depressed */
 	bool bFireButtonPressed;

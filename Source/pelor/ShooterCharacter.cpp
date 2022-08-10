@@ -43,8 +43,8 @@ AShooterCharacter::AShooterCharacter()
 	, CrosshairShootingFactor(0.F)
 
 	// Variables used in managing Crosshair spread due to firing
-	, WeaponFireDuration(0.05F)
-	, bWeaponFiring(false)
+	, CrosshairShootingImpactDuration(0.05F)
+	, bCrosshairShootingImpactActive(false)
 
 	// Automatic fire variables
 	, bFireButtonPressed(false)
@@ -365,7 +365,7 @@ void AShooterCharacter::CalculateCrosshairSpreadMultiplier(const float DeltaTime
 		CrosshairAimFactor = FMath::FInterpTo(CrosshairAimFactor, 0.F, DeltaTime, 30.F);
 	}
 	// After firing bullet then spread crosshair for short duration
-	if (bWeaponFiring)
+	if (bCrosshairShootingImpactActive)
 	{
 		CrosshairShootingFactor = FMath::FInterpTo(CrosshairShootingFactor, 0.3F, DeltaTime, 60.F);
 	}
@@ -418,13 +418,13 @@ void AShooterCharacter::AutoFireReset()
 
 void AShooterCharacter::StartWeaponFireTimer()
 {
-	bWeaponFiring = true;
-	GetWorldTimerManager().SetTimer(WeaponFireTimer, this, &AShooterCharacter::FinishWeaponFireTimer, WeaponFireDuration);
+	bCrosshairShootingImpactActive = true;
+	GetWorldTimerManager().SetTimer(CrosshairShootingImpactTimer, this, &AShooterCharacter::FinishWeaponFireTimer, CrosshairShootingImpactDuration);
 }
 
 void AShooterCharacter::FinishWeaponFireTimer()
 {
-	bWeaponFiring = false;
+	bCrosshairShootingImpactActive = false;
 }
 
 float AShooterCharacter::GetCrosshairSpreadMultiplier() const
