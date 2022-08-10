@@ -329,7 +329,7 @@ void AShooterCharacter::CalculateCrosshairSpreadMultiplier(const float DeltaTime
 
 	CrosshairVelocityFactor = FMath::GetMappedRangeValueClamped(WalkSpeedRange, CrosshairVelocityFactorRange, Velocity.Size());
 
-	CrosshairSpreadMultiplier = 0.5F + CrosshairVelocityFactor; // * ;
+	CrosshairSpreadMultiplier = 0.5F + CrosshairVelocityFactor;
 }
 
 float AShooterCharacter::GetCrosshairSpreadMultiplier() const
