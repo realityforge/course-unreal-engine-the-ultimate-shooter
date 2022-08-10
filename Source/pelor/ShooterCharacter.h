@@ -188,9 +188,19 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Crosshairs, meta = (AllowPrivateAccess = "true"))
 	float CrosshairShootingFactor;
 
+	float WeaponFireDuration;
+	bool bWeaponFiring;
+	FTimerHandle WeaponFireTimer;
+
 	void UpdateFovBasedOnAimingStatus(float DeltaTime);
 	void UpdateLookRateBasedOnAimingStatus();
 	void CalculateCrosshairSpreadMultiplier(float DeltaTime);
+
+	void StartWeaponFireTimer();
+
+	// Needs to be annotated with the UFUNCTION macro as it is a callback for timer
+	UFUNCTION()
+	void FinishWeaponFireTimer();
 
 public:
 	FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; }

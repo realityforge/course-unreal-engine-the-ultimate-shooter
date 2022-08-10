@@ -41,6 +41,10 @@ AShooterCharacter::AShooterCharacter()
 	, CrosshairInAirFactor(0.F)
 	, CrosshairAimFactor(0.F)
 	, CrosshairShootingFactor(0.F)
+
+	// Variables used in managing Crosshair spread due to firing
+	, WeaponFireDuration(0.05F)
+	, bWeaponFiring(false)
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -230,6 +234,7 @@ void AShooterCharacter::FireWeapon()
 			AnimInstance->Montage_JumpToSection("StartFire");
 		}
 	}
+	StartWeaponFireTimer();
 }
 
 bool AShooterCharacter::GetBeamEndLocation(const FVector& MuzzleEndLocation, FVector& OutBeamLocation) const
@@ -356,12 +361,33 @@ void AShooterCharacter::CalculateCrosshairSpreadMultiplier(const float DeltaTime
 		// If character is not aiming then we want to rapidly interpolate CrosshairAimFactor to 0
 		CrosshairAimFactor = FMath::FInterpTo(CrosshairAimFactor, 0.F, DeltaTime, 30.F);
 	}
+	// After firing bullet then spread crosshair for short duration
+	if (bWeaponFiring)
+	{
+		CrosshairShootingFactor = FMath::FInterpTo(CrosshairShootingFactor, 0.3F, DeltaTime, 60.F);
+	}
+	else
+	{
+		CrosshairShootingFactor = FMath::FInterpTo(CrosshairShootingFactor, 0.F, DeltaTime, 60.F);
+	}
 
-	CrosshairSpreadMultiplier = 0.5F + CrosshairVelocityFactor + CrosshairInAirFactor - CrosshairAimFactor;
+	CrosshairSpreadMultiplier = 0.5F + CrosshairVelocityFactor + CrosshairInAirFactor - CrosshairAimFactor + CrosshairShootingFactor;
 	// GEngine->AddOnScreenDebugMessage(1, 0, FColor::Red, FString(FString::Printf(TEXT("CrosshairVelocityFactor=%f"), CrosshairVelocityFactor)));
 	// GEngine->AddOnScreenDebugMessage(2, 0, FColor::Red, FString(FString::Printf(TEXT("CrosshairInAirFactor=%f"), CrosshairInAirFactor)));
 	// GEngine->AddOnScreenDebugMessage(3, 0, FColor::Red, FString(FString::Printf(TEXT("CrosshairAimFactor=%f"), CrosshairAimFactor)));
-	// GEngine->AddOnScreenDebugMessage(4, 0, FColor::Red, FString(FString::Printf(TEXT("CrosshairSpreadMultiplier=%f"), CrosshairSpreadMultiplier)));
+	// GEngine->AddOnScreenDebugMessage(4, 0, FColor::Red, FString(FString::Printf(TEXT("CrosshairShootingFactor=%f"), CrosshairShootingFactor)));
+	// GEngine->AddOnScreenDebugMessage(5, 0, FColor::Green, FString(FString::Printf(TEXT("CrosshairSpreadMultiplier=%f"), CrosshairSpreadMultiplier)));
+}
+
+void AShooterCharacter::StartWeaponFireTimer()
+{
+	bWeaponFiring = true;
+	GetWorldTimerManager().SetTimer(WeaponFireTimer, this, &AShooterCharacter::FinishWeaponFireTimer, WeaponFireDuration);
+}
+
+void AShooterCharacter::FinishWeaponFireTimer()
+{
+	bWeaponFiring = false;
 }
 
 float AShooterCharacter::GetCrosshairSpreadMultiplier() const
