@@ -4,7 +4,7 @@ using UnrealBuildTool;
 
 public class pelor : ModuleRules
 {
-	public pelor(ReadOnlyTargetRules Target) : base(Target)
+	public pelor(ReadOnlyTargetRules target) : base(target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
