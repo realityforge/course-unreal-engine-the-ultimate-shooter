@@ -7,6 +7,7 @@
 #include "Item.generated.h"
 
 class UBoxComponent;
+class UWidgetComponent;
 
 UCLASS()
 class PELOR_API AItem : public AActor
@@ -34,6 +35,10 @@ private:
 	/** Line trace collides with this box to show HUD widgets */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
 	UBoxComponent* CollisionBox;
+
+	/** Popup widget when character looks at the item */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
+	UWidgetComponent* PickupWidget;
 
 	// public section for accessors for state
 public:
