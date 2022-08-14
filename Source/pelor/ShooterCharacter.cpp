@@ -251,8 +251,14 @@ bool AShooterCharacter::GetBeamEndLocation(const FVector& MuzzleEndLocation, FVe
 		FHitResult TargetHitResult;
 		TraceCrosshairToWorld(TargetHitResult, OutBeamLocation);
 
+		FVector MuzzleEndToHit = OutBeamLocation - MuzzleEndLocation;
+		// Place the end of our trace beyond the location hit by our original trace by 25% so that we
+		// are always guaranteed to hit the wall, otherwise numerical instability and changing location
+		// of the muzzle (usually due to kick animations) will mean our traces never hit the target
+		const FVector WeaponTraceEnd{ MuzzleEndLocation + MuzzleEndToHit * 1.25F };
+
 		// Trace a line from Muzzle to target and see if we hit anything along the way
-		if (FHitResult WeaponTraceHit; GetWorld()->LineTraceSingleByChannel(WeaponTraceHit, MuzzleEndLocation, OutBeamLocation, ECC_Visibility))
+		if (FHitResult WeaponTraceHit; GetWorld()->LineTraceSingleByChannel(WeaponTraceHit, MuzzleEndLocation, WeaponTraceEnd, ECC_Visibility))
 		{
 			OutBeamLocation = WeaponTraceHit.Location;
 			return true;
