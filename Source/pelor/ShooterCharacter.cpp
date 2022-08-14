@@ -248,36 +248,14 @@ bool AShooterCharacter::GetBeamEndLocation(const FVector& MuzzleEndLocation, FVe
 {
 	if (nullptr != GEngine && nullptr != GEngine->GameViewport)
 	{
-		FVector2D ViewportSize;
-		GEngine->GameViewport->GetViewportSize(ViewportSize);
+		FHitResult TargetHitResult;
+		TraceCrosshairToWorld(TargetHitResult, OutBeamLocation);
 
-		// CrossHairLocation is in screen coordinates and now we need world space coordinates
-		FVector2D CrossHairLocation(ViewportSize.X / 2.f, ViewportSize.Y / 2.f);
-
-		// PlayerIndex is always 0 in this game as there are no other players
-		constexpr int PlayerIndex = 0;
-		APlayerController* Player = UGameplayStatics::GetPlayerController(this, PlayerIndex);
-
-		if (FVector CrosshairWorldPosition, CrosshairWorldDirection; UGameplayStatics::DeprojectScreenToWorld(Player, CrossHairLocation, CrosshairWorldPosition, CrosshairWorldDirection))
+		// Trace a line from Muzzle to target and see if we hit anything along the way
+		if (FHitResult WeaponTraceHit; GetWorld()->LineTraceSingleByChannel(WeaponTraceHit, MuzzleEndLocation, OutBeamLocation, ECC_Visibility))
 		{
-			const FVector End{ CrosshairWorldPosition + CrosshairWorldDirection * 50'000.0F };
-
-			// Trace a line from CrossHair to world to find the target location
-			if (FHitResult TargetHitResult; GetWorld()->LineTraceSingleByChannel(TargetHitResult, CrosshairWorldPosition, End, ECC_Visibility))
-			{
-				OutBeamLocation = TargetHitResult.Location;
-			}
-			else
-			{
-				OutBeamLocation = End;
-			}
-
-			// Trace a line from Muzzle to target and see if we hit anything along the way
-			if (FHitResult WeaponTraceHit; GetWorld()->LineTraceSingleByChannel(WeaponTraceHit, MuzzleEndLocation, OutBeamLocation, ECC_Visibility))
-			{
-				OutBeamLocation = WeaponTraceHit.Location;
-				return true;
-			}
+			OutBeamLocation = WeaponTraceHit.Location;
+			return true;
 		}
 	}
 	else
@@ -292,7 +270,7 @@ bool AShooterCharacter::GetBeamEndLocation(const FVector& MuzzleEndLocation, FVe
 	return false;
 }
 
-bool AShooterCharacter::TraceCrosshairToWorld(FHitResult& OutHitResult) const
+bool AShooterCharacter::TraceCrosshairToWorld(FHitResult& OutHitResult, FVector& OutHitLocation) const
 {
 	if (nullptr != GEngine && nullptr != GEngine->GameViewport)
 	{
@@ -312,7 +290,16 @@ bool AShooterCharacter::TraceCrosshairToWorld(FHitResult& OutHitResult) const
 			const FVector End{ CrosshairWorldPosition + CrosshairWorldDirection * 50'000.0F };
 
 			// Trace a line from CrossHair to world to find the target location
-			return GetWorld()->LineTraceSingleByChannel(OutHitResult, CrosshairWorldPosition, End, ECC_Visibility);
+			if (GetWorld()->LineTraceSingleByChannel(OutHitResult, CrosshairWorldPosition, End, ECC_Visibility))
+			{
+				OutHitLocation = OutHitResult.Location;
+				return true;
+			}
+			else
+			{
+				OutHitLocation = End;
+				return false;
+			}
 		}
 	}
 	return false;
