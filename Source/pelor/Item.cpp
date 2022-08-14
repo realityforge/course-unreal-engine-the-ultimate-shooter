@@ -18,6 +18,10 @@ AItem::AItem()
 	// Attach CollisionBox as a Child of ItemMesh using the default Socket
 	CollisionBox->SetupAttachment(ItemMesh);
 
+	// Make sure the collision box will block visibility channel traces but no others
+	CollisionBox->SetCollisionResponseToAllChannels(ECR_Ignore);
+	CollisionBox->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
+
 	PickupWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("PickupWidget"));
 	PickupWidget->SetupAttachment(GetRootComponent());
 }
@@ -26,6 +30,9 @@ AItem::AItem()
 void AItem::BeginPlay()
 {
 	Super::BeginPlay();
+
+	// Hide Pickup Widget
+	PickupWidget->SetVisibility(false);
 }
 
 // Called every frame

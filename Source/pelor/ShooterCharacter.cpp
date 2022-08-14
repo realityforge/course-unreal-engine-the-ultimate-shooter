@@ -2,9 +2,11 @@
 
 #include "ShooterCharacter.h"
 #include "Camera/CameraComponent.h"
+#include "Components/WidgetComponent.h"
 #include "Engine/SkeletalMeshSocket.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Item.h"
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Sound/SoundCue.h"
@@ -290,6 +292,32 @@ bool AShooterCharacter::GetBeamEndLocation(const FVector& MuzzleEndLocation, FVe
 	return false;
 }
 
+bool AShooterCharacter::TraceCrosshairToWorld(FHitResult& OutHitResult) const
+{
+	if (nullptr != GEngine && nullptr != GEngine->GameViewport)
+	{
+		FVector2D ViewportSize;
+		GEngine->GameViewport->GetViewportSize(ViewportSize);
+
+		// CrossHairLocation is in screen coordinates and now we need world space coordinates
+		const FVector2D CrossHairLocation(ViewportSize.X / 2.f, ViewportSize.Y / 2.f);
+
+		// PlayerIndex is always 0 in this game as there are no other players
+		constexpr int PlayerIndex = 0;
+		const APlayerController* Player = UGameplayStatics::GetPlayerController(this, PlayerIndex);
+
+		if (FVector CrosshairWorldPosition, CrosshairWorldDirection; UGameplayStatics::DeprojectScreenToWorld(Player, CrossHairLocation, CrosshairWorldPosition, CrosshairWorldDirection))
+		{
+			// Calculate an endpoint that is 50,000 units away in direction
+			const FVector End{ CrosshairWorldPosition + CrosshairWorldDirection * 50'000.0F };
+
+			// Trace a line from CrossHair to world to find the target location
+			return GetWorld()->LineTraceSingleByChannel(OutHitResult, CrosshairWorldPosition, End, ECC_Visibility);
+		}
+	}
+	return false;
+}
+
 void AShooterCharacter::AimingButtonPressed()
 {
 	bAiming = true;
@@ -439,6 +467,20 @@ void AShooterCharacter::Tick(float DeltaTime)
 	UpdateFovBasedOnAimingStatus(DeltaTime);
 	CalculateCrosshairSpreadMultiplier(DeltaTime);
 	UpdateLookRateBasedOnAimingStatus();
+	FHitResult ItemTraceResult;
+	if (TraceCrosshairToWorld(ItemTraceResult))
+	{
+		// if trace touched an actor, try to resolve if into an Item. Cast will go to NULL if actor is not an item
+		const AItem* HitItem = Cast<AItem>(ItemTraceResult.GetActor());
+		if (nullptr != HitItem)
+		{
+			UWidgetComponent* PickupWidget = HitItem->GetPickupWidget();
+			if (nullptr != PickupWidget)
+			{
+				PickupWidget->SetVisibility(true);
+			}
+		}
+	}
 }
 
 // Called to bind functionality to input

@@ -60,6 +60,8 @@ protected:
 	 */
 	bool GetBeamEndLocation(const FVector& MuzzleEndLocation, FVector& OutBeamLocation) const;
 
+	bool TraceCrosshairToWorld(FHitResult& OutHitResult) const;
+
 	void AimingButtonPressed();
 	void AimingButtonReleased();
 

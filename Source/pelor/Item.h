@@ -42,4 +42,5 @@ private:
 
 	// public section for accessors for state
 public:
+	FORCEINLINE UWidgetComponent* GetPickupWidget() const { return PickupWidget; }
 };
