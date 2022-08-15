@@ -68,6 +68,7 @@ StatementMacros:
   - GENERATED_BODY
 TabWidth: 4
 BinPackParameters: false
+AllowAllParametersOfDeclarationOnNextLine: false
 UseTab: Always
 IncludeBlocks:   Merge
 IncludeCategories:
