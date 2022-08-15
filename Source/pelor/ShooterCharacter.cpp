@@ -417,6 +417,23 @@ void AShooterCharacter::CalculateCrosshairSpreadMultiplier(const float DeltaTime
 	// FString(FString::Printf(TEXT("CrosshairSpreadMultiplier=%f"), CrosshairSpreadMultiplier)));
 }
 
+void AShooterCharacter::TraceForItems() const
+{
+		FVector Ignored;
+		if (FHitResult ItemTraceResult; TraceCrosshairToWorld(ItemTraceResult, Ignored))
+		{
+			// if trace touched an actor, try to resolve if into an Item. Cast will go to NULL if actor is not an item
+			if (const AItem* HitItem = Cast<AItem>(ItemTraceResult.GetActor()); nullptr != HitItem)
+			{
+				UWidgetComponent* PickupWidget = HitItem->GetPickupWidget();
+				if (nullptr != PickupWidget)
+				{
+					PickupWidget->SetVisibility(true);
+				}
+			}
+		}
+}
+
 void AShooterCharacter::FireButtonPressed()
 {
 	bFireButtonPressed = true;
@@ -485,19 +502,7 @@ void AShooterCharacter::Tick(float DeltaTime)
 	UpdateFovBasedOnAimingStatus(DeltaTime);
 	CalculateCrosshairSpreadMultiplier(DeltaTime);
 	UpdateLookRateBasedOnAimingStatus();
-	FVector Ignored;
-	if (FHitResult ItemTraceResult; TraceCrosshairToWorld(ItemTraceResult, Ignored))
-	{
-		// if trace touched an actor, try to resolve if into an Item. Cast will go to NULL if actor is not an item
-		if (const AItem* HitItem = Cast<AItem>(ItemTraceResult.GetActor()); nullptr != HitItem)
-		{
-			UWidgetComponent* PickupWidget = HitItem->GetPickupWidget();
-			if (nullptr != PickupWidget)
-			{
-				PickupWidget->SetVisibility(true);
-			}
-		}
-	}
+	TraceForItems();
 }
 
 // Called to bind functionality to input

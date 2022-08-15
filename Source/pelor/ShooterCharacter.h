@@ -230,6 +230,7 @@ private:
 	void UpdateFovBasedOnAimingStatus(float DeltaTime);
 	void UpdateLookRateBasedOnAimingStatus();
 	void CalculateCrosshairSpreadMultiplier(float DeltaTime);
+	void TraceForItems() const;
 
 	void FireButtonPressed();
 	void FireButtonReleased();
