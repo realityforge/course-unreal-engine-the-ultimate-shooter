@@ -476,8 +476,8 @@ void AShooterCharacter::Tick(float DeltaTime)
 	CalculateCrosshairSpreadMultiplier(DeltaTime);
 	UpdateLookRateBasedOnAimingStatus();
 	FHitResult ItemTraceResult;
-	FVector ignored;
-	if (TraceCrosshairToWorld(ItemTraceResult, ignored))
+	FVector Ignored;
+	if (TraceCrosshairToWorld(ItemTraceResult, Ignored))
 	{
 		// if trace touched an actor, try to resolve if into an Item. Cast will go to NULL if actor is not an item
 		if (const AItem* HitItem = Cast<AItem>(ItemTraceResult.GetActor()); nullptr != HitItem)
