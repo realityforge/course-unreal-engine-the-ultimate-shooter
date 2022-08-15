@@ -27,6 +27,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	// private section for state for actor
+
 private:
 	/** Mesh representation for the item */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
@@ -41,6 +42,7 @@ private:
 	UWidgetComponent* PickupWidget;
 
 	// public section for accessors for state
+
 public:
 	FORCEINLINE UWidgetComponent* GetPickupWidget() const { return PickupWidget; }
 };

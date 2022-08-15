@@ -49,7 +49,7 @@ BreakStringLiterals: false
 ColumnLimit: 120
 ConstructorInitializerAllOnOneLineOrOnePerLine: true
 Cpp11BracedListStyle: false
-EmptyLineBeforeAccessModifier: LogicalBlock
+EmptyLineBeforeAccessModifier: Always
 IndentCaseBlocks: false
 IndentCaseLabels: true
 IndentPPDirectives: BeforeHash
@@ -69,6 +69,8 @@ StatementMacros:
 TabWidth: 4
 BinPackParameters: false
 AllowAllParametersOfDeclarationOnNextLine: false
+BinPackArguments: false
+AllowAllArgumentsOnNextLine: false
 UseTab: Always
 IncludeBlocks:   Merge
 IncludeCategories:

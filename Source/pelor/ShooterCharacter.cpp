@@ -294,8 +294,11 @@ bool AShooterCharacter::TraceCrosshairToWorld(FHitResult& OutHitResult, FVector&
 		constexpr int PlayerIndex = 0;
 		const APlayerController* Player = UGameplayStatics::GetPlayerController(this, PlayerIndex);
 
-		if (FVector CrosshairWorldPosition, CrosshairWorldDirection; UGameplayStatics::DeprojectScreenToWorld(
-				Player, CrossHairLocation, CrosshairWorldPosition, CrosshairWorldDirection))
+		if (FVector CrosshairWorldPosition, CrosshairWorldDirection;
+			UGameplayStatics::DeprojectScreenToWorld(Player,
+													 CrossHairLocation,
+													 CrosshairWorldPosition,
+													 CrosshairWorldDirection))
 		{
 			// Calculate an endpoint that is 50,000 units away in direction
 			const FVector End{ CrosshairWorldPosition + CrosshairWorldDirection * 50'000.0F };
@@ -428,14 +431,19 @@ void AShooterCharacter::FireButtonReleased()
 void AShooterCharacter::StartAutoFireTimer()
 {
 	GEngine->AddOnScreenDebugMessage(
-		1, 0, FColor::Red, FString(FString::Printf(TEXT("StartAutoWeaponFireTimer bShouldFire=%d"), bShouldFire)));
+		1,
+		0,
+		FColor::Red,
+		FString(FString::Printf(TEXT("StartAutoWeaponFireTimer bShouldFire=%d"), bShouldFire)));
 	UE_LOG(LogTemp, Warning, TEXT("StartAutoWeaponFireTimer bShouldFire=%d"), bShouldFire);
 	if (bShouldFire)
 	{
 		FireWeapon();
 		bShouldFire = false;
 		GEngine->AddOnScreenDebugMessage(
-			2, 0, FColor::Red,
+			2,
+			0,
+			FColor::Red,
 			FString(FString::Printf(TEXT("ScheduleAutoFireShot AutomaticFireRate=%f"), AutomaticFireRate)));
 		GetWorldTimerManager().SetTimer(AutomaticFireTimer, this, &AShooterCharacter::AutoFireReset, AutomaticFireRate);
 	}
@@ -454,7 +462,9 @@ void AShooterCharacter::AutoFireReset()
 void AShooterCharacter::StartWeaponFireTimer()
 {
 	bCrosshairShootingImpactActive = true;
-	GetWorldTimerManager().SetTimer(CrosshairShootingImpactTimer, this, &AShooterCharacter::FinishWeaponFireTimer,
+	GetWorldTimerManager().SetTimer(CrosshairShootingImpactTimer,
+									this,
+									&AShooterCharacter::FinishWeaponFireTimer,
 									CrosshairShootingImpactDuration);
 }
 
@@ -475,9 +485,8 @@ void AShooterCharacter::Tick(float DeltaTime)
 	UpdateFovBasedOnAimingStatus(DeltaTime);
 	CalculateCrosshairSpreadMultiplier(DeltaTime);
 	UpdateLookRateBasedOnAimingStatus();
-	FHitResult ItemTraceResult;
 	FVector Ignored;
-	if (TraceCrosshairToWorld(ItemTraceResult, Ignored))
+	if (FHitResult ItemTraceResult; TraceCrosshairToWorld(ItemTraceResult, Ignored))
 	{
 		// if trace touched an actor, try to resolve if into an Item. Cast will go to NULL if actor is not an item
 		if (const AItem* HitItem = Cast<AItem>(ItemTraceResult.GetActor()); nullptr != HitItem)
