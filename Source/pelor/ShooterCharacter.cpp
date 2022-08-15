@@ -480,8 +480,7 @@ void AShooterCharacter::Tick(float DeltaTime)
 	if (TraceCrosshairToWorld(ItemTraceResult, ignored))
 	{
 		// if trace touched an actor, try to resolve if into an Item. Cast will go to NULL if actor is not an item
-		const AItem* HitItem = Cast<AItem>(ItemTraceResult.GetActor());
-		if (nullptr != HitItem)
+		if (const AItem* HitItem = Cast<AItem>(ItemTraceResult.GetActor()); nullptr != HitItem)
 		{
 			UWidgetComponent* PickupWidget = HitItem->GetPickupWidget();
 			if (nullptr != PickupWidget)
