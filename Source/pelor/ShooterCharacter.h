@@ -55,7 +55,8 @@ protected:
 	 * Trace a line from the MuzzleEndLocation to where the crosshair is aiming.
 	 *
 	 * @param MuzzleEndLocation the start of the line to trace
-	 * @param OutBeamLocation the location where the weapon weapon hit or when the weapon shot dissipated depending on whether the return result is true or false..
+	 * @param OutBeamLocation the location where the weapon weapon hit or when the weapon shot dissipated depending on
+	 *                        whether the return result is true or false.
 	 * @return true if a hit occurs, false if no hit occurs
 	 */
 	bool GetBeamEndLocation(const FVector& MuzzleEndLocation, FVector& OutBeamLocation) const;
@@ -114,27 +115,45 @@ private:
 	float AimingLookUpRate;
 
 	/** Base turn rate in deg/sec. Other scaling may effect final turn rate. */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true", ClampMin = "0.0", ClampMax = "1.0", UIMin = "0.0", UIMax = "1.0"))
+	UPROPERTY(EditDefaultsOnly,
+			  BlueprintReadOnly,
+			  Category = Camera,
+			  meta = (AllowPrivateAccess = "true", ClampMin = "0.0", ClampMax = "1.0", UIMin = "0.0", UIMax = "1.0"))
 	float BaseMouseLookRightRate;
 
 	/** Base look up/down rate in deg/sec. Other scaling may effect final turn rate. */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true", ClampMin = "0.0", ClampMax = "1.0", UIMin = "0.0", UIMax = "1.0"))
+	UPROPERTY(EditDefaultsOnly,
+			  BlueprintReadOnly,
+			  Category = Camera,
+			  meta = (AllowPrivateAccess = "true", ClampMin = "0.0", ClampMax = "1.0", UIMin = "0.0", UIMax = "1.0"))
 	float BaseMouseLookUpRate;
 
 	/** turn rate in deg/sec when not aiming. */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true", ClampMin = "0.0", ClampMax = "1.0", UIMin = "0.0", UIMax = "1.0"))
+	UPROPERTY(EditDefaultsOnly,
+			  BlueprintReadOnly,
+			  Category = Camera,
+			  meta = (AllowPrivateAccess = "true", ClampMin = "0.0", ClampMax = "1.0", UIMin = "0.0", UIMax = "1.0"))
 	float HipMouseLookRightRate;
 
 	/** look up/down rate in deg/sec when not aiming. */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true", ClampMin = "0.0", ClampMax = "1.0", UIMin = "0.0", UIMax = "1.0"))
+	UPROPERTY(EditDefaultsOnly,
+			  BlueprintReadOnly,
+			  Category = Camera,
+			  meta = (AllowPrivateAccess = "true", ClampMin = "0.0", ClampMax = "1.0", UIMin = "0.0", UIMax = "1.0"))
 	float HipMouseLookUpRate;
 
 	/** turn rate in deg/sec when not aiming. */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true", ClampMin = "0.0", ClampMax = "1.0", UIMin = "0.0", UIMax = "1.0"))
+	UPROPERTY(EditDefaultsOnly,
+			  BlueprintReadOnly,
+			  Category = Camera,
+			  meta = (AllowPrivateAccess = "true", ClampMin = "0.0", ClampMax = "1.0", UIMin = "0.0", UIMax = "1.0"))
 	float AimingMouseLookRightRate;
 
 	/** look up/down rate in deg/sec when not aiming. */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true", ClampMin = "0.0", ClampMax = "1.0", UIMin = "0.0", UIMax = "1.0"))
+	UPROPERTY(EditDefaultsOnly,
+			  BlueprintReadOnly,
+			  Category = Camera,
+			  meta = (AllowPrivateAccess = "true", ClampMin = "0.0", ClampMax = "1.0", UIMin = "0.0", UIMax = "1.0"))
 	float AimingMouseLookUpRate;
 
 	/** Randomized gun shot sound */
@@ -201,7 +220,9 @@ private:
 	bool bFireButtonPressed;
 	/** True when can fire, false when for weapon to get ready to fire again */
 	bool bShouldFire;
-	/** Rate of automatic gun fire. This should be bigger than WeaponFireDuration as that controls spread of cross hair*/
+	/**
+	 * Rate of automatic gun fire. This should be bigger than WeaponFireDuration as that controls spread of cross hair
+	 */
 	float AutomaticFireRate;
 	/** A timer between weapon firing */
 	FTimerHandle AutomaticFireTimer;

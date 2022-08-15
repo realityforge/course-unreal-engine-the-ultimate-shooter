@@ -53,7 +53,8 @@ AShooterCharacter::AShooterCharacter()
 	, bShouldFire(true)
 	, AutomaticFireRate(0.1F)
 {
-	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need
+	// it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	// Create a Camera Boom (pulls in towards the character if there is a collision)
@@ -80,8 +81,9 @@ AShooterCharacter::AShooterCharacter()
 		// Create new ActorSubobject named "FollowCamera" of type UCameraComponent
 		FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 
-		// Attaches the Camera to the CameraBoom at the "socket" with the name specified by USpringArmComponent::SocketName
-		// This is the name of the socket at the end of the spring arm (looking back towards the spring arm origin)
+		// Attaches the Camera to the CameraBoom at the "socket" with the name specified by
+		// USpringArmComponent::SocketName This is the name of the socket at the end of the spring arm (looking back
+		// towards the spring arm origin)
 		FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 
 		// camera does not rotate relative to arm
@@ -149,9 +151,9 @@ void AShooterCharacter::MoveForward(const float Value)
 		// extract the direction in world-space of x axis (i.e. the forward vector)
 		const FVector Direction{ RotationMatrix.GetUnitAxis(EAxis::X) };
 
-		// Add movement input along 'Direction' vector scaled by 'value'. If 'value' < 0, movement will be in the opposite direction.
-		// Base Pawn classes won't automatically apply movement, it's up to the user to do so in a Tick event.
-		// Subclasses such as Character and DefaultPawn automatically handle this input and move.
+		// Add movement input along 'Direction' vector scaled by 'value'. If 'value' < 0, movement will be in the
+		// opposite direction. Base Pawn classes won't automatically apply movement, it's up to the user to do so in a
+		// Tick event. Subclasses such as Character and DefaultPawn automatically handle this input and move.
 
 		// Our movement component will translate this according to its internal rules (i.e. max walk speed,
 		// whether there is a blocker in front etc) and then apply the position update to Actor
@@ -223,7 +225,8 @@ void AShooterCharacter::FireWeapon()
 		if (nullptr != BeamParticles)
 		{
 			// The smoke trail particle system starts at the end of the gun and goes to HitLocation
-			UParticleSystemComponent* Beam = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), BeamParticles, MuzzleEndLocation);
+			UParticleSystemComponent* Beam =
+				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), BeamParticles, MuzzleEndLocation);
 			if (nullptr != Beam)
 			{
 				// "Target" is a parameter specified in the particle system definition
@@ -258,7 +261,8 @@ bool AShooterCharacter::GetBeamEndLocation(const FVector& MuzzleEndLocation, FVe
 		const FVector WeaponTraceEnd{ MuzzleEndLocation + MuzzleEndToHit * 1.25F };
 
 		// Trace a line from Muzzle to target and see if we hit anything along the way
-		if (FHitResult WeaponTraceHit; GetWorld()->LineTraceSingleByChannel(WeaponTraceHit, MuzzleEndLocation, WeaponTraceEnd, ECC_Visibility))
+		if (FHitResult WeaponTraceHit;
+			GetWorld()->LineTraceSingleByChannel(WeaponTraceHit, MuzzleEndLocation, WeaponTraceEnd, ECC_Visibility))
 		{
 			OutBeamLocation = WeaponTraceHit.Location;
 			return true;
@@ -290,7 +294,8 @@ bool AShooterCharacter::TraceCrosshairToWorld(FHitResult& OutHitResult, FVector&
 		constexpr int PlayerIndex = 0;
 		const APlayerController* Player = UGameplayStatics::GetPlayerController(this, PlayerIndex);
 
-		if (FVector CrosshairWorldPosition, CrosshairWorldDirection; UGameplayStatics::DeprojectScreenToWorld(Player, CrossHairLocation, CrosshairWorldPosition, CrosshairWorldDirection))
+		if (FVector CrosshairWorldPosition, CrosshairWorldDirection; UGameplayStatics::DeprojectScreenToWorld(
+				Player, CrossHairLocation, CrosshairWorldPosition, CrosshairWorldDirection))
 		{
 			// Calculate an endpoint that is 50,000 units away in direction
 			const FVector End{ CrosshairWorldPosition + CrosshairWorldDirection * 50'000.0F };
@@ -325,7 +330,8 @@ void AShooterCharacter::UpdateFovBasedOnAimingStatus(const float DeltaTime)
 {
 	if (const float TargetFOV = bAiming ? CameraZoomedFOV : DefaultCameraFOV; CameraCurrentFOV != TargetFOV)
 	{
-		// Interpolate float from Current to Target. Scaled by distance to Target, so it has a strong start speed and ease out.
+		// Interpolate float from Current to Target. Scaled by distance to Target, so it has a strong start speed and
+		// ease out.
 		CameraCurrentFOV = FMath::FInterpTo(CameraCurrentFOV, TargetFOV, DeltaTime, CameraFOVInterpolationSpeed);
 		// UE_LOG(LogTemp, Warning, TEXT("Zoom CurrentFOV=%f TargetFOV=%f"), CameraCurrentFOV, TargetFOV);
 		// GEngine->AddOnScreenDebugMessage(1, 0, FColor::Green, FString("FOV Set"));
@@ -363,7 +369,8 @@ void AShooterCharacter::CalculateCrosshairSpreadMultiplier(const float DeltaTime
 	FVector3d Velocity{ GetVelocity() };
 	Velocity.Z = 0;
 
-	CrosshairVelocityFactor = FMath::GetMappedRangeValueClamped(WalkSpeedRange, CrosshairVelocityFactorRange, Velocity.Size());
+	CrosshairVelocityFactor =
+		FMath::GetMappedRangeValueClamped(WalkSpeedRange, CrosshairVelocityFactorRange, Velocity.Size());
 
 	if (GetCharacterMovement()->IsFalling())
 	{
@@ -395,12 +402,16 @@ void AShooterCharacter::CalculateCrosshairSpreadMultiplier(const float DeltaTime
 		CrosshairShootingFactor = FMath::FInterpTo(CrosshairShootingFactor, 0.F, DeltaTime, 60.F);
 	}
 
-	CrosshairSpreadMultiplier = 0.5F + CrosshairVelocityFactor + CrosshairInAirFactor - CrosshairAimFactor + CrosshairShootingFactor;
-	// GEngine->AddOnScreenDebugMessage(1, 0, FColor::Red, FString(FString::Printf(TEXT("CrosshairVelocityFactor=%f"), CrosshairVelocityFactor)));
-	// GEngine->AddOnScreenDebugMessage(2, 0, FColor::Red, FString(FString::Printf(TEXT("CrosshairInAirFactor=%f"), CrosshairInAirFactor)));
-	// GEngine->AddOnScreenDebugMessage(3, 0, FColor::Red, FString(FString::Printf(TEXT("CrosshairAimFactor=%f"), CrosshairAimFactor)));
-	// GEngine->AddOnScreenDebugMessage(4, 0, FColor::Red, FString(FString::Printf(TEXT("CrosshairShootingFactor=%f"), CrosshairShootingFactor)));
-	// GEngine->AddOnScreenDebugMessage(5, 0, FColor::Green, FString(FString::Printf(TEXT("CrosshairSpreadMultiplier=%f"), CrosshairSpreadMultiplier)));
+	CrosshairSpreadMultiplier =
+		0.5F + CrosshairVelocityFactor + CrosshairInAirFactor - CrosshairAimFactor + CrosshairShootingFactor;
+	// GEngine->AddOnScreenDebugMessage(1, 0, FColor::Red, FString(FString::Printf(TEXT("CrosshairVelocityFactor=%f"),
+	// CrosshairVelocityFactor))); GEngine->AddOnScreenDebugMessage(2, 0, FColor::Red,
+	// FString(FString::Printf(TEXT("CrosshairInAirFactor=%f"), CrosshairInAirFactor)));
+	// GEngine->AddOnScreenDebugMessage(3, 0, FColor::Red, FString(FString::Printf(TEXT("CrosshairAimFactor=%f"),
+	// CrosshairAimFactor))); GEngine->AddOnScreenDebugMessage(4, 0, FColor::Red,
+	// FString(FString::Printf(TEXT("CrosshairShootingFactor=%f"), CrosshairShootingFactor)));
+	// GEngine->AddOnScreenDebugMessage(5, 0, FColor::Green,
+	// FString(FString::Printf(TEXT("CrosshairSpreadMultiplier=%f"), CrosshairSpreadMultiplier)));
 }
 
 void AShooterCharacter::FireButtonPressed()
@@ -416,13 +427,16 @@ void AShooterCharacter::FireButtonReleased()
 
 void AShooterCharacter::StartAutoFireTimer()
 {
-	GEngine->AddOnScreenDebugMessage(1, 0, FColor::Red, FString(FString::Printf(TEXT("StartAutoWeaponFireTimer bShouldFire=%d"), bShouldFire)));
+	GEngine->AddOnScreenDebugMessage(
+		1, 0, FColor::Red, FString(FString::Printf(TEXT("StartAutoWeaponFireTimer bShouldFire=%d"), bShouldFire)));
 	UE_LOG(LogTemp, Warning, TEXT("StartAutoWeaponFireTimer bShouldFire=%d"), bShouldFire);
 	if (bShouldFire)
 	{
 		FireWeapon();
 		bShouldFire = false;
-		GEngine->AddOnScreenDebugMessage(2, 0, FColor::Red, FString(FString::Printf(TEXT("ScheduleAutoFireShot AutomaticFireRate=%f"), AutomaticFireRate)));
+		GEngine->AddOnScreenDebugMessage(
+			2, 0, FColor::Red,
+			FString(FString::Printf(TEXT("ScheduleAutoFireShot AutomaticFireRate=%f"), AutomaticFireRate)));
 		GetWorldTimerManager().SetTimer(AutomaticFireTimer, this, &AShooterCharacter::AutoFireReset, AutomaticFireRate);
 	}
 }
@@ -440,7 +454,8 @@ void AShooterCharacter::AutoFireReset()
 void AShooterCharacter::StartWeaponFireTimer()
 {
 	bCrosshairShootingImpactActive = true;
-	GetWorldTimerManager().SetTimer(CrosshairShootingImpactTimer, this, &AShooterCharacter::FinishWeaponFireTimer, CrosshairShootingImpactDuration);
+	GetWorldTimerManager().SetTimer(CrosshairShootingImpactTimer, this, &AShooterCharacter::FinishWeaponFireTimer,
+									CrosshairShootingImpactDuration);
 }
 
 void AShooterCharacter::FinishWeaponFireTimer()
