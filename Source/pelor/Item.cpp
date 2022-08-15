@@ -2,7 +2,9 @@
 
 #include "Item.h"
 #include "Components/BoxComponent.h"
+#include "Components/SphereComponent.h"
 #include "Components/WidgetComponent.h"
+#include "ShooterCharacter.h"
 
 // Sets default values
 AItem::AItem()
@@ -24,6 +26,9 @@ AItem::AItem()
 
 	PickupWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("PickupWidget"));
 	PickupWidget->SetupAttachment(GetRootComponent());
+
+	AreaSphere = CreateDefaultSubobject<USphereComponent>(TEXT("AreaSphere"));
+	AreaSphere->SetupAttachment(GetRootComponent());
 }
 
 // Called when the game starts or when spawned
@@ -33,10 +38,44 @@ void AItem::BeginPlay()
 
 	// Hide Pickup Widget
 	PickupWidget->SetVisibility(false);
+
+	// Setup overlap handlers for AreaSphere
+
+	// OnComponentBeginOverlap event called when something starts to overlaps the AreaSphere component
+	AreaSphere->OnComponentBeginOverlap.AddDynamic(this, &AItem::OnAreaSphereOverlap);
+	AreaSphere->OnComponentEndOverlap.AddDynamic(this, &AItem::OnAreaSphereEndOverlap);
 }
 
 // Called every frame
 void AItem::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
+
+// ReSharper disable once CppMemberFunctionMayBeConst
+void AItem::OnAreaSphereOverlap([[maybe_unused]] UPrimitiveComponent* OverlappedComponent,
+								AActor* OtherActor,
+								[[maybe_unused]] UPrimitiveComponent* OtherComponent,
+								[[maybe_unused]] int32 OtherBodyIndex,
+								[[maybe_unused]] bool bFromSweep,
+								[[maybe_unused]] const FHitResult& SweepResult)
+{
+	AShooterCharacter* ShooterCharacter = nullptr == OtherActor ? nullptr : Cast<AShooterCharacter>(OtherActor);
+	if (nullptr != ShooterCharacter)
+	{
+		ShooterCharacter->IncrementOverlappedItemCount(1);
+	}
+}
+
+// ReSharper disable once CppMemberFunctionMayBeConst
+void AItem::OnAreaSphereEndOverlap([[maybe_unused]] UPrimitiveComponent* OverlappedComponent,
+								   AActor* OtherActor,
+								   [[maybe_unused]] UPrimitiveComponent* OtherComponent,
+								   [[maybe_unused]] int32 OtherBodyIndex)
+{
+	AShooterCharacter* ShooterCharacter = nullptr == OtherActor ? nullptr : Cast<AShooterCharacter>(OtherActor);
+	if (nullptr != ShooterCharacter)
+	{
+		ShooterCharacter->IncrementOverlappedItemCount(-1);
+	}
 }

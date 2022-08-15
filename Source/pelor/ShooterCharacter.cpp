@@ -52,6 +52,9 @@ AShooterCharacter::AShooterCharacter()
 	, bFireButtonPressed(false)
 	, bShouldFire(true)
 	, AutomaticFireRate(0.1F)
+
+	// Item trace variables
+	, bShouldTraceForItems(false)
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need
 	// it.
@@ -419,6 +422,8 @@ void AShooterCharacter::CalculateCrosshairSpreadMultiplier(const float DeltaTime
 
 void AShooterCharacter::TraceForItems() const
 {
+	if (bShouldTraceForItems)
+	{
 		FVector Ignored;
 		if (FHitResult ItemTraceResult; TraceCrosshairToWorld(ItemTraceResult, Ignored))
 		{
@@ -432,6 +437,7 @@ void AShooterCharacter::TraceForItems() const
 				}
 			}
 		}
+	}
 }
 
 void AShooterCharacter::FireButtonPressed()
@@ -493,6 +499,12 @@ void AShooterCharacter::FinishWeaponFireTimer()
 float AShooterCharacter::GetCrosshairSpreadMultiplier() const
 {
 	return CrosshairSpreadMultiplier;
+}
+
+void AShooterCharacter::IncrementOverlappedItemCount(const int8 Amount)
+{
+	OverlappedItemCount = FMath::Max(OverlappedItemCount + Amount, 0);
+	bShouldTraceForItems = 0 != OverlappedItemCount;
 }
 
 // Called every frame

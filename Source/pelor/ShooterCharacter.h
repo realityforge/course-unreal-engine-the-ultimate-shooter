@@ -227,6 +227,14 @@ private:
 	/** A timer between weapon firing */
 	FTimerHandle AutomaticFireTimer;
 
+	/**
+	 * true if we should trace every frame for items.
+	 * This flag is managed by intersecting the "AreaSphere" of an Item
+	 */
+	bool bShouldTraceForItems;
+	/** The number of AItems that the character overlaps (the items AreaSphere) */
+	int8 OverlappedItemCount;
+
 	void UpdateFovBasedOnAimingStatus(float DeltaTime);
 	void UpdateLookRateBasedOnAimingStatus();
 	void CalculateCrosshairSpreadMultiplier(float DeltaTime);
@@ -251,4 +259,11 @@ public:
 	FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 	FORCEINLINE bool GetAiming() const { return bAiming; }
 	float GetCrosshairSpreadMultiplier() const;
+	FORCEINLINE int8 GetOverlappedItemCount() const { return OverlappedItemCount; }
+
+	/**
+	 * Add Amount to OverlappedItemCount and update bShouldTraceForItems if OverlappedItemCount > 0.
+	 * Amount may be negative.
+	 */
+	void IncrementOverlappedItemCount(int8 Amount);
 };

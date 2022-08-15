@@ -7,6 +7,7 @@
 #include "Item.generated.h"
 
 class UBoxComponent;
+class USphereComponent;
 class UWidgetComponent;
 
 UCLASS()
@@ -40,6 +41,23 @@ private:
 	/** Popup widget when character looks at the item */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
 	UWidgetComponent* PickupWidget;
+
+	/** Enables Item Tracing When overlapped */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
+	USphereComponent* AreaSphere;
+
+	UFUNCTION()
+	void OnAreaSphereOverlap(UPrimitiveComponent* OverlappedComponent,
+							 AActor* OtherActor,
+							 UPrimitiveComponent* OtherComponent,
+							 int32 OtherBodyIndex,
+							 bool bFromSweep,
+							 const FHitResult& SweepResult);
+	UFUNCTION()
+	void OnAreaSphereEndOverlap(UPrimitiveComponent* OverlappedComponent,
+								AActor* OtherActor,
+								UPrimitiveComponent* OtherComponent,
+								int32 OtherBodyIndex);
 
 	// public section for accessors for state
 
