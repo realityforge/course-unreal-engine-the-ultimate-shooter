@@ -247,6 +247,9 @@ private:
 	void UpdateFovBasedOnAimingStatus(float DeltaTime);
 	void UpdateLookRateBasedOnAimingStatus();
 	void CalculateCrosshairSpreadMultiplier(float DeltaTime);
+	/**
+	 * Set the visibility of the InfoBox for the ItemShowingInfoBox to specified flag.
+	 */
 	void SetItemInfoBoxVisibility(bool bVisibility) const;
 	void TraceForItems();
 

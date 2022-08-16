@@ -447,16 +447,25 @@ void AShooterCharacter::TraceForItems()
 				{
 					if (nullptr != ItemShowingInfoBox && ItemShowingInfoBox != HitItem)
 					{
+						// Hide previous info box if any is showing
 						SetItemInfoBoxVisibility(false);
 					}
+					// Show currently targeted info box
 					ItemShowingInfoBox = HitItem;
 					SetItemInfoBoxVisibility(true);
 				}
+			}
+			else
+			{
+				// We are no longer looking at an item so hide infobox if it was previously showing
+				SetItemInfoBoxVisibility(false);
+				ItemShowingInfoBox = nullptr;
 			}
 		}
 	}
 	else if (nullptr != ItemShowingInfoBox)
 	{
+		// We are outside the range of any InfoBox so hide them
 		SetItemInfoBoxVisibility(false);
 		ItemShowingInfoBox = nullptr;
 	}
