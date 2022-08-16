@@ -46,6 +46,10 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
 	USphereComponent* AreaSphere;
 
+	/** Name of the item as it appears on PickupWidget */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
+	FString ItemName;
+
 	UFUNCTION()
 	void OnAreaSphereOverlap(UPrimitiveComponent* OverlappedComponent,
 							 AActor* OtherActor,
