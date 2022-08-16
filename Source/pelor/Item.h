@@ -10,6 +10,18 @@ class UBoxComponent;
 class USphereComponent;
 class UWidgetComponent;
 
+UENUM(BlueprintType)
+enum class EItemRarity : uint8
+{
+	EIR_Damaged UMETA(DisplayName = "Damaged"),
+	EIR_Common UMETA(DisplayName = "Common"),
+	EIR_Uncommon UMETA(DisplayName = "Uncommon"),
+	EIR_Rare UMETA(DisplayName = "Rare"),
+	EIR_Legendary UMETA(DisplayName = "Legendary"),
+
+	EIR_MAX UMETA(DisplayName = "DefaultMAX")
+};
+
 UCLASS()
 class PELOR_API AItem : public AActor
 {
@@ -54,6 +66,14 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
 	int32 ItemCount;
 
+	/** Item rarity determmines number of stars in InfoBox */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
+	EItemRarity Rarity;
+
+	/** Property derived from Rarity */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
+	TArray<bool> ActiveStars;
+
 	UFUNCTION()
 	void OnAreaSphereOverlap(UPrimitiveComponent* OverlappedComponent,
 							 AActor* OtherActor,
@@ -66,6 +86,9 @@ private:
 								AActor* OtherActor,
 								UPrimitiveComponent* OtherComponent,
 								int32 OtherBodyIndex);
+
+	/** Derives the ActiveStars from the Rarity */
+	void DeriveActiveStars();
 
 	// public section for accessors for state
 
