@@ -37,14 +37,20 @@ void AItem::BeginPlay()
 	Super::BeginPlay();
 
 	// Hide Pickup Widget
-	PickupWidget->SetVisibility(false);
+	if (nullptr != PickupWidget)
+	{
+		PickupWidget->SetVisibility(false);
+	}
 
 	DeriveActiveStars();
-	// Setup overlap handlers for AreaSphere
 
-	// OnComponentBeginOverlap event called when something starts to overlaps the AreaSphere component
-	AreaSphere->OnComponentBeginOverlap.AddDynamic(this, &AItem::OnAreaSphereOverlap);
-	AreaSphere->OnComponentEndOverlap.AddDynamic(this, &AItem::OnAreaSphereEndOverlap);
+	// Setup overlap handlers for AreaSphere
+	if (nullptr != AreaSphere)
+	{
+		// OnComponentBeginOverlap event called when something starts to overlaps the AreaSphere component
+		AreaSphere->OnComponentBeginOverlap.AddDynamic(this, &AItem::OnAreaSphereOverlap);
+		AreaSphere->OnComponentEndOverlap.AddDynamic(this, &AItem::OnAreaSphereEndOverlap);
+	}
 }
 
 // Called every frame
