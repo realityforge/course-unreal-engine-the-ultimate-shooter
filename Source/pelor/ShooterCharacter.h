@@ -7,6 +7,8 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "ShooterCharacter.generated.h"
 
+class AItem;
+
 UCLASS()
 class PELOR_API AShooterCharacter : public ACharacter
 {
@@ -235,10 +237,18 @@ private:
 	/** The number of AItems that the character overlaps (the items AreaSphere) */
 	int8 OverlappedItemCount;
 
+	/**
+	 * A reference to the AItem that is currently showing the Info box.
+	 * It is triggered by looking at the item within the items AreaSphere.
+	 */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Crosshairs, meta = (AllowPrivateAccess = "true"))
+	const AItem* ItemShowingInfoBox;
+
 	void UpdateFovBasedOnAimingStatus(float DeltaTime);
 	void UpdateLookRateBasedOnAimingStatus();
 	void CalculateCrosshairSpreadMultiplier(float DeltaTime);
-	void TraceForItems() const;
+	void SetItemInfoBoxVisibility(bool bVisibility) const;
+	void TraceForItems();
 
 	void FireButtonPressed();
 	void FireButtonReleased();
@@ -257,6 +267,7 @@ private:
 public:
 	FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+	FORCEINLINE const AItem* GetItemShowingInfoBox() const { return ItemShowingInfoBox; }
 	FORCEINLINE bool GetAiming() const { return bAiming; }
 	float GetCrosshairSpreadMultiplier() const;
 	FORCEINLINE int8 GetOverlappedItemCount() const { return OverlappedItemCount; }

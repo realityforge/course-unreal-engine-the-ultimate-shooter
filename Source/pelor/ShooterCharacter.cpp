@@ -55,6 +55,8 @@ AShooterCharacter::AShooterCharacter()
 
 	// Item trace variables
 	, bShouldTraceForItems(false)
+	, OverlappedItemCount(0)
+	, ItemShowingInfoBox(nullptr)
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need
 	// it.
@@ -420,7 +422,18 @@ void AShooterCharacter::CalculateCrosshairSpreadMultiplier(const float DeltaTime
 	// FString(FString::Printf(TEXT("CrosshairSpreadMultiplier=%f"), CrosshairSpreadMultiplier)));
 }
 
-void AShooterCharacter::TraceForItems() const
+void AShooterCharacter::SetItemInfoBoxVisibility(const bool bVisibility) const
+{
+	if (nullptr != ItemShowingInfoBox)
+	{
+		if (UWidgetComponent* PickupWidget = ItemShowingInfoBox->GetPickupWidget(); nullptr != PickupWidget)
+		{
+			PickupWidget->SetVisibility(bVisibility);
+		}
+	}
+}
+
+void AShooterCharacter::TraceForItems()
 {
 	if (bShouldTraceForItems)
 	{
@@ -430,13 +443,22 @@ void AShooterCharacter::TraceForItems() const
 			// if trace touched an actor, try to resolve if into an Item. Cast will go to NULL if actor is not an item
 			if (const AItem* HitItem = Cast<AItem>(ItemTraceResult.GetActor()); nullptr != HitItem)
 			{
-				UWidgetComponent* PickupWidget = HitItem->GetPickupWidget();
-				if (nullptr != PickupWidget)
+				if (ItemShowingInfoBox != HitItem)
 				{
-					PickupWidget->SetVisibility(true);
+					if (nullptr != ItemShowingInfoBox && ItemShowingInfoBox != HitItem)
+					{
+						SetItemInfoBoxVisibility(false);
+					}
+					ItemShowingInfoBox = HitItem;
+					SetItemInfoBoxVisibility(true);
 				}
 			}
 		}
+	}
+	else if (nullptr != ItemShowingInfoBox)
+	{
+		SetItemInfoBoxVisibility(false);
+		ItemShowingInfoBox = nullptr;
 	}
 }
 

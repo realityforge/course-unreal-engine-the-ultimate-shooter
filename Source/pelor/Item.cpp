@@ -77,5 +77,9 @@ void AItem::OnAreaSphereEndOverlap([[maybe_unused]] UPrimitiveComponent* Overlap
 	if (nullptr != ShooterCharacter)
 	{
 		ShooterCharacter->IncrementOverlappedItemCount(-1);
+		if (ShooterCharacter->GetItemShowingInfoBox() == this && nullptr != PickupWidget)
+		{
+			PickupWidget->SetVisibility(false);
+		}
 	}
 }
