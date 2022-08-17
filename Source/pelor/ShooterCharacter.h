@@ -239,7 +239,7 @@ private:
 	 * A reference to the AItem that is currently showing the Info box.
 	 * It is triggered by looking at the item within the items AreaSphere.
 	 */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Crosshairs, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Items, meta = (AllowPrivateAccess = "true"))
 	const AItem* ItemShowingInfoBox;
 
 	void UpdateFovBasedOnAimingStatus(float DeltaTime);
