@@ -10,6 +10,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Sound/SoundCue.h"
+#include "Weapon.h"
 
 // Sets default values
 AShooterCharacter::AShooterCharacter()
@@ -57,6 +58,10 @@ AShooterCharacter::AShooterCharacter()
 	, bShouldTraceForItems(false)
 	, OverlappedItemCount(0)
 	, ItemShowingInfoBox(nullptr)
+
+	// Weapon equipped vars
+	, EquippedWeapon(nullptr)
+	, DefaultWeaponClass(nullptr)
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need
 	// it.
@@ -122,6 +127,7 @@ AShooterCharacter::AShooterCharacter()
 void AShooterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	SpawnDefaultWeapon();
 	if (nullptr != FollowCamera)
 	{
 		DefaultCameraFOV = FollowCamera->FieldOfView;
@@ -520,6 +526,28 @@ void AShooterCharacter::StartWeaponFireTimer()
 									this,
 									&AShooterCharacter::FinishWeaponFireTimer,
 									CrosshairShootingImpactDuration);
+}
+
+void AShooterCharacter::SpawnDefaultWeapon()
+{
+	UE_LOG(LogTemp, Warning, TEXT("SpawnDefaultWeapon()..."));
+	// If the Blueprint is correctly configured with DefaultWeaponClass
+	if (nullptr != DefaultWeaponClass)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("DefaultWeaponClass=%p"), (void*)DefaultWeaponClass);
+		// Spawn the weapon based on default class
+		AWeapon* DefaultWeapon = GetWorld()->SpawnActor<AWeapon>(DefaultWeaponClass);
+		// Find the socket we have created in the mesh
+		const USkeletalMeshSocket* HandSocket = GetMesh()->GetSocketByName(FName("hand_r_socket"));
+		UE_LOG(LogTemp, Warning, TEXT("HandSocket=%p"), (void*)HandSocket);
+		if (nullptr != HandSocket)
+		{
+			// Add the weapon to the socket
+			HandSocket->AttachActor(DefaultWeapon, GetMesh());
+		}
+		// Actually record the default weapon as equipped
+		EquippedWeapon = DefaultWeapon;
+	}
 }
 
 void AShooterCharacter::FinishWeaponFireTimer()

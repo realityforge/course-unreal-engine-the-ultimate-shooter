@@ -8,6 +8,7 @@
 #include "ShooterCharacter.generated.h"
 
 class AItem;
+class AWeapon;
 class UCameraComponent;
 class USoundCue;
 
@@ -242,6 +243,14 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Items, meta = (AllowPrivateAccess = "true"))
 	const AItem* ItemShowingInfoBox;
 
+	/** The currently equipped weapon */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
+	AWeapon* EquippedWeapon;
+
+	/** The class of the default weapon that is set in Blueprint */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Combat, meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<AWeapon> DefaultWeaponClass;
+
 	void UpdateFovBasedOnAimingStatus(float DeltaTime);
 	void UpdateLookRateBasedOnAimingStatus();
 	void CalculateCrosshairSpreadMultiplier(float DeltaTime);
@@ -260,6 +269,8 @@ private:
 	void AutoFireReset();
 
 	void StartWeaponFireTimer();
+
+	void SpawnDefaultWeapon();
 
 	// Needs to be annotated with the UFUNCTION macro as it is a callback for timer
 	UFUNCTION()
