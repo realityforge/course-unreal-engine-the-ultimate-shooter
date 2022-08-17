@@ -52,7 +52,7 @@ private:
 
 	/** Popup widget when character looks at the item */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
-	UWidgetComponent* PickupWidget;
+	UWidgetComponent* InfoBoxWidget;
 
 	/** Enables Item Tracing When overlapped */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
@@ -93,5 +93,5 @@ private:
 	// public section for accessors for state
 
 public:
-	FORCEINLINE UWidgetComponent* GetPickupWidget() const { return PickupWidget; }
+	FORCEINLINE UWidgetComponent* GetInfoBoxWidget() const { return InfoBoxWidget; }
 };

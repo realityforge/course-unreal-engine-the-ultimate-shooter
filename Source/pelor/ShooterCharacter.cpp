@@ -426,7 +426,7 @@ void AShooterCharacter::SetItemInfoBoxVisibility(const bool bVisibility) const
 {
 	if (nullptr != ItemShowingInfoBox)
 	{
-		if (UWidgetComponent* PickupWidget = ItemShowingInfoBox->GetPickupWidget(); nullptr != PickupWidget)
+		if (UWidgetComponent* PickupWidget = ItemShowingInfoBox->GetInfoBoxWidget(); nullptr != PickupWidget)
 		{
 			PickupWidget->SetVisibility(bVisibility);
 		}

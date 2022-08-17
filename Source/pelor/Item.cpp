@@ -24,8 +24,8 @@ AItem::AItem() : ItemName("Default"), ItemCount(0), Rarity(EItemRarity::EIR_Comm
 	CollisionBox->SetCollisionResponseToAllChannels(ECR_Ignore);
 	CollisionBox->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
 
-	PickupWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("PickupWidget"));
-	PickupWidget->SetupAttachment(GetRootComponent());
+	InfoBoxWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("PickupWidget"));
+	InfoBoxWidget->SetupAttachment(GetRootComponent());
 
 	AreaSphere = CreateDefaultSubobject<USphereComponent>(TEXT("AreaSphere"));
 	AreaSphere->SetupAttachment(GetRootComponent());
@@ -37,9 +37,9 @@ void AItem::BeginPlay()
 	Super::BeginPlay();
 
 	// Hide Pickup Widget
-	if (nullptr != PickupWidget)
+	if (nullptr != InfoBoxWidget)
 	{
-		PickupWidget->SetVisibility(false);
+		InfoBoxWidget->SetVisibility(false);
 	}
 
 	DeriveActiveStars();
@@ -84,9 +84,9 @@ void AItem::OnAreaSphereEndOverlap([[maybe_unused]] UPrimitiveComponent* Overlap
 	if (nullptr != ShooterCharacter)
 	{
 		ShooterCharacter->IncrementOverlappedItemCount(-1);
-		if (ShooterCharacter->GetItemShowingInfoBox() == this && nullptr != PickupWidget)
+		if (ShooterCharacter->GetItemShowingInfoBox() == this && nullptr != InfoBoxWidget)
 		{
-			PickupWidget->SetVisibility(false);
+			InfoBoxWidget->SetVisibility(false);
 		}
 	}
 }
