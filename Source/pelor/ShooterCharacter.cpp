@@ -557,7 +557,7 @@ void AShooterCharacter::EquipWeapon(AWeapon* Weapon)
         }
         // Actually record the weapon as equipped
         EquippedWeapon = Weapon;
-        EquippedWeapon->SetItemState(EItemState::EIS_Equipped);
+        EquippedWeapon->UpdateItemState(EItemState::EIS_Equipped);
     }
 }
 

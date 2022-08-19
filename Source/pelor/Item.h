@@ -138,6 +138,9 @@ private:
     /** Derives the ActiveStars from the Rarity */
     void DeriveActiveStars();
 
+    /** Sets the items properties based on the specified State */
+    void ApplyPropertiesBasedOnCurrentItemState() const;
+
     // public section for accessors for state
 
 public:
@@ -145,5 +148,9 @@ public:
     FORCEINLINE USphereComponent* GetAreaSphere() const { return AreaSphere; }
     FORCEINLINE UBoxComponent* GetCollisionBox() const { return CollisionBox; }
     FORCEINLINE EItemState GetItemState() const { return ItemState; }
-    FORCEINLINE void SetItemState(const EItemState ItemState) { this->ItemState = ItemState; }
+    FORCEINLINE void UpdateItemState(const EItemState NewItemState)
+    {
+        this->ItemState = NewItemState;
+        ApplyPropertiesBasedOnCurrentItemState();
+    }
 };

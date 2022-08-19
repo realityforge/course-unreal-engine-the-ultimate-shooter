@@ -17,12 +17,7 @@ AItem::AItem() : ItemName("Default"), ItemCount(0), Rarity(EItemRarity::EIR_Comm
     SetRootComponent(ItemMesh);
 
     CollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("CollisionBox"));
-    // Attach CollisionBox as a Child of ItemMesh using the default Socket
     CollisionBox->SetupAttachment(ItemMesh);
-
-    // Make sure the collision box will block visibility channel traces but no others
-    CollisionBox->SetCollisionResponseToAllChannels(ECR_Ignore);
-    CollisionBox->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
 
     InfoBoxWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("PickupWidget"));
     InfoBoxWidget->SetupAttachment(GetRootComponent());
@@ -51,6 +46,7 @@ void AItem::BeginPlay()
         AreaSphere->OnComponentBeginOverlap.AddDynamic(this, &AItem::OnAreaSphereOverlap);
         AreaSphere->OnComponentEndOverlap.AddDynamic(this, &AItem::OnAreaSphereEndOverlap);
     }
+    ApplyPropertiesBasedOnCurrentItemState();
 }
 
 // Called every frame
@@ -128,5 +124,51 @@ void AItem::DeriveActiveStars()
             break;
         default:
             break;
+    }
+}
+
+void AItem::ApplyPropertiesBasedOnCurrentItemState() const
+{
+    switch (ItemState)
+    {
+        case EItemState::EIS_Dropped:
+            ItemMesh->SetSimulatePhysics(false);
+            ItemMesh->SetVisibility(true);
+            ItemMesh->SetCollisionResponseToAllChannels(ECR_Ignore);
+            ItemMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+            AreaSphere->SetCollisionResponseToAllChannels(ECR_Overlap);
+            AreaSphere->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+
+            CollisionBox->SetCollisionResponseToAllChannels(ECR_Ignore);
+            CollisionBox->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
+            CollisionBox->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+            break;
+
+        case EItemState::EIS_Dropping:
+            checkf(false, TEXT("EIS_Dropping not yet implemented"));
+            break;
+
+        case EItemState::EIS_Equipped:
+            ItemMesh->SetSimulatePhysics(false);
+            ItemMesh->SetVisibility(true);
+            ItemMesh->SetCollisionResponseToAllChannels(ECR_Ignore);
+            ItemMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+            AreaSphere->SetCollisionResponseToAllChannels(ECR_Ignore);
+            AreaSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+            CollisionBox->SetCollisionResponseToAllChannels(ECR_Ignore);
+            CollisionBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+            break;
+
+        case EItemState::EIS_Equipping:
+            checkf(false, TEXT("EIS_Equipping not yet implemented"));
+            break;
+        case EItemState::EIS_Carried:
+            checkf(false, TEXT("EIS_Carried not yet implemented"));
+            break;
+        default:
+            checkf(false, TEXT("Unknown ItemState %d"), ItemState);
     }
 }
