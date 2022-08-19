@@ -22,6 +22,50 @@ enum class EItemRarity : uint8
 	EIR_MAX UMETA(Hidden, DisplayName = "DefaultMAX")
 };
 
+UENUM(BlueprintType)
+enum class EItemState : uint8
+{
+	/**
+	 * Item is:
+	 * - held in hand
+	 * - attached to socket (of character mesh)
+	 * - Collision turned off. (i.e. AreaSphere and CollisionBox have collision responses disabled)
+	 * - AShooterCharacter.EquippedWeapon holds a reference to it
+	 */
+	EIS_Equipped UMETA(DisplayName = "Equipped"),
+	/**
+	 * Item is:
+	 * - Sitting on the Ground
+	 * - Not attached to anything
+	 * - Collision turned on. (i.e. AreaSphere and CollisionBox have collision responses enabled)
+	 */
+	EIS_Dropped UMETA(DisplayName = "Dropped"),
+	/**
+	 * Item is in the process of being picked up:
+	 * - We are picking up the Item and it is moving from it's rest state to being equipped/picked up
+	 * - It flies up to our face!
+	 * - Collision turned off.
+	 */
+	EIS_Equipping UMETA(DisplayName = "Equipping"),
+	/**
+	 * Item is in inventory but not equipped:
+	 * - In inventory
+	 * - Collision turned off.
+	 * - Visibility turned off.
+	 */
+	EIS_Carried UMETA(DisplayName = "Carried"),
+	/**
+	 * Item is falling to the ground:
+	 * - We are dropping the item.
+	 * - Has not hit the ground.
+	 * - Collision turned off for AreaSphere and Collision Box but should enable collision with the floor.
+	 * - Visibility turned off.
+	 */
+	EIS_Dropping UMETA(DisplayName = "Dropping"),
+
+	EIS_MAX UMETA(Hidden, DisplayName = "DefaultMAX")
+};
+
 UCLASS()
 class PELOR_API AItem : public AActor
 {
@@ -73,6 +117,10 @@ private:
 	/** Property derived from Rarity */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
 	TArray<bool> ActiveStars;
+
+	/** Item rarity determines number of stars in InfoBox */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
+	EItemState ItemState;
 
 	UFUNCTION()
 	void OnAreaSphereOverlap(UPrimitiveComponent* OverlappedComponent,

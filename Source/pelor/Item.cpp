@@ -7,7 +7,7 @@
 #include "ShooterCharacter.h"
 
 // Sets default values
-AItem::AItem() : ItemName("Default"), ItemCount(0), Rarity(EItemRarity::EIR_Common)
+AItem::AItem() : ItemName("Default"), ItemCount(0), Rarity(EItemRarity::EIR_Common), ItemState(EItemState::EIS_Dropped)
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
