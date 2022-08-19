@@ -133,6 +133,7 @@ void AItem::ApplyPropertiesBasedOnCurrentItemState() const
     {
         case EItemState::EIS_Dropped:
             ItemMesh->SetSimulatePhysics(false);
+            ItemMesh->SetEnableGravity(false);
             ItemMesh->SetVisibility(true);
             ItemMesh->SetCollisionResponseToAllChannels(ECR_Ignore);
             ItemMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
@@ -146,11 +147,24 @@ void AItem::ApplyPropertiesBasedOnCurrentItemState() const
             break;
 
         case EItemState::EIS_Dropping:
-            checkf(false, TEXT("EIS_Dropping not yet implemented"));
+            ItemMesh->SetSimulatePhysics(true);
+            ItemMesh->SetEnableGravity(true);
+            ItemMesh->SetVisibility(true);
+            ItemMesh->SetCollisionResponseToAllChannels(ECR_Ignore);
+            // ECC_WorldStatic channel means it will fall until it is blocked by world static
+            ItemMesh->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
+            ItemMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+
+            AreaSphere->SetCollisionResponseToAllChannels(ECR_Ignore);
+            AreaSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+            CollisionBox->SetCollisionResponseToAllChannels(ECR_Ignore);
+            CollisionBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
             break;
 
         case EItemState::EIS_Equipped:
             ItemMesh->SetSimulatePhysics(false);
+            ItemMesh->SetEnableGravity(false);
             ItemMesh->SetVisibility(true);
             ItemMesh->SetCollisionResponseToAllChannels(ECR_Ignore);
             ItemMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
