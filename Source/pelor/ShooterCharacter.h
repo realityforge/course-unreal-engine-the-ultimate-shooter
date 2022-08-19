@@ -271,7 +271,10 @@ private:
 	void StartWeaponFireTimer();
 
 	/** Spawns the default weapon and equips the weapon */
-	void SpawnDefaultWeapon();
+	AWeapon* SpawnDefaultWeapon() const;
+
+	/** Equips the specified weapon */
+	void EquipWeapon(AWeapon* Weapon);
 
 	// Needs to be annotated with the UFUNCTION macro as it is a callback for timer
 	UFUNCTION()

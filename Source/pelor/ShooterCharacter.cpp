@@ -2,6 +2,8 @@
 
 #include "ShooterCharacter.h"
 #include "Camera/CameraComponent.h"
+#include "Components/BoxComponent.h"
+#include "Components/SphereComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Engine/SkeletalMeshSocket.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -127,7 +129,9 @@ AShooterCharacter::AShooterCharacter()
 void AShooterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	SpawnDefaultWeapon();
+
+	EquipWeapon(SpawnDefaultWeapon());
+
 	if (nullptr != FollowCamera)
 	{
 		DefaultCameraFOV = FollowCamera->FieldOfView;
@@ -528,22 +532,31 @@ void AShooterCharacter::StartWeaponFireTimer()
 									CrosshairShootingImpactDuration);
 }
 
-void AShooterCharacter::SpawnDefaultWeapon()
+AWeapon* AShooterCharacter::SpawnDefaultWeapon() const
 {
-	// If the Blueprint is correctly configured with DefaultWeaponClass
-	if (nullptr != DefaultWeaponClass)
+	return nullptr != DefaultWeaponClass ? GetWorld()->SpawnActor<AWeapon>(DefaultWeaponClass) : nullptr;
+}
+
+void AShooterCharacter::EquipWeapon(AWeapon* Weapon)
+{
+	checkf(nullptr != Weapon, TEXT("Invalid weapon passed to EquipWeapon"));
+	if (nullptr != Weapon)
 	{
-		// Spawn the weapon based on default class
-		AWeapon* DefaultWeapon = GetWorld()->SpawnActor<AWeapon>(DefaultWeaponClass);
+		// Turn off collision events for Weapon so it is not triggering while carried
+		{
+			Weapon->GetAreaSphere()->SetCollisionResponseToAllChannels(ECR_Ignore);
+			Weapon->GetCollisionBox()->SetCollisionResponseToAllChannels(ECR_Ignore);
+		}
+
 		// Find the socket we have created in the mesh
 		const USkeletalMeshSocket* HandSocket = GetMesh()->GetSocketByName(FName("hand_r_socket"));
 		if (nullptr != HandSocket)
 		{
 			// Add the weapon to the socket
-			HandSocket->AttachActor(DefaultWeapon, GetMesh());
+			HandSocket->AttachActor(Weapon, GetMesh());
 		}
-		// Actually record the default weapon as equipped
-		EquippedWeapon = DefaultWeapon;
+		// Actually record the weapon as equipped
+		EquippedWeapon = Weapon;
 	}
 }
 

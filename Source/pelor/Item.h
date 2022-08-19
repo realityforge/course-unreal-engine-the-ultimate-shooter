@@ -94,4 +94,6 @@ private:
 
 public:
 	FORCEINLINE UWidgetComponent* GetInfoBoxWidget() const { return InfoBoxWidget; }
+	FORCEINLINE USphereComponent* GetAreaSphere() const { return AreaSphere; }
+	FORCEINLINE UBoxComponent* GetCollisionBox() const { return CollisionBox; }
 };
