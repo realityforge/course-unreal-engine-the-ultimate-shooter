@@ -270,6 +270,7 @@ private:
 
 	void StartWeaponFireTimer();
 
+	/** Spawns the default weapon and equips the weapon */
 	void SpawnDefaultWeapon();
 
 	// Needs to be annotated with the UFUNCTION macro as it is a callback for timer
