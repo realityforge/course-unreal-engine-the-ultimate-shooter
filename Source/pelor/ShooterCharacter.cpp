@@ -530,16 +530,13 @@ void AShooterCharacter::StartWeaponFireTimer()
 
 void AShooterCharacter::SpawnDefaultWeapon()
 {
-	UE_LOG(LogTemp, Warning, TEXT("SpawnDefaultWeapon()..."));
 	// If the Blueprint is correctly configured with DefaultWeaponClass
 	if (nullptr != DefaultWeaponClass)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("DefaultWeaponClass=%p"), (void*)DefaultWeaponClass);
 		// Spawn the weapon based on default class
 		AWeapon* DefaultWeapon = GetWorld()->SpawnActor<AWeapon>(DefaultWeaponClass);
 		// Find the socket we have created in the mesh
 		const USkeletalMeshSocket* HandSocket = GetMesh()->GetSocketByName(FName("hand_r_socket"));
-		UE_LOG(LogTemp, Warning, TEXT("HandSocket=%p"), (void*)HandSocket);
 		if (nullptr != HandSocket)
 		{
 			// Add the weapon to the socket
