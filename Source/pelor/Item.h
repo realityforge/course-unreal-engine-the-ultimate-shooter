@@ -153,4 +153,6 @@ public:
         this->ItemState = NewItemState;
         ApplyPropertiesBasedOnCurrentItemState();
     }
+
+    FORCEINLINE USkeletalMeshComponent* GetItemMesh() const { return ItemMesh; }
 };

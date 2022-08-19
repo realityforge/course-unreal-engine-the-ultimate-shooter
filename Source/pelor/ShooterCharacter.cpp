@@ -561,6 +561,22 @@ void AShooterCharacter::EquipWeapon(AWeapon* Weapon)
     }
 }
 
+void AShooterCharacter::DropWeapon() const
+{
+    if (EquippedWeapon)
+    {
+        const FDetachmentTransformRules DetachmentTransformRules(EDetachmentRule::KeepWorld, true);
+        EquippedWeapon->GetItemMesh()->DetachFromComponent(DetachmentTransformRules);
+    }
+}
+
+void AShooterCharacter::OnSelectButtonPressed()
+{
+    DropWeapon();
+}
+
+void AShooterCharacter::OnSelectButtonReleased() {}
+
 void AShooterCharacter::FinishWeaponFireTimer()
 {
     bCrosshairShootingImpactActive = false;
@@ -615,4 +631,8 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
     // Aiming Button to zoom in and aim
     PlayerInputComponent->BindAction("AimingButton", IE_Pressed, this, &AShooterCharacter::AimingButtonPressed);
     PlayerInputComponent->BindAction("AimingButton", IE_Released, this, &AShooterCharacter::AimingButtonReleased);
+
+    // Select button press/release
+    PlayerInputComponent->BindAction("Select", IE_Pressed, this, &AShooterCharacter::OnSelectButtonPressed);
+    PlayerInputComponent->BindAction("Select", IE_Released, this, &AShooterCharacter::OnSelectButtonReleased);
 }

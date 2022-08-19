@@ -276,6 +276,14 @@ private:
     /** Equips the specified weapon */
     void EquipWeapon(AWeapon* Weapon);
 
+    /** Drops the specified weapon */
+    void DropWeapon() const;
+
+    /** When user presses the select button */
+    void OnSelectButtonPressed();
+    /** When user releases the select button */
+    void OnSelectButtonReleased();
+
     // Needs to be annotated with the UFUNCTION macro as it is a callback for timer
     UFUNCTION()
     void FinishWeaponFireTimer();
