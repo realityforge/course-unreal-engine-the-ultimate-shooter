@@ -12,5 +12,5 @@
 UCLASS()
 class PELOR_API APelorGameModeBase : public AGameModeBase
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 };

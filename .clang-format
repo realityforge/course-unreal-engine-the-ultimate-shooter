@@ -71,7 +71,7 @@ BinPackParameters: false
 AllowAllParametersOfDeclarationOnNextLine: false
 BinPackArguments: false
 AllowAllArgumentsOnNextLine: false
-UseTab: Always
+UseTab: Never
 IncludeBlocks:   Merge
 IncludeCategories:
   - Regex:           '.*\.generated\.h'

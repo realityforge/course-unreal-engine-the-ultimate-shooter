@@ -12,5 +12,5 @@
 UCLASS()
 class PELOR_API AWeapon : public AItem
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 };
