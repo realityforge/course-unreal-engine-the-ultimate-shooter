@@ -19,7 +19,7 @@ enum class EItemRarity : uint8
 	EIR_Rare UMETA(DisplayName = "Rare"),
 	EIR_Legendary UMETA(DisplayName = "Legendary"),
 
-	EIR_MAX UMETA(DisplayName = "DefaultMAX")
+	EIR_MAX UMETA(Hidden, DisplayName = "DefaultMAX")
 };
 
 UCLASS()
