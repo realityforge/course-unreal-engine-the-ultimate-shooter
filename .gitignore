@@ -6,7 +6,7 @@ Gemfile.lock
 .vscode
 .vs
 /cmake-build-debug/
-/.idea/
+/.idea
 *.VC.db
 *.opensdf
 *.opendb
