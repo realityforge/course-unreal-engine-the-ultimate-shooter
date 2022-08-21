@@ -39,11 +39,14 @@ void AWeapon::ThrowWeapon()
     const float RandomRotation{ FMath::FRandRange(1.f, 30.f) };
     const FVector ZAxis = FVector(0.F, 0.F, 1.F);
 
-    // The direction in which we throw the Weapon (20 degrees angled down forward, with some random rotation around z
-    // thus is goes leftish/rightish
+    // an arbitrary value that derived from experimentation
+    constexpr float ImpulseFactor = 160.F;
+    // Calculate the direction in which it is thrown which is 20 degrees to up, and 1-30 degree to the right of object
+    // direction (In model space it is the models X Axis)
     const FVector ImpulseDirection =
-        MeshRight.RotateAngleAxis(-20.f, MeshForward).RotateAngleAxis(RandomRotation, ZAxis) * 2'000.F;
-    GetItemMesh()->AddImpulse(ImpulseDirection);
+        MeshRight.RotateAngleAxis(-20.f, MeshForward).RotateAngleAxis(RandomRotation, ZAxis).GetSafeNormal()
+        * ImpulseFactor;
+    GetItemMesh()->AddImpulse(ImpulseDirection, NAME_None, true);
 
     bFalling = true;
     GetWorldTimerManager().SetTimer(ThrowWeaponTimer, this, &AWeapon::StopFalling, ThrowWeaponTime);
