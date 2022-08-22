@@ -64,6 +64,10 @@ AShooterCharacter::AShooterCharacter()
     , DefaultWeaponClass(nullptr)
 
     , TraceHitItem(nullptr)
+
+    // Variables controlling where the item is presented
+    , ItemPresentationDistance(250.f)
+    , ItemPresentationElevation(65.f)
 {
     // Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need
     // it.
@@ -600,6 +604,16 @@ void AShooterCharacter::IncrementOverlappedItemCount(const int8 Amount)
 {
     OverlappedItemCount = FMath::Max(OverlappedItemCount + Amount, 0);
     bShouldTraceForItems = 0 != OverlappedItemCount;
+}
+
+FVector AShooterCharacter::GetItemPresentationLocation() const
+{
+    const FVector CameraWorldLocation{ FollowCamera->GetComponentLocation() };
+    const FVector CameraForward{ FollowCamera->GetForwardVector() };
+    // CameraUp is always up in the world as our camera does not allow tilting
+    // const FVector CameraUp{ FollowCamera->GetUpVector() };
+    return CameraWorldLocation + CameraForward * ItemPresentationDistance
+        + FVector(0.f, 0.f, ItemPresentationElevation);
 }
 
 // Called every frame

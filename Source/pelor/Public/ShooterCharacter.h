@@ -254,6 +254,17 @@ private:
     /** The item currently hit by our trace in TraceForItems ... may be null */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Combat, meta = (AllowPrivateAccess = "true"))
     AItem* TraceHitItem;
+    /**
+     * The distance forward of the camera that we want to present an Item during pickup.
+     * (This is combined with ItemPresentationElevation) to locate the Item presentation location.
+     */
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Items, meta = (AllowPrivateAccess = "true"))
+    float ItemPresentationDistance;
+    /**
+     * The distance up of the camera that we want to present an Item during pickup.
+     */
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Items, meta = (AllowPrivateAccess = "true"))
+    float ItemPresentationElevation;
 
     void UpdateFovBasedOnAimingStatus(float DeltaTime);
     void UpdateLookRateBasedOnAimingStatus();
@@ -308,4 +319,9 @@ public:
      * Amount may be negative.
      */
     void IncrementOverlappedItemCount(int8 Amount);
+
+    /**
+     * Returns the location where an item is presented to the user during a pickup sequence.
+     */
+    FVector GetItemPresentationLocation() const;
 };
