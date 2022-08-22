@@ -163,6 +163,12 @@ void AItem::ApplyPropertiesBasedOnCurrentItemState() const
             break;
 
         case EItemState::EIS_Equipped:
+            // Make sure we hide the widget once we equip the item if it is currently visible.
+            // Useful when we are picking it up off the ground
+            if (InfoBoxWidget)
+            {
+                InfoBoxWidget->SetVisibility(false);
+            }
             ItemMesh->SetSimulatePhysics(false);
             ItemMesh->SetEnableGravity(false);
             ItemMesh->SetVisibility(true);
