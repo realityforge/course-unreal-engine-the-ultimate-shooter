@@ -251,6 +251,10 @@ private:
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Combat, meta = (AllowPrivateAccess = "true"))
     TSubclassOf<AWeapon> DefaultWeaponClass;
 
+    /** The item currently hit by our trace in TraceForItems ... may be null */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Combat, meta = (AllowPrivateAccess = "true"))
+    AItem* TraceHitItem;
+
     void UpdateFovBasedOnAimingStatus(float DeltaTime);
     void UpdateLookRateBasedOnAimingStatus();
     void CalculateCrosshairSpreadMultiplier(float DeltaTime);
@@ -283,6 +287,9 @@ private:
     void OnSelectButtonPressed();
     /** When user releases the select button */
     void OnSelectButtonReleased();
+
+    /** Drops currently equipped weapon and replaces it with TraceHitWeapon if one exists. */
+    void SwapWeapon(AWeapon* WeaponToSwap);
 
     // Needs to be annotated with the UFUNCTION macro as it is a callback for timer
     UFUNCTION()

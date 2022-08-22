@@ -64,6 +64,8 @@ AShooterCharacter::AShooterCharacter()
     // Weapon equipped vars
     , EquippedWeapon(nullptr)
     , DefaultWeaponClass(nullptr)
+
+    , TraceHitItem(nullptr)
 {
     // Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need
     // it.
@@ -451,17 +453,17 @@ void AShooterCharacter::TraceForItems()
         if (FHitResult ItemTraceResult; TraceCrosshairToWorld(ItemTraceResult, Ignored))
         {
             // if trace touched an actor, try to resolve if into an Item. Cast will go to NULL if actor is not an item
-            if (const AItem* HitItem = Cast<AItem>(ItemTraceResult.GetActor()); nullptr != HitItem)
+            if (TraceHitItem = Cast<AItem>(ItemTraceResult.GetActor()); nullptr != TraceHitItem)
             {
-                if (ItemShowingInfoBox != HitItem)
+                if (ItemShowingInfoBox != TraceHitItem)
                 {
-                    if (nullptr != ItemShowingInfoBox && ItemShowingInfoBox != HitItem)
+                    if (nullptr != ItemShowingInfoBox && ItemShowingInfoBox != TraceHitItem)
                     {
                         // Hide previous info box if any is showing
                         SetItemInfoBoxVisibility(false);
                     }
                     // Show currently targeted info box
-                    ItemShowingInfoBox = HitItem;
+                    ItemShowingInfoBox = TraceHitItem;
                     SetItemInfoBoxVisibility(true);
                 }
             }
@@ -573,10 +575,24 @@ void AShooterCharacter::DropWeapon() const
 
 void AShooterCharacter::OnSelectButtonPressed()
 {
-    DropWeapon();
+    if (TraceHitItem)
+    {
+        const auto TraceHitWeapon = Cast<AWeapon>(TraceHitItem);
+        SwapWeapon(TraceHitWeapon);
+    }
 }
 
 void AShooterCharacter::OnSelectButtonReleased() {}
+
+void AShooterCharacter::SwapWeapon(AWeapon* WeaponToSwap)
+{
+    DropWeapon();
+    EquipWeapon(WeaponToSwap);
+    if (ItemShowingInfoBox == WeaponToSwap)
+    {
+        ItemShowingInfoBox = nullptr;
+    }
+}
 
 void AShooterCharacter::FinishWeaponFireTimer()
 {
