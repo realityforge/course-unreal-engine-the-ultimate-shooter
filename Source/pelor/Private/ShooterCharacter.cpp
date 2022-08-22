@@ -544,12 +544,6 @@ void AShooterCharacter::EquipWeapon(AWeapon* Weapon)
     checkf(nullptr != Weapon, TEXT("Invalid weapon passed to EquipWeapon"));
     if (nullptr != Weapon)
     {
-        // Turn off collision events for Weapon so it is not triggering while carried
-        {
-            Weapon->GetAreaSphere()->SetCollisionResponseToAllChannels(ECR_Ignore);
-            Weapon->GetCollisionBox()->SetCollisionResponseToAllChannels(ECR_Ignore);
-        }
-
         // Find the socket we have created in the mesh
         const USkeletalMeshSocket* HandSocket = GetMesh()->GetSocketByName(FName("hand_r_socket"));
         if (nullptr != HandSocket)
