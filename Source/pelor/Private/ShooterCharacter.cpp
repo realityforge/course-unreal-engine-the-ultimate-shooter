@@ -616,6 +616,14 @@ FVector AShooterCharacter::GetItemPresentationLocation() const
         + FVector(0.f, 0.f, ItemPresentationElevation);
 }
 
+void AShooterCharacter::PickupItem(AItem* Item)
+{
+    if (const auto Weapon = Cast<AWeapon>(Item))
+    {
+        SwapWeapon(Weapon);
+    }
+}
+
 // Called every frame
 void AShooterCharacter::Tick(float DeltaTime)
 {

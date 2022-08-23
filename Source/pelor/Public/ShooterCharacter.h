@@ -324,4 +324,6 @@ public:
      * Returns the location where an item is presented to the user during a pickup sequence.
      */
     FVector GetItemPresentationLocation() const;
+
+    void PickupItem(AItem* Item);
 };
