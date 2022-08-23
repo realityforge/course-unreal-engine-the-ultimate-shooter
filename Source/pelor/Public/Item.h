@@ -47,6 +47,8 @@ enum class EItemState : uint8
      * - We are picking up the Item and it is moving from it's rest state to being equipped/picked up
      * - It flies up to our face!
      * - Collision turned off.
+     * TODO: We use this as a state of "Picking Up" so maybe this enum should reflect that terminology. (Or maybe the
+     * terminology elsewhere should align with Equipping terminology)
      */
     EIS_Equipping UMETA(DisplayName = "Equipping"),
     /**
