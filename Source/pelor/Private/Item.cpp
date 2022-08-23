@@ -195,7 +195,23 @@ void AItem::ApplyPropertiesBasedOnCurrentItemState() const
             break;
 
         case EItemState::EIS_Equipping:
-            checkf(false, TEXT("EIS_Equipping not yet implemented"));
+            // Make sure we hide the widget once we equip the item if it is currently visible.
+            // Useful when we are picking it up off the ground
+            if (InfoBoxWidget)
+            {
+                InfoBoxWidget->SetVisibility(false);
+            }
+            ItemMesh->SetSimulatePhysics(false);
+            ItemMesh->SetEnableGravity(false);
+            ItemMesh->SetVisibility(true);
+            ItemMesh->SetCollisionResponseToAllChannels(ECR_Ignore);
+            ItemMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+            AreaSphere->SetCollisionResponseToAllChannels(ECR_Ignore);
+            AreaSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+            CollisionBox->SetCollisionResponseToAllChannels(ECR_Ignore);
+            CollisionBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
             break;
         case EItemState::EIS_Carried:
             checkf(false, TEXT("EIS_Carried not yet implemented"));
