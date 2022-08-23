@@ -171,7 +171,6 @@ private:
 
     /** Called by Pickup timer when pickup should be "complete" */
     void OnCompletePickup();
-    // public section for accessors for state
 
 public:
     FORCEINLINE UWidgetComponent* GetInfoBoxWidget() const { return InfoBoxWidget; }
