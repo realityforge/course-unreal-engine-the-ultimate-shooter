@@ -174,6 +174,11 @@ private:
     /** Called by Pickup timer when pickup should be "complete" */
     void OnCompletePickup();
 
+    /**
+     * Called during Tick when the item is being picked up.
+     */
+    void ItemPickingUpTick(float DeltaTime);
+
 public:
     FORCEINLINE UWidgetComponent* GetInfoBoxWidget() const { return InfoBoxWidget; }
     FORCEINLINE USphereComponent* GetAreaSphere() const { return AreaSphere; }

@@ -65,6 +65,7 @@ void AItem::BeginPlay()
 void AItem::Tick(const float DeltaTime)
 {
     Super::Tick(DeltaTime);
+    ItemPickingUpTick(DeltaTime);
 }
 
 // ReSharper disable once CppMemberFunctionMayBeConst
@@ -226,6 +227,36 @@ void AItem::OnCompletePickup()
     if (Character)
     {
         Character->PickupItem(this);
+        Character = nullptr;
+    }
+    bPickingUpActive = false;
+}
+
+void AItem::ItemPickingUpTick(const float DeltaTime)
+{
+    if (bPickingUpActive && Character && ItemZCurve)
+    {
+        // The time that has passed since we started the timer
+        const float ElapsedTime = GetWorldTimerManager().GetTimerElapsed(ItemPickupTimer);
+        const float ZCurveValue = ItemZCurve->GetFloatValue(ElapsedTime);
+
+        // Our curve is expected to return 1 when it is being presented to the player
+        // thus we calculate the distance between StartLocation and ItemPresentationLocation
+        // to determine the factor which we must multiple the ZCurveValue by to get Z of item
+
+        const FVector ItemPresentationLocation{ Character->GetItemPresentationLocation() };
+
+        // Calculate a vector from start location to presentation location ... but only including z component
+        // TODO: This is horrendously inefficient but trying not to deviate from course too much
+        const FVector ItemToPresentationLocation{
+            FVector(0.f, 0.f, (ItemPresentationLocation - ItemPickupStartLocation).Z)
+        };
+        // Scale factor to multiple by the ZCurve to get actual Z location
+        const float DeltaZ = ItemToPresentationLocation.Size();
+
+        FVector NewItemLocation{ ItemPickupStartLocation };
+        NewItemLocation.Z += ZCurveValue * DeltaZ;
+        SetActorLocation(NewItemLocation, true, nullptr, ETeleportType::TeleportPhysics);
     }
 }
 

@@ -573,8 +573,7 @@ void AShooterCharacter::OnSelectButtonPressed()
 {
     if (TraceHitItem)
     {
-        const auto TraceHitWeapon = Cast<AWeapon>(TraceHitItem);
-        SwapWeapon(TraceHitWeapon);
+        TraceHitItem->StartItemPickup(this);
     }
 }
 
