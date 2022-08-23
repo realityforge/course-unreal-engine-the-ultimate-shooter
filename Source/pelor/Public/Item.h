@@ -6,7 +6,9 @@
 #include "GameFramework/Actor.h"
 #include "Item.generated.h"
 
+class AShooterCharacter;
 class UBoxComponent;
+class UCurveFloat;
 class USphereComponent;
 class UWidgetComponent;
 
@@ -122,6 +124,32 @@ private:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
     EItemState ItemState;
 
+    /** The curve asset to use for the item's Z location when presenting */
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
+    UCurveFloat* ItemZCurve;
+
+    /** The location at which the Item starts during a pickup */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
+    FVector ItemPickupStartLocation;
+
+    /** The location at which the Item will be presented to the player in worldspace */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
+    FVector ItemTargetPresentationLocation;
+
+    /** Flag indicating that the item is currently being picked up */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
+    bool bPickingUpActive;
+
+    /** Handle of timer that runs while items is being picked up. */
+    FTimerHandle ItemPickupTimer;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
+    AShooterCharacter* Character;
+
+    /** Duration of the curve (and thus the duration of the timer) */
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
+    float ZCurveTime;
+
     UFUNCTION()
     void OnAreaSphereOverlap(UPrimitiveComponent* OverlappedComponent,
                              AActor* OtherActor,
@@ -141,6 +169,8 @@ private:
     /** Sets the items properties based on the specified State */
     void ApplyPropertiesBasedOnCurrentItemState() const;
 
+    /** Called by Pickup timer when pickup should be "complete" */
+    void OnCompletePickup();
     // public section for accessors for state
 
 public:
@@ -155,4 +185,7 @@ public:
     }
 
     FORCEINLINE USkeletalMeshComponent* GetItemMesh() const { return ItemMesh; }
+
+    /** Called by character class when they start the pickup process */
+    void StartItemPickup(AShooterCharacter* CharacterPerformingPickup);
 };

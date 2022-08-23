@@ -7,7 +7,19 @@
 #include "ShooterCharacter.h"
 
 // Sets default values
-AItem::AItem() : ItemName("Default"), ItemCount(0), Rarity(EItemRarity::EIR_Common), ItemState(EItemState::EIS_Dropped)
+AItem::AItem()
+    : ItemName("Default")
+    , ItemCount(0)
+    , Rarity(EItemRarity::EIR_Common)
+    , ItemState(EItemState::EIS_Dropped)
+
+    // Variables relating to pickup action
+    , ItemZCurve(nullptr)
+    , ItemPickupStartLocation(FVector(0.f))
+    , ItemTargetPresentationLocation(FVector(0.f))
+    , bPickingUpActive(false)
+    , Character(nullptr)
+    , ZCurveTime(0.7f)
 {
     // Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
     PrimaryActorTick.bCanEverTick = true;
@@ -191,4 +203,26 @@ void AItem::ApplyPropertiesBasedOnCurrentItemState() const
         default:
             checkf(false, TEXT("Unknown ItemState %d"), ItemState);
     }
+}
+
+void AItem::OnCompletePickup()
+{
+    if (Character)
+    {
+        Character->PickupItem(this);
+    }
+}
+
+void AItem::StartItemPickup(AShooterCharacter* CharacterPerformingPickup)
+{
+    checkf(CharacterPerformingPickup, TEXT("Character MUST be supplied"));
+    // Character performing pickup
+    Character = CharacterPerformingPickup;
+    // Get the location of the item now as this is where we will start the pickup process
+    ItemPickupStartLocation = GetActorLocation();
+    bPickingUpActive = true;
+    UpdateItemState(EItemState::EIS_Equipping);
+
+    // Schedule a timer for completion of pickup
+    GetWorldTimerManager().SetTimer(ItemPickupTimer, this, &AItem::OnCompletePickup, ZCurveTime);
 }
