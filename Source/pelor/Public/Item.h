@@ -134,6 +134,9 @@ private:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
     FVector ItemPickupStartLocation;
 
+    /** Yaw offset between the camera and the item being picked up at pickup time. */
+    double ItemPickupYawOffset;
+
     /** The location at which the Item will be presented to the player in worldspace */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
     FVector ItemTargetPresentationLocation;

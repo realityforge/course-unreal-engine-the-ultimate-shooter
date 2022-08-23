@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Item.h"
+#include "Camera/CameraComponent.h"
 #include "Components/BoxComponent.h"
 #include "Components/SphereComponent.h"
 #include "Components/WidgetComponent.h"
@@ -16,6 +17,7 @@ AItem::AItem()
     // Variables relating to pickup action
     , ItemZCurve(nullptr)
     , ItemPickupStartLocation(FVector(0.f))
+    , ItemPickupYawOffset(0.f)
     , ItemTargetPresentationLocation(FVector(0.f))
     , bPickingUpActive(false)
     , Character(nullptr)
@@ -265,6 +267,14 @@ void AItem::ItemPickingUpTick(const float DeltaTime)
         NewItemLocation.Y = CurrentYValue;
         NewItemLocation.Z += ZCurveValue * DeltaZ;
         SetActorLocation(NewItemLocation, true, nullptr, ETeleportType::TeleportPhysics);
+
+        // Rotation of camera this tick
+        const FRotator CameraRotation{ Character->GetFollowCamera()->GetComponentRotation() };
+        // The target rotation of the Item this tick, maintaining a constant yaw offset
+        const FRotator ItemRotation{ 0.f, CameraRotation.Yaw + ItemPickupYawOffset, 0.f };
+        // Set the rotation so that when the character rotates while the item is presenting
+        // then the item will not appear to rotate
+        SetActorRotation(ItemRotation, ETeleportType::TeleportPhysics);
     }
 }
 
@@ -277,6 +287,11 @@ void AItem::StartItemPickup(AShooterCharacter* CharacterPerformingPickup)
     ItemPickupStartLocation = GetActorLocation();
     bPickingUpActive = true;
     UpdateItemState(EItemState::EIS_Equipping);
+
+    const double CameraYaw{ Character->GetFollowCamera()->GetComponentRotation().Yaw };
+    const double ItemYaw{ GetActorRotation().Yaw };
+    // Yaw Offset of Item relative to Camera
+    ItemPickupYawOffset = ItemYaw - CameraYaw;
 
     // Schedule a timer for completion of pickup
     GetWorldTimerManager().SetTimer(ItemPickupTimer, this, &AItem::OnCompletePickup, ZCurveTime);
