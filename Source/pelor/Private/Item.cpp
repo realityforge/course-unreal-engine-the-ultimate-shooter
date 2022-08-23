@@ -254,7 +254,15 @@ void AItem::ItemPickingUpTick(const float DeltaTime)
         // Scale factor to multiple by the ZCurve to get actual Z location
         const float DeltaZ = ItemToPresentationLocation.Size();
 
+        // This value seems wrong, why we do not just LERP from start to presentation Location based on ElapsedTime
+        // However following what the course does unless a later lesson refers back to it ...
+        const FVector CurrentLocation{ GetActorLocation() };
+        const float CurrentXValue = FMath::FInterpTo(CurrentLocation.X, ItemPresentationLocation.X, DeltaTime, 30.f);
+        const float CurrentYValue = FMath::FInterpTo(CurrentLocation.Y, ItemPresentationLocation.Y, DeltaTime, 30.f);
+
         FVector NewItemLocation{ ItemPickupStartLocation };
+        NewItemLocation.X = CurrentXValue;
+        NewItemLocation.Y = CurrentYValue;
         NewItemLocation.Z += ZCurveValue * DeltaZ;
         SetActorLocation(NewItemLocation, true, nullptr, ETeleportType::TeleportPhysics);
     }
