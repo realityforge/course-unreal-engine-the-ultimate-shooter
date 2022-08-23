@@ -130,6 +130,10 @@ private:
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
     UCurveFloat* ItemZCurve;
 
+    /** The curve asset to use scaling the item when presenting/equipping */
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
+    UCurveFloat* ItemScaleCurve;
+
     /** The location at which the Item starts during a pickup */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
     FVector ItemPickupStartLocation;

@@ -16,6 +16,7 @@ AItem::AItem()
 
     // Variables relating to pickup action
     , ItemZCurve(nullptr)
+    , ItemScaleCurve(nullptr)
     , ItemPickupStartLocation(FVector(0.f))
     , ItemPickupYawOffset(0.f)
     , ItemTargetPresentationLocation(FVector(0.f))
@@ -236,7 +237,7 @@ void AItem::OnCompletePickup()
 
 void AItem::ItemPickingUpTick(const float DeltaTime)
 {
-    if (bPickingUpActive && Character && ItemZCurve)
+    if (bPickingUpActive && Character && ItemZCurve && ItemScaleCurve)
     {
         // The time that has passed since we started the timer
         const float ElapsedTime = GetWorldTimerManager().GetTimerElapsed(ItemPickupTimer);
@@ -275,6 +276,9 @@ void AItem::ItemPickingUpTick(const float DeltaTime)
         // Set the rotation so that when the character rotates while the item is presenting
         // then the item will not appear to rotate
         SetActorRotation(ItemRotation, ETeleportType::TeleportPhysics);
+
+        const float ScaleFactor = ItemScaleCurve->GetFloatValue(ElapsedTime);
+        SetActorScale3D(FVector(ScaleFactor));
     }
 }
 
@@ -292,6 +296,9 @@ void AItem::StartItemPickup(AShooterCharacter* CharacterPerformingPickup)
     const double ItemYaw{ GetActorRotation().Yaw };
     // Yaw Offset of Item relative to Camera
     ItemPickupYawOffset = ItemYaw - CameraYaw;
+
+    // Reset scale back to normal
+    SetActorScale3D(FVector(1));
 
     // Schedule a timer for completion of pickup
     GetWorldTimerManager().SetTimer(ItemPickupTimer, this, &AItem::OnCompletePickup, ZCurveTime);
