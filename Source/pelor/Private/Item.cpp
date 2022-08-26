@@ -232,6 +232,10 @@ void AItem::OnCompletePickup()
         Character->PickupItem(this);
         Character = nullptr;
     }
+
+    // Reset scale back to normal
+    SetActorScale3D(FVector(1));
+
     bPickingUpActive = false;
 }
 
@@ -296,9 +300,6 @@ void AItem::StartItemPickup(AShooterCharacter* CharacterPerformingPickup)
     const double ItemYaw{ GetActorRotation().Yaw };
     // Yaw Offset of Item relative to Camera
     ItemPickupYawOffset = ItemYaw - CameraYaw;
-
-    // Reset scale back to normal
-    SetActorScale3D(FVector(1));
 
     // Schedule a timer for completion of pickup
     GetWorldTimerManager().SetTimer(ItemPickupTimer, this, &AItem::OnCompletePickup, ZCurveTime);
