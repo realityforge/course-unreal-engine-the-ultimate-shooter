@@ -12,6 +12,14 @@ class AWeapon;
 class UCameraComponent;
 class USoundCue;
 
+UENUM(BlueprintType)
+enum class EAmmoType : uint8
+{
+    EAT_9mm UMETA(DisplayName = "9mm"),
+    EAT_AR UMETA(DisplayName = "Assault Rifle"),
+    EAT_MAX UMETA(DisplayName = "Default MAX")
+};
+
 UCLASS()
 class PELOR_API AShooterCharacter : public ACharacter
 {
@@ -266,6 +274,18 @@ private:
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Items, meta = (AllowPrivateAccess = "true"))
     float ItemPresentationElevation;
 
+    /** Map to keep track of ammo of the different ammo types */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Items, meta = (AllowPrivateAccess = "true"))
+    TMap<EAmmoType, int32> AmmoMap;
+
+    /* Starting amount of 9mm Ammo */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Items, meta = (AllowPrivateAccess = "true"))
+    int32 Initial9mmAmmo;
+
+    /* Starting amount of Assault Rifle Ammo */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Items, meta = (AllowPrivateAccess = "true"))
+    int32 InitialARAmmo;
+
     void UpdateFovBasedOnAimingStatus(float DeltaTime);
     void UpdateLookRateBasedOnAimingStatus();
     void CalculateCrosshairSpreadMultiplier(float DeltaTime);
@@ -301,6 +321,9 @@ private:
 
     /** Drops currently equipped weapon and replaces it with TraceHitWeapon if one exists. */
     void SwapWeapon(AWeapon* WeaponToSwap);
+
+    /** Initialize the AmmoMap with our starting Ammo. */
+    void InitializeAmmoMap();
 
     // Needs to be annotated with the UFUNCTION macro as it is a callback for timer
     UFUNCTION()

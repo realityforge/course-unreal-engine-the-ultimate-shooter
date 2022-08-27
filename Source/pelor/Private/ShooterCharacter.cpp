@@ -68,6 +68,10 @@ AShooterCharacter::AShooterCharacter()
     // Variables controlling where the item is presented
     , ItemPresentationDistance(250.f)
     , ItemPresentationElevation(65.f)
+
+    // Ammo variables
+    , Initial9mmAmmo(85)
+    , InitialARAmmo(120)
 {
     // Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need
     // it.
@@ -141,6 +145,8 @@ void AShooterCharacter::BeginPlay()
         DefaultCameraFOV = FollowCamera->FieldOfView;
         CameraCurrentFOV = DefaultCameraFOV;
     }
+
+    InitializeAmmoMap();
 }
 
 void AShooterCharacter::MouseLookRight(float Value)
@@ -587,6 +593,12 @@ void AShooterCharacter::SwapWeapon(AWeapon* WeaponToSwap)
     {
         ItemShowingInfoBox = nullptr;
     }
+}
+
+void AShooterCharacter::InitializeAmmoMap()
+{
+    AmmoMap.Add(EAmmoType::EAT_9mm, Initial9mmAmmo);
+    AmmoMap.Add(EAmmoType::EAT_AR, InitialARAmmo);
 }
 
 void AShooterCharacter::FinishWeaponFireTimer()
