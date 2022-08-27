@@ -149,12 +149,12 @@ void AShooterCharacter::BeginPlay()
     InitializeAmmoMap();
 }
 
-void AShooterCharacter::MouseLookRight(float Value)
+void AShooterCharacter::MouseLookRight(const float Value)
 {
     AddControllerYawInput(Value * BaseMouseLookRightRate);
 }
 
-void AShooterCharacter::MouseLookUp(float Value)
+void AShooterCharacter::MouseLookUp(const float Value)
 {
     AddControllerPitchInput(Value * BaseMouseLookUpRate);
 }
