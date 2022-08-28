@@ -501,6 +501,7 @@ void AShooterCharacter::TraceForItems()
 
 void AShooterCharacter::FireButtonPressed()
 {
+    UE_LOG(LogTemp, Warning, TEXT("FireButtonPressed::WeaponHasAmmo() = > %d"), WeaponHasAmmo())
     if (WeaponHasAmmo())
     {
         bFireButtonPressed = true;
@@ -617,7 +618,7 @@ void AShooterCharacter::InitializeAmmoMap()
 
 bool AShooterCharacter::WeaponHasAmmo() const
 {
-    return !EquippedWeapon ? EquippedWeapon->GetAmmo() > 0 : false;
+    return EquippedWeapon ? EquippedWeapon->GetAmmo() > 0 : false;
 }
 
 void AShooterCharacter::FinishWeaponFireTimer()
