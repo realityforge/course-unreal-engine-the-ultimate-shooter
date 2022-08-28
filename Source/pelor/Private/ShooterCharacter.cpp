@@ -221,63 +221,64 @@ void AShooterCharacter::LookUp(const float Rate)
 
 void AShooterCharacter::FireWeapon()
 {
-    UE_LOG(LogTemp, Warning, TEXT("Fire Weapon! Pew Pew!"));
-    if (nullptr != FireSound)
-    {
-        UGameplayStatics::PlaySound2D(this, FireSound);
-    }
-    // This socket indicates where the particle emitter is set to be anchored
-    const USkeletalMeshSocket* BarrelExitSocket = GetMesh()->GetSocketByName("BarrelExitSocket");
-    if (nullptr != BarrelExitSocket)
-    {
-        // The transform relative to the mesh where the socket is located
-        const FTransform SocketTransform = BarrelExitSocket->GetSocketTransform(GetMesh());
-        if (nullptr != MuzzleFlash)
-        {
-            // Actually attach the emitter
-            UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), MuzzleFlash, SocketTransform);
-        }
-
-        FVector HitLocation;
-        const FVector MuzzleEndLocation = SocketTransform.GetLocation();
-        if (GetBeamEndLocation(MuzzleEndLocation, HitLocation))
-        {
-            if (nullptr != ImpactParticles)
-            {
-                UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticles, HitLocation);
-            }
-        }
-        if (nullptr != BeamParticles)
-        {
-            // The smoke trail particle system starts at the end of the gun and goes to HitLocation
-            UParticleSystemComponent* Beam =
-                UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), BeamParticles, MuzzleEndLocation);
-            if (nullptr != Beam)
-            {
-                // "Target" is a parameter specified in the particle system definition
-                Beam->SetVectorParameter("Target", HitLocation);
-            }
-        }
-    }
-    if (nullptr != HipFireMontage)
-    {
-        // Get our current animation manager
-        if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance(); nullptr != AnimInstance)
-        {
-            // Merge in the HipFire Animation Montage
-            AnimInstance->Montage_Play(HipFireMontage);
-            AnimInstance->Montage_JumpToSection("StartFire");
-        }
-    }
     if (EquippedWeapon)
     {
+        UE_LOG(LogTemp, Warning, TEXT("Fire Weapon! Pew Pew!"));
+        if (nullptr != FireSound)
+        {
+            UGameplayStatics::PlaySound2D(this, FireSound);
+        }
+        const USkeletalMeshComponent* WeaponMesh = EquippedWeapon->GetItemMesh();
+        // This socket indicates where the particle emitter is set to be anchored
+        const USkeletalMeshSocket* BarrelExitSocket = WeaponMesh->GetSocketByName("BarrelExitSocket");
+        if (nullptr != BarrelExitSocket)
+        {
+            // The transform relative to the mesh where the socket is located
+            const FTransform SocketTransform = BarrelExitSocket->GetSocketTransform(WeaponMesh);
+            if (nullptr != MuzzleFlash)
+            {
+                // Actually attach the emitter
+                UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), MuzzleFlash, SocketTransform);
+            }
+
+            FVector HitLocation;
+            const FVector MuzzleEndLocation = SocketTransform.GetLocation();
+            if (GetBeamEndLocation(MuzzleEndLocation, HitLocation))
+            {
+                if (nullptr != ImpactParticles)
+                {
+                    UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticles, HitLocation);
+                }
+            }
+            if (nullptr != BeamParticles)
+            {
+                // The smoke trail particle system starts at the end of the gun and goes to HitLocation
+                UParticleSystemComponent* Beam =
+                    UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), BeamParticles, MuzzleEndLocation);
+                if (nullptr != Beam)
+                {
+                    // "Target" is a parameter specified in the particle system definition
+                    Beam->SetVectorParameter("Target", HitLocation);
+                }
+            }
+        }
+        if (nullptr != HipFireMontage)
+        {
+            // Get our current animation manager
+            if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance(); nullptr != AnimInstance)
+            {
+                // Merge in the HipFire Animation Montage
+                AnimInstance->Montage_Play(HipFireMontage);
+                AnimInstance->Montage_JumpToSection("StartFire");
+            }
+        }
         // Consume 1 unit of Ammo
         // In reality EquippedWeapon will always be non-null here and Ammo above 1 but we could re-architect the code
         // so that attempting to fire weapon checks Decrement does not go below zero and just has an empty click if
         // it would but that would mean varying too much from tutorial which may not be a good thing.
         EquippedWeapon->DecrementAmmo();
+        StartWeaponFireTimer();
     }
-    StartWeaponFireTimer();
 }
 
 bool AShooterCharacter::GetBeamEndLocation(const FVector& MuzzleEndLocation, FVector& OutBeamLocation) const
