@@ -269,6 +269,14 @@ void AShooterCharacter::FireWeapon()
             AnimInstance->Montage_JumpToSection("StartFire");
         }
     }
+    if (EquippedWeapon)
+    {
+        // Consume 1 unit of Ammo
+        // In reality EquippedWeapon will always be non-null here and Ammo above 1 but we could re-architect the code
+        // so that attempting to fire weapon checks Decrement does not go below zero and just has an empty click if
+        // it would but that would mean varying too much from tutorial which may not be a good thing.
+        EquippedWeapon->DecrementAmmo();
+    }
     StartWeaponFireTimer();
 }
 
@@ -493,8 +501,11 @@ void AShooterCharacter::TraceForItems()
 
 void AShooterCharacter::FireButtonPressed()
 {
-    bFireButtonPressed = true;
-    StartAutoFireTimer();
+    if (WeaponHasAmmo())
+    {
+        bFireButtonPressed = true;
+        StartAutoFireTimer();
+    }
 }
 
 void AShooterCharacter::FireButtonReleased()
@@ -525,11 +536,14 @@ void AShooterCharacter::StartAutoFireTimer()
 
 void AShooterCharacter::AutoFireReset()
 {
-    bShouldFire = true;
-    if (bFireButtonPressed)
+    if (WeaponHasAmmo())
     {
-        // If we are still holding button then fire again
-        StartAutoFireTimer();
+        bShouldFire = true;
+        if (bFireButtonPressed)
+        {
+            // If we are still holding button then fire again
+            StartAutoFireTimer();
+        }
     }
 }
 
@@ -599,6 +613,11 @@ void AShooterCharacter::InitializeAmmoMap()
 {
     AmmoMap.Add(EAmmoType::EAT_9mm, Initial9mmAmmo);
     AmmoMap.Add(EAmmoType::EAT_AR, InitialARAmmo);
+}
+
+bool AShooterCharacter::WeaponHasAmmo() const
+{
+    return !EquippedWeapon ? EquippedWeapon->GetAmmo() > 0 : false;
 }
 
 void AShooterCharacter::FinishWeaponFireTimer()

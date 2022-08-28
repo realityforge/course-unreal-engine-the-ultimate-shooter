@@ -325,6 +325,9 @@ private:
     /** Initialize the AmmoMap with our starting Ammo. */
     void InitializeAmmoMap();
 
+    /** Does the Weapon have any Ammo */
+    bool WeaponHasAmmo() const;
+
     // Needs to be annotated with the UFUNCTION macro as it is a callback for timer
     UFUNCTION()
     void FinishWeaponFireTimer();

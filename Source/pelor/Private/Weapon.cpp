@@ -52,6 +52,11 @@ void AWeapon::ThrowWeapon()
     GetWorldTimerManager().SetTimer(ThrowWeaponTimer, this, &AWeapon::StopFalling, ThrowWeaponTime);
 }
 
+void AWeapon::DecrementAmmo()
+{
+    Ammo = FMath::Max(0, Ammo - 1);
+}
+
 void AWeapon::StopFalling()
 {
     UE_LOG(LogTemp, Warning, TEXT("AWeapon::StopFalling()"));
