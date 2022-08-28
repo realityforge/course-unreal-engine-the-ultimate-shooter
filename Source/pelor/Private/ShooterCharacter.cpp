@@ -502,7 +502,6 @@ void AShooterCharacter::TraceForItems()
 
 void AShooterCharacter::FireButtonPressed()
 {
-    UE_LOG(LogTemp, Warning, TEXT("FireButtonPressed::WeaponHasAmmo() = > %d"), WeaponHasAmmo())
     if (WeaponHasAmmo())
     {
         bFireButtonPressed = true;
