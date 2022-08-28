@@ -516,21 +516,10 @@ void AShooterCharacter::FireButtonReleased()
 
 void AShooterCharacter::StartAutoFireTimer()
 {
-    GEngine->AddOnScreenDebugMessage(
-        1,
-        0,
-        FColor::Red,
-        FString(FString::Printf(TEXT("StartAutoWeaponFireTimer bShouldFire=%d"), bShouldFire)));
-    UE_LOG(LogTemp, Warning, TEXT("StartAutoWeaponFireTimer bShouldFire=%d"), bShouldFire);
     if (bShouldFire)
     {
         FireWeapon();
         bShouldFire = false;
-        GEngine->AddOnScreenDebugMessage(
-            2,
-            0,
-            FColor::Red,
-            FString(FString::Printf(TEXT("ScheduleAutoFireShot AutomaticFireRate=%f"), AutomaticFireRate)));
         GetWorldTimerManager().SetTimer(AutomaticFireTimer, this, &AShooterCharacter::AutoFireReset, AutomaticFireRate);
     }
 }
