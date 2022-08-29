@@ -323,7 +323,7 @@ private:
     UFUNCTION()
     void AutoFireReset();
 
-    void StartWeaponFireTimer();
+    void StartCrosshairShootingImpactTimer();
 
     /** Spawns the default weapon and equips the weapon */
     AWeapon* SpawnDefaultWeapon() const;
@@ -350,7 +350,7 @@ private:
 
     // Needs to be annotated with the UFUNCTION macro as it is a callback for timer
     UFUNCTION()
-    void FinishWeaponFireTimer();
+    void FinishCrosshairShootingImpactTimer();
 
 public:
     FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; }

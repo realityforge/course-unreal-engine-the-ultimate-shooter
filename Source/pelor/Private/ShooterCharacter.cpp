@@ -290,7 +290,7 @@ void AShooterCharacter::FireWeapon()
         SendBullet();
         PlayGunFireMontage();
         EquippedWeapon->DecrementAmmo();
-        StartWeaponFireTimer();
+        StartCrosshairShootingImpactTimer();
         StartAutoFireTimer();
     }
 }
@@ -548,12 +548,12 @@ void AShooterCharacter::AutoFireReset()
     }
 }
 
-void AShooterCharacter::StartWeaponFireTimer()
+void AShooterCharacter::StartCrosshairShootingImpactTimer()
 {
     bCrosshairShootingImpactActive = true;
     GetWorldTimerManager().SetTimer(CrosshairShootingImpactTimer,
                                     this,
-                                    &AShooterCharacter::FinishWeaponFireTimer,
+                                    &AShooterCharacter::FinishCrosshairShootingImpactTimer,
                                     CrosshairShootingImpactDuration);
 }
 
@@ -621,7 +621,7 @@ bool AShooterCharacter::WeaponHasAmmo() const
     return EquippedWeapon ? EquippedWeapon->GetAmmo() > 0 : false;
 }
 
-void AShooterCharacter::FinishWeaponFireTimer()
+void AShooterCharacter::FinishCrosshairShootingImpactTimer()
 {
     bCrosshairShootingImpactActive = false;
 }
