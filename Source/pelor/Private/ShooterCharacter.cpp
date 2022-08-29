@@ -429,6 +429,31 @@ void AShooterCharacter::FinishReload()
     CombatState = ECombatState::ECS_Idle;
 }
 
+void AShooterCharacter::GrabClip()
+{
+    if (EquippedWeapon)
+    {
+        const USkeletalMeshComponent* EquippedWeaponMesh = EquippedWeapon->GetItemMesh();
+        // Get the index of the bone in the weapon that represents the clip
+        const int32 ClipBoneIndex{ EquippedWeaponMesh->GetBoneIndex(EquippedWeapon->GetClipBoneName()) };
+
+        // TODO: No idea why this need to be a field rather than just local variable
+        // Store the transform of the Clip when the hand grabs the clip
+        ClipTransform = EquippedWeaponMesh->GetBoneTransform(ClipBoneIndex);
+
+        // Attach scene component to character mesh with relative offset given by ClipBone to the "hand_l" bone
+        const FAttachmentTransformRules AttachmentRules(EAttachmentRule::KeepRelative, true);
+        HandSceneComponent->AttachToComponent(GetMesh(), AttachmentRules, "hand_l");
+        HandSceneComponent->SetWorldTransform(ClipTransform);
+
+        EquippedWeapon->SetMovingClip(true);
+    }
+}
+void AShooterCharacter::ReleaseClip()
+{
+    EquippedWeapon->SetMovingClip(false);
+}
+
 void AShooterCharacter::UpdateFovBasedOnAimingStatus(const float DeltaTime)
 {
     if (const float TargetFOV = bAiming ? CameraZoomedFOV : DefaultCameraFOV; CameraCurrentFOV != TargetFOV)

@@ -97,6 +97,14 @@ protected:
     UFUNCTION(BlueprintCallable)
     void FinishReload();
 
+    /** Called from animation reload montage when hand grabs clip to take it out */
+    UFUNCTION(BlueprintCallable)
+    void GrabClip();
+
+    /** Called from animation reload montage when hand releases clip after placing it back in */
+    UFUNCTION(BlueprintCallable)
+    void ReleaseClip();
+
 public:
     // Called every frame
     virtual void Tick(float DeltaTime) override;
@@ -311,6 +319,14 @@ private:
     /** Animation when reloading occurs */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
     UAnimMontage* ReloadMontage;
+
+    /** The transform of the clip when it is grabbed during a reload that is valid until it has been replaced */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Combat, meta = (AllowPrivateAccess = "true"))
+    FTransform ClipTransform;
+
+    /** Scene component to attach to the Character's hand during reloading */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Combat, meta = (AllowPrivateAccess = "true"))
+    USceneComponent* HandSceneComponent;
 
     void UpdateFovBasedOnAimingStatus(float DeltaTime);
     void UpdateLookRateBasedOnAimingStatus();

@@ -10,6 +10,7 @@ AWeapon::AWeapon()
     , WeaponType(EWeaponType::EWT_SMG)
     , AmmoType(EAmmoType::EAT_9mm)
     , ReloadMontageSectionName("Reload SMG")
+    , ClipBoneName("smg_clip")
 {
     PrimaryActorTick.bCanEverTick = true;
 }

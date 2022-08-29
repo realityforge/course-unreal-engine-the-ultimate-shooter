@@ -60,6 +60,13 @@ private:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Properties", meta = (AllowPrivateAccess = "true"))
     FName ReloadMontageSectionName;
 
+    /** True when moving the clip while reloading */
+    bool bMovingClip;
+
+    /** Name of the clip bone */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Properties", meta = (AllowPrivateAccess = "true"))
+    FName ClipBoneName;
+
 public:
     // Adds impulse forward and down thus throwing the Weapon
     void ThrowWeapon();
@@ -69,10 +76,13 @@ public:
     FORCEINLINE EWeaponType GetWeaponType() const { return WeaponType; }
     FORCEINLINE EAmmoType GetAmmoType() const { return AmmoType; }
     FORCEINLINE FName GetReloadMontageSectionName() const { return ReloadMontageSectionName; }
+    FORCEINLINE FName GetClipBoneName() const { return ClipBoneName; }
 
     /** Decrement the Ammo but never reduce below 0 */
     void DecrementAmmo();
 
     /** Add the Ammo but to the Weapon */
     void ReloadAmmo(int32 Amount);
+
+    FORCEINLINE void SetMovingClip(const bool MovingClip) { bMovingClip = MovingClip; }
 };
