@@ -9,6 +9,7 @@
 
 class AItem;
 class AWeapon;
+class UAnimMontage;
 class UCameraComponent;
 class USoundCue;
 
@@ -94,6 +95,16 @@ protected:
 
     void AimingButtonPressed();
     void AimingButtonReleased();
+
+    void ReloadButtonPressed();
+    EAmmoType GetEquippedWeaponAmmoType() const;
+    const char* GetEquippedWeaponReloadMontageSection() const;
+
+    void ReloadWeapon();
+    int GetEquippedWeaponMaxAmmoCount();
+
+    UFUNCTION()
+    void FinishReload();
 
 public:
     // Called every frame
@@ -305,6 +316,10 @@ private:
     /** Idle implies the character can reload or fire, otherwise character has to wait to transition back to idle. */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Combat, meta = (AllowPrivateAccess = "true"))
     ECombatState CombatState;
+
+    /** Animation when reloading occurs */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
+    UAnimMontage* ReloadMontage;
 
     void UpdateFovBasedOnAimingStatus(float DeltaTime);
     void UpdateLookRateBasedOnAimingStatus();

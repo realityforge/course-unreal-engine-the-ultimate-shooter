@@ -377,6 +377,56 @@ void AShooterCharacter::AimingButtonReleased()
     bAiming = false;
 }
 
+void AShooterCharacter::ReloadButtonPressed()
+{
+    ReloadWeapon();
+}
+
+EAmmoType AShooterCharacter::GetEquippedWeaponAmmoType() const
+{
+    // TODO: Derive AmmoType from the EquippedWeapon
+    return EAmmoType::EAT_9mm;
+}
+
+const char* AShooterCharacter::GetEquippedWeaponReloadMontageSection() const
+{
+    // TODO: Derive MontageSectionName from the EquippedWeapon
+    return "Reload SMG";
+}
+
+void AShooterCharacter::ReloadWeapon()
+{
+    if (ECombatState::ECS_Idle == CombatState && EquippedWeapon)
+    {
+        // Do we have ammo of the correct type?
+        if (const int* AmmoCount = AmmoMap.Find(GetEquippedWeaponAmmoType()); AmmoCount && *AmmoCount > 0)
+        {
+            if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance(); ReloadMontage && AnimInstance)
+            {
+                AnimInstance->Montage_Play(ReloadMontage);
+                AnimInstance->Montage_JumpToSection(GetEquippedWeaponReloadMontageSection());
+            }
+        }
+    }
+}
+
+int AShooterCharacter::GetEquippedWeaponMaxAmmoCount()
+{
+    // TODO: Derive MaxAmmoCount from the EquippedWeapon
+    return 15;
+}
+
+void AShooterCharacter::FinishReload()
+{
+    if (const int* AmmoCount = AmmoMap.Find(GetEquippedWeaponAmmoType()); AmmoCount && *AmmoCount > 0)
+    {
+        const int MaxAmmoCount = GetEquippedWeaponMaxAmmoCount();
+        const int AmmoCountToReload = FMath::Min(*AmmoCount, MaxAmmoCount);
+        EquippedWeapon->AddAmmo(AmmoCountToReload);
+    }
+    CombatState = ECombatState::ECS_Idle;
+}
+
 void AShooterCharacter::UpdateFovBasedOnAimingStatus(const float DeltaTime)
 {
     if (const float TargetFOV = bAiming ? CameraZoomedFOV : DefaultCameraFOV; CameraCurrentFOV != TargetFOV)
@@ -544,7 +594,7 @@ void AShooterCharacter::AutoFireReset()
     }
     else
     {
-        // Reload Weapon Here
+        ReloadWeapon();
     }
 }
 
@@ -697,4 +747,7 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
     // Select button press/release
     PlayerInputComponent->BindAction("Select", IE_Pressed, this, &AShooterCharacter::OnSelectButtonPressed);
     PlayerInputComponent->BindAction("Select", IE_Released, this, &AShooterCharacter::OnSelectButtonReleased);
+
+    // Reload button pressed
+    PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &AShooterCharacter::ReloadButtonPressed);
 }

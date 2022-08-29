@@ -40,4 +40,7 @@ public:
 
     /** Decrement the Ammo but never reduce below 0 */
     void DecrementAmmo();
+
+    /** Add the Ammo but to the Weapon */
+    void AddAmmo(uint32 Amount);
 };

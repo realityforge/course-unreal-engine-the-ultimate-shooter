@@ -57,6 +57,11 @@ void AWeapon::DecrementAmmo()
     Ammo = FMath::Max(0, Ammo - 1);
 }
 
+void AWeapon::AddAmmo(const uint32 Amount)
+{
+    Ammo += Amount;
+}
+
 void AWeapon::StopFalling()
 {
     UE_LOG(LogTemp, Warning, TEXT("AWeapon::StopFalling()"));
