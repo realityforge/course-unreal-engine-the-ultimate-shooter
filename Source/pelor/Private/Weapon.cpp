@@ -2,7 +2,14 @@
 
 #include "Weapon.h"
 
-AWeapon::AWeapon() : ThrowWeaponTime(0.75F), bFalling(false), WeaponType(EWeaponType::EWT_SMG)
+AWeapon::AWeapon()
+    : ThrowWeaponTime(0.75F)
+    , bFalling(false)
+    , Ammo(30)
+    , AmmoCapacity(30)
+    , WeaponType(EWeaponType::EWT_SMG)
+    , AmmoType(EAmmoType::EAT_9mm)
+    , ReloadMontageSectionName("Reload SMG")
 {
     PrimaryActorTick.bCanEverTick = true;
 }
@@ -57,9 +64,16 @@ void AWeapon::DecrementAmmo()
     Ammo = FMath::Max(0, Ammo - 1);
 }
 
-void AWeapon::AddAmmo(const uint32 Amount)
+void AWeapon::ReloadAmmo(const int32 Amount)
 {
-    Ammo += Amount;
+    const int32 NewAmount = Ammo + Amount;
+    checkf(NewAmount > 0, TEXT("AddAmmo(%d) on Ammo = %d produced negative Ammo amount."), Amount, Ammo);
+    checkf(NewAmount > 0,
+           TEXT("AddAmmo(%d) on Ammo = %d produced Ammo amount above capacity %d."),
+           Amount,
+           Ammo,
+           AmmoCapacity);
+    Ammo = NewAmount;
 }
 
 void AWeapon::StopFalling()

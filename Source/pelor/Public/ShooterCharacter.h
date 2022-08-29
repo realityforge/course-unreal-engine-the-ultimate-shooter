@@ -90,11 +90,9 @@ protected:
     void AimingButtonReleased();
 
     void ReloadButtonPressed();
-    EAmmoType GetEquippedWeaponAmmoType() const;
-    const char* GetEquippedWeaponReloadMontageSection() const;
 
+    bool CarryingAmmo();
     void ReloadWeapon();
-    int GetEquippedWeaponMaxAmmoCount();
 
     UFUNCTION(BlueprintCallable)
     void FinishReload();

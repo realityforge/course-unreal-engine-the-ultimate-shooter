@@ -382,16 +382,17 @@ void AShooterCharacter::ReloadButtonPressed()
     ReloadWeapon();
 }
 
-EAmmoType AShooterCharacter::GetEquippedWeaponAmmoType() const
+bool AShooterCharacter::CarryingAmmo()
 {
-    // TODO: Derive AmmoType from the EquippedWeapon
-    return EAmmoType::EAT_9mm;
-}
-
-const char* AShooterCharacter::GetEquippedWeaponReloadMontageSection() const
-{
-    // TODO: Derive MontageSectionName from the EquippedWeapon
-    return "Reload SMG";
+    if (EquippedWeapon)
+    {
+        const int* AmmoCount = AmmoMap.Find(EquippedWeapon->GetAmmoType());
+        return AmmoCount && *AmmoCount > 0;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 void AShooterCharacter::ReloadWeapon()
@@ -399,31 +400,32 @@ void AShooterCharacter::ReloadWeapon()
     if (ECombatState::ECS_Idle == CombatState && EquippedWeapon)
     {
         // Do we have ammo of the correct type?
-        if (const int* AmmoCount = AmmoMap.Find(GetEquippedWeaponAmmoType()); AmmoCount && *AmmoCount > 0)
+        if (CarryingAmmo())
         {
             if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance(); ReloadMontage && AnimInstance)
             {
                 AnimInstance->Montage_Play(ReloadMontage);
-                AnimInstance->Montage_JumpToSection(GetEquippedWeaponReloadMontageSection());
+                AnimInstance->Montage_JumpToSection(EquippedWeapon->GetReloadMontageSectionName());
             }
+            CombatState = ECombatState::ECS_Firing;
         }
     }
 }
 
-int AShooterCharacter::GetEquippedWeaponMaxAmmoCount()
-{
-    // TODO: Derive MaxAmmoCount from the EquippedWeapon
-    return 15;
-}
-
 void AShooterCharacter::FinishReload()
 {
-    if (const int* AmmoCount = AmmoMap.Find(GetEquippedWeaponAmmoType()); AmmoCount && *AmmoCount > 0)
+    if (EquippedWeapon)
     {
-        const int MaxAmmoCount = GetEquippedWeaponMaxAmmoCount();
-        const int AmmoCountToReload = FMath::Min(*AmmoCount, MaxAmmoCount);
-        EquippedWeapon->AddAmmo(AmmoCountToReload);
+        if (int32* AmmoCount = AmmoMap.Find(EquippedWeapon->GetAmmoType()); AmmoCount && *AmmoCount > 0)
+        {
+            // Space left in magazine
+            const int32 EmptySpace = EquippedWeapon->GetAmmoCapacity() - EquippedWeapon->GetAmmo();
+            const int32 AmmoCountToReload = FMath::Min(*AmmoCount, EmptySpace);
+            EquippedWeapon->ReloadAmmo(AmmoCountToReload);
+            *AmmoCount -= AmmoCountToReload;
+        }
     }
+    // Ready to fire or reload again
     CombatState = ECombatState::ECS_Idle;
 }
 

@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "AmmoType.h"
 #include "CoreMinimal.h"
 #include "Item.h"
 #include "Weapon.generated.h"
@@ -41,20 +42,37 @@ private:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Properties", meta = (AllowPrivateAccess = "true"))
     int32 Ammo;
 
+    /** Maximum amount of Ammo that this Weapon can load */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Properties", meta = (AllowPrivateAccess = "true"))
+    int32 AmmoCapacity;
+
     /** The type of weapon */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Properties", meta = (AllowPrivateAccess = "true"))
     EWeaponType WeaponType;
+
+    // NOTE: This is bad and should be keyed ff WeaponType but ... tutorial
+    /** The type of ammo the weapon uses */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Properties", meta = (AllowPrivateAccess = "true"))
+    EAmmoType AmmoType;
+
+    // NOTE: This is bad and should be keyed ff WeaponType but ... tutorial
+    /** The animation montage section to reload the weapon */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Properties", meta = (AllowPrivateAccess = "true"))
+    FName ReloadMontageSectionName;
 
 public:
     // Adds impulse forward and down thus throwing the Weapon
     void ThrowWeapon();
 
     FORCEINLINE int32 GetAmmo() const { return Ammo; }
+    FORCEINLINE int32 GetAmmoCapacity() const { return AmmoCapacity; }
     FORCEINLINE EWeaponType GetWeaponType() const { return WeaponType; }
+    FORCEINLINE EAmmoType GetAmmoType() const { return AmmoType; }
+    FORCEINLINE FName GetReloadMontageSectionName() const { return ReloadMontageSectionName; }
 
     /** Decrement the Ammo but never reduce below 0 */
     void DecrementAmmo();
 
     /** Add the Ammo but to the Weapon */
-    void AddAmmo(uint32 Amount);
+    void ReloadAmmo(int32 Amount);
 };
