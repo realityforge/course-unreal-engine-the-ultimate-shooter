@@ -96,7 +96,7 @@ protected:
     void ReloadWeapon();
     int GetEquippedWeaponMaxAmmoCount();
 
-    UFUNCTION()
+    UFUNCTION(BlueprintCallable)
     void FinishReload();
 
 public:
