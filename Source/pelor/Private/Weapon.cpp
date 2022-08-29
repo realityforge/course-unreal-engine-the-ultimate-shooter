@@ -2,7 +2,7 @@
 
 #include "Weapon.h"
 
-AWeapon::AWeapon() : ThrowWeaponTime(0.75F), bFalling(false)
+AWeapon::AWeapon() : ThrowWeaponTime(0.75F), bFalling(false), WeaponType(EWeaponType::EWT_SMG)
 {
     PrimaryActorTick.bCanEverTick = true;
 }
