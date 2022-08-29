@@ -72,6 +72,9 @@ AShooterCharacter::AShooterCharacter()
     // Ammo variables
     , Initial9mmAmmo(85)
     , InitialARAmmo(120)
+
+    // Combat variables
+    , CombatState(ECombatState::ECS_Idle)
 {
     // Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need
     // it.
@@ -219,65 +222,76 @@ void AShooterCharacter::LookUp(const float Rate)
     AddControllerPitchInput(Rate * BaseLookUpRate * DeltaSeconds);
 }
 
+void AShooterCharacter::PlayFireSound() const
+{
+    if (FireSound)
+    {
+        UGameplayStatics::PlaySound2D(this, FireSound);
+    }
+}
+
+void AShooterCharacter::SendBullet() const
+{
+    const USkeletalMeshComponent* WeaponMesh = EquippedWeapon->GetItemMesh();
+    // This socket indicates where the particle emitter is set to be anchored
+    if (const USkeletalMeshSocket* BarrelExitSocket = WeaponMesh->GetSocketByName("BarrelExitSocket"))
+    {
+        // The transform relative to the mesh where the socket is located
+        const FTransform SocketTransform = BarrelExitSocket->GetSocketTransform(WeaponMesh);
+        if (MuzzleFlash)
+        {
+            // Actually attach the emitter
+            UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), MuzzleFlash, SocketTransform);
+        }
+
+        FVector HitLocation;
+        const FVector MuzzleEndLocation = SocketTransform.GetLocation();
+        if (GetBeamEndLocation(MuzzleEndLocation, HitLocation))
+        {
+            if (nullptr != ImpactParticles)
+            {
+                UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticles, HitLocation);
+            }
+        }
+        if (nullptr != BeamParticles)
+        {
+            // The smoke trail particle system starts at the end of the gun and goes to HitLocation
+            UParticleSystemComponent* Beam =
+                UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), BeamParticles, MuzzleEndLocation);
+            if (nullptr != Beam)
+            {
+                // "Target" is a parameter specified in the particle system definition
+                Beam->SetVectorParameter("Target", HitLocation);
+            }
+        }
+    }
+}
+
+void AShooterCharacter::PlayGunFireMontage() const
+{
+    if (HipFireMontage)
+    {
+        // Get our current animation manager
+        if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance(); AnimInstance)
+        {
+            // Merge in the HipFire Animation Montage
+            AnimInstance->Montage_Play(HipFireMontage);
+            AnimInstance->Montage_JumpToSection("StartFire");
+        }
+    }
+}
+
 void AShooterCharacter::FireWeapon()
 {
-    if (EquippedWeapon)
+    if (EquippedWeapon && ECombatState::ECS_Idle == CombatState && WeaponHasAmmo())
     {
         UE_LOG(LogTemp, Warning, TEXT("Fire Weapon! Pew Pew!"));
-        if (nullptr != FireSound)
-        {
-            UGameplayStatics::PlaySound2D(this, FireSound);
-        }
-        const USkeletalMeshComponent* WeaponMesh = EquippedWeapon->GetItemMesh();
-        // This socket indicates where the particle emitter is set to be anchored
-        const USkeletalMeshSocket* BarrelExitSocket = WeaponMesh->GetSocketByName("BarrelExitSocket");
-        if (nullptr != BarrelExitSocket)
-        {
-            // The transform relative to the mesh where the socket is located
-            const FTransform SocketTransform = BarrelExitSocket->GetSocketTransform(WeaponMesh);
-            if (nullptr != MuzzleFlash)
-            {
-                // Actually attach the emitter
-                UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), MuzzleFlash, SocketTransform);
-            }
-
-            FVector HitLocation;
-            const FVector MuzzleEndLocation = SocketTransform.GetLocation();
-            if (GetBeamEndLocation(MuzzleEndLocation, HitLocation))
-            {
-                if (nullptr != ImpactParticles)
-                {
-                    UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticles, HitLocation);
-                }
-            }
-            if (nullptr != BeamParticles)
-            {
-                // The smoke trail particle system starts at the end of the gun and goes to HitLocation
-                UParticleSystemComponent* Beam =
-                    UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), BeamParticles, MuzzleEndLocation);
-                if (nullptr != Beam)
-                {
-                    // "Target" is a parameter specified in the particle system definition
-                    Beam->SetVectorParameter("Target", HitLocation);
-                }
-            }
-        }
-        if (nullptr != HipFireMontage)
-        {
-            // Get our current animation manager
-            if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance(); nullptr != AnimInstance)
-            {
-                // Merge in the HipFire Animation Montage
-                AnimInstance->Montage_Play(HipFireMontage);
-                AnimInstance->Montage_JumpToSection("StartFire");
-            }
-        }
-        // Consume 1 unit of Ammo
-        // In reality EquippedWeapon will always be non-null here and Ammo above 1 but we could re-architect the code
-        // so that attempting to fire weapon checks Decrement does not go below zero and just has an empty click if
-        // it would but that would mean varying too much from tutorial which may not be a good thing.
+        PlayFireSound();
+        SendBullet();
+        PlayGunFireMontage();
         EquippedWeapon->DecrementAmmo();
         StartWeaponFireTimer();
+        StartAutoFireTimer();
     }
 }
 
@@ -502,11 +516,8 @@ void AShooterCharacter::TraceForItems()
 
 void AShooterCharacter::FireButtonPressed()
 {
-    if (WeaponHasAmmo())
-    {
-        bFireButtonPressed = true;
-        StartAutoFireTimer();
-    }
+    bFireButtonPressed = true;
+    FireWeapon();
 }
 
 void AShooterCharacter::FireButtonReleased()
@@ -516,24 +527,24 @@ void AShooterCharacter::FireButtonReleased()
 
 void AShooterCharacter::StartAutoFireTimer()
 {
-    if (bShouldFire)
-    {
-        FireWeapon();
-        bShouldFire = false;
-        GetWorldTimerManager().SetTimer(AutomaticFireTimer, this, &AShooterCharacter::AutoFireReset, AutomaticFireRate);
-    }
+    CombatState = ECombatState::ECS_Firing;
+    GetWorldTimerManager().SetTimer(AutomaticFireTimer, this, &AShooterCharacter::AutoFireReset, AutomaticFireRate);
 }
 
 void AShooterCharacter::AutoFireReset()
 {
+    CombatState = ECombatState::ECS_Idle;
     if (WeaponHasAmmo())
     {
-        bShouldFire = true;
         if (bFireButtonPressed)
         {
             // If we are still holding button then fire again
-            StartAutoFireTimer();
+            FireWeapon();
         }
+    }
+    else
+    {
+        // Reload Weapon Here
     }
 }
 

@@ -20,6 +20,19 @@ enum class EAmmoType : uint8
     EAT_MAX UMETA(DisplayName = "Default MAX")
 };
 
+UENUM(BlueprintType)
+enum class ECombatState : uint8
+{
+    // Character is not firing or reloading
+    ECS_Idle UMETA(DisplayName = "Idle"),
+    // Character is actively firing (Thus the FireTimer is active)
+    ECS_Firing UMETA(DisplayName = "Firing"),
+    // Character is reloading
+    ECS_Reloading UMETA(DisplayName = "Reloading"),
+
+    ECS_MAX UMETA(DisplayName = "DefaultMAX")
+};
+
 UCLASS()
 class PELOR_API AShooterCharacter : public ACharacter
 {
@@ -58,6 +71,9 @@ protected:
      * @param Rate This is a normalized rate. (i.e. 1.0 = 100% of desired turn rate, 0.5 = 50% of rate)
      */
     void LookUp(float Rate);
+    void PlayFireSound() const;
+    void SendBullet() const;
+    void PlayGunFireMontage() const;
 
     /**
      * Called by Input when the FireWeapon button is pressed.
@@ -285,6 +301,10 @@ private:
     /* Starting amount of Assault Rifle Ammo */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Items, meta = (AllowPrivateAccess = "true"))
     int32 InitialARAmmo;
+
+    /** Idle implies the character can reload or fire, otherwise character has to wait to transition back to idle. */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Combat, meta = (AllowPrivateAccess = "true"))
+    ECombatState CombatState;
 
     void UpdateFovBasedOnAimingStatus(float DeltaTime);
     void UpdateLookRateBasedOnAimingStatus();
