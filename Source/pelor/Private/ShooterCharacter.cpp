@@ -691,8 +691,8 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
     PlayerInputComponent->BindAction("FireWeapon", IE_Released, this, &AShooterCharacter::FireButtonReleased);
 
     // Aiming Button to zoom in and aim
-    PlayerInputComponent->BindAction("AimingButton", IE_Pressed, this, &AShooterCharacter::AimingButtonPressed);
-    PlayerInputComponent->BindAction("AimingButton", IE_Released, this, &AShooterCharacter::AimingButtonReleased);
+    PlayerInputComponent->BindAction("Aim", IE_Pressed, this, &AShooterCharacter::AimingButtonPressed);
+    PlayerInputComponent->BindAction("Aim", IE_Released, this, &AShooterCharacter::AimingButtonReleased);
 
     // Select button press/release
     PlayerInputComponent->BindAction("Select", IE_Pressed, this, &AShooterCharacter::OnSelectButtonPressed);
