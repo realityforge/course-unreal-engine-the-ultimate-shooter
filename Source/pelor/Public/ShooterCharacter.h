@@ -294,11 +294,11 @@ private:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Items, meta = (AllowPrivateAccess = "true"))
     TMap<EAmmoType, int32> AmmoMap;
 
-    /* Starting amount of 9mm Ammo */
+    /** Starting amount of 9mm Ammo */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Items, meta = (AllowPrivateAccess = "true"))
     int32 Initial9mmAmmo;
 
-    /* Starting amount of Assault Rifle Ammo */
+    /** Starting amount of Assault Rifle Ammo */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Items, meta = (AllowPrivateAccess = "true"))
     int32 InitialARAmmo;
 
