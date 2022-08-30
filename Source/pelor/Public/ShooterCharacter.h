@@ -320,6 +320,16 @@ private:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
     UAnimMontage* ReloadMontage;
 
+    /*
+     * During reloads, we show the character grabbing the clip and replacing the clip. The way we have
+     * implemented this is that the clip is part of the weapon mesh and attached to a specific bone.
+     * Our reload animation clip has two "notification" points as part of the animation which is when
+     * the hand grabs the clip and when the hand releases the clip. These notifications call the GrabClip()
+     * and ReleaseClip() callback respectively when animations reach these points. Between these calls we
+     * copy the position and orientation from the HandSceneComponent (which is attached to the hand) and copy
+     * that to the clip ... thus the clip moves with the hand even though it is part of the weapon mesh.
+     */
+
     /** The transform of the clip when it is grabbed during a reload that is valid until it has been replaced */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Combat, meta = (AllowPrivateAccess = "true"))
     FTransform ClipTransform;
