@@ -134,6 +134,8 @@ AShooterCharacter::AShooterCharacter()
         // 0 = no control, 1 = full control at max speed of MaxWalkSpeed.
         GetCharacterMovement()->AirControl = 0.2F;
     }
+
+    HandSceneComponent = CreateDefaultSubobject<USceneComponent>("HandSceneComponent");
 }
 
 // Called when the game starts or when spawned
