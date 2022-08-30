@@ -50,12 +50,12 @@ private:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Properties", meta = (AllowPrivateAccess = "true"))
     EWeaponType WeaponType;
 
-    // NOTE: This is bad and should be keyed ff WeaponType but ... tutorial
+    // NOTE: This is bad and should be keyed off WeaponType but ... tutorial
     /** The type of ammo the weapon uses */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Properties", meta = (AllowPrivateAccess = "true"))
     EAmmoType AmmoType;
 
-    // NOTE: This is bad and should be keyed ff WeaponType but ... tutorial
+    // NOTE: This is bad and should be keyed off WeaponType but ... tutorial
     /** The animation montage section to reload the weapon */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Properties", meta = (AllowPrivateAccess = "true"))
     FName ReloadMontageSectionName;
