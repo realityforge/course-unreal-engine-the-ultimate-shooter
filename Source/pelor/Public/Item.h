@@ -9,6 +9,7 @@
 class AShooterCharacter;
 class UBoxComponent;
 class UCurveFloat;
+class USoundCue;
 class USphereComponent;
 class UWidgetComponent;
 
@@ -152,6 +153,15 @@ private:
     /** Handle of timer that runs while items is being picked up. */
     FTimerHandle ItemPickupTimer;
 
+    /** The sound cue when a character (or player only?) picks up item */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
+    USoundCue* PickupSound;
+
+    /** The sound cue when a character equips item */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
+    USoundCue* EquipSound;
+
+    /** The character that is picking picking up item. This is null after pickup has completed. */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
     AShooterCharacter* Character;
 
@@ -191,6 +201,8 @@ public:
     FORCEINLINE USphereComponent* GetAreaSphere() const { return AreaSphere; }
     FORCEINLINE UBoxComponent* GetCollisionBox() const { return CollisionBox; }
     FORCEINLINE EItemState GetItemState() const { return ItemState; }
+    FORCEINLINE USoundCue* GetPickupSound() const { return PickupSound; }
+    FORCEINLINE USoundCue* GetEquipSound() const { return EquipSound; }
     FORCEINLINE void UpdateItemState(const EItemState NewItemState)
     {
         this->ItemState = NewItemState;

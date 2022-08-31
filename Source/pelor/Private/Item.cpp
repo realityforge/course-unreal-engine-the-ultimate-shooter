@@ -5,7 +5,9 @@
 #include "Components/BoxComponent.h"
 #include "Components/SphereComponent.h"
 #include "Components/WidgetComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "ShooterCharacter.h"
+#include "Sound/SoundCue.h"
 
 // Sets default values
 AItem::AItem()
@@ -21,6 +23,8 @@ AItem::AItem()
     , ItemPickupYawOffset(0.f)
     , ItemTargetPresentationLocation(FVector(0.f))
     , bPickingUpActive(false)
+    , PickupSound(nullptr)
+    , EquipSound(nullptr)
     , Character(nullptr)
     , ZCurveTime(0.7f)
 {
@@ -234,6 +238,11 @@ void AItem::OnCompletePickup()
         Character = nullptr;
     }
 
+    if (EquipSound)
+    {
+        UGameplayStatics::PlaySound2D(this, EquipSound);
+    }
+
     // Reset scale back to normal
     SetActorScale3D(FVector(1));
 
@@ -304,4 +313,8 @@ void AItem::StartItemPickup(AShooterCharacter* CharacterPerformingPickup)
 
     // Schedule a timer for completion of pickup
     GetWorldTimerManager().SetTimer(ItemPickupTimer, this, &AItem::OnCompletePickup, ZCurveTime);
+    if (PickupSound)
+    {
+        UGameplayStatics::PlaySound2D(this, PickupSound);
+    }
 }
