@@ -76,5 +76,4 @@ void UShooterAnimInstance::NativeInitializeAnimation()
     APawn* Owner = TryGetPawnOwner();
     // Cast => Dynamically cast an object type-safely.
     ShooterCharacter = Cast<AShooterCharacter>(Owner);
-    UE_LOG(LogTemp, Warning, TEXT("UShooterAnimInstance::NativeInitializeAnimation()"));
 }
