@@ -6,6 +6,16 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "ShooterCharacter.h"
 
+UShooterAnimInstance::UShooterAnimInstance()
+    : ShooterCharacter(nullptr)
+    , bIsInAir(false)
+    , bIsMoving(false)
+    , MovementOffsetYaw(0)
+    , LastMovementOffsetYaw(0)
+    , bAiming(false)
+{
+}
+
 void UShooterAnimInstance::UpdateAnimationProperties(float DeltaTime)
 {
     if (nullptr == ShooterCharacter)

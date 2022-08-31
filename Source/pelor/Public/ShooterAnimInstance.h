@@ -15,6 +15,8 @@ class PELOR_API UShooterAnimInstance : public UAnimInstance
     GENERATED_BODY()
 
 public:
+    UShooterAnimInstance();
+
     UFUNCTION(BlueprintCallable)
     void UpdateAnimationProperties(float DeltaTime);
 
