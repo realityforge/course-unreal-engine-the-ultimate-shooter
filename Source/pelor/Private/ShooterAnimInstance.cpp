@@ -13,6 +13,9 @@ UShooterAnimInstance::UShooterAnimInstance()
     , MovementOffsetYaw(0)
     , LastMovementOffsetYaw(0)
     , bAiming(false)
+    , CharacterYaw(0)
+    , CharacterYawLastFrame(0)
+    , RootYawOffset(0)
 {
 }
 
@@ -67,6 +70,7 @@ void UShooterAnimInstance::UpdateAnimationProperties(float DeltaTime)
             // 	GEngine->AddOnScreenDebugMessage(2, 0, FColor::Green, DebugMessage2);
             // }
         }
+        TurnInPlace();
     }
 }
 
@@ -76,4 +80,31 @@ void UShooterAnimInstance::NativeInitializeAnimation()
     APawn* Owner = TryGetPawnOwner();
     // Cast => Dynamically cast an object type-safely.
     ShooterCharacter = Cast<AShooterCharacter>(Owner);
+}
+
+void UShooterAnimInstance::TurnInPlace()
+{
+    // We won't turn in place if we are moving or we dont have a character
+    if (ShooterCharacter && Speed <= 0)
+    {
+        CharacterYawLastFrame = CharacterYaw;
+        CharacterYaw = ShooterCharacter->GetActorRotation().Yaw;
+        // Change change in yaw since last frame
+        const float YawDelta{ CharacterYaw - CharacterYawLastFrame };
+
+        RootYawOffset -= YawDelta;
+
+        if (GEngine)
+        {
+            GEngine->AddOnScreenDebugMessage(
+                0,
+                0,
+                FColor::Red,
+                FString::Printf(TEXT("CharacterYawLastFrame=%f CharacterYaw=%f YawDelta=%f RootYawOffset=%f"),
+                                CharacterYawLastFrame,
+                                CharacterYaw,
+                                YawDelta,
+                                RootYawOffset));
+        }
+    }
 }

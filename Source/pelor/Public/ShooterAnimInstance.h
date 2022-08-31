@@ -22,6 +22,10 @@ public:
 
     virtual void NativeInitializeAnimation() override;
 
+protected:
+    /** Update TurnInPlace variables */
+    void TurnInPlace();
+
 private:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
     class AShooterCharacter* ShooterCharacter;
@@ -48,4 +52,19 @@ private:
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
     bool bAiming;
+
+    /** Yaw of the Character this frame */
+    float CharacterYaw;
+
+    /** Yaw of the Character the previous frame */
+    float CharacterYawLastFrame;
+
+    /*
+     * We set this to the offset between the where the character is facing and where the camera is looking.
+     * Thus we can set the root back this amount and the character will keep facing in the same direction
+     * rather than root rotating with camera. (In the future when we rotate the camera too much the character
+     * will attempt to turn in place)
+     */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Turn In Place", meta = (AllowPrivateAccess = "true"))
+    float RootYawOffset;
 };
