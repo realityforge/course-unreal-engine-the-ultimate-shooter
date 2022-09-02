@@ -16,6 +16,8 @@ UShooterAnimInstance::UShooterAnimInstance()
     , CharacterYaw(0)
     , CharacterYawLastFrame(0)
     , RootYawOffset(0)
+    , RotationCurve(0)
+    , RotationCurveLastFrame(0)
     , Pitch(0)
     , bReloading(false)
 {
