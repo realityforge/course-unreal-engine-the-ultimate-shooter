@@ -388,6 +388,7 @@ public:
     FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
     FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; }
     FORCEINLINE const AItem* GetItemShowingInfoBox() const { return ItemShowingInfoBox; }
+    FORCEINLINE ECombatState GetCombatState() const { return CombatState; }
     FORCEINLINE bool GetAiming() const { return bAiming; }
     float GetCrosshairSpreadMultiplier() const;
     FORCEINLINE int8 GetOverlappedItemCount() const { return OverlappedItemCount; }
