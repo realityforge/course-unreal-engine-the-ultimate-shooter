@@ -16,6 +16,7 @@ UShooterAnimInstance::UShooterAnimInstance()
     , CharacterYaw(0)
     , CharacterYawLastFrame(0)
     , RootYawOffset(0)
+    , Pitch(0)
     , bReloading(false)
 {
 }
@@ -91,6 +92,8 @@ void UShooterAnimInstance::TurnInPlace()
     // We won't turn in place if we are moving or we dont have a character
     if (ShooterCharacter)
     {
+        Pitch = ShooterCharacter->GetBaseAimRotation().Pitch;
+
         if (Speed > 0)
         {
             // We have started moving so face in direction we are goin
