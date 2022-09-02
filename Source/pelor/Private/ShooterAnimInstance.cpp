@@ -16,6 +16,7 @@ UShooterAnimInstance::UShooterAnimInstance()
     , CharacterYaw(0)
     , CharacterYawLastFrame(0)
     , RootYawOffset(0)
+    , bReloading(false)
 {
 }
 
@@ -31,6 +32,9 @@ void UShooterAnimInstance::UpdateAnimationProperties(float DeltaTime)
     {
         // Copy aiming property from character
         bAiming = ShooterCharacter->GetAiming();
+
+        // Set flag for exposure to animation blurprints when character is reloading
+        bReloading = ShooterCharacter->GetCombatState() == ECombatState::ECS_Reloading;
 
         // Extract the lateral velocity and place in Speed variable
         {
