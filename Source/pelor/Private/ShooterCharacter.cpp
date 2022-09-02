@@ -402,7 +402,7 @@ void AShooterCharacter::ReloadWeapon()
     if (ECombatState::ECS_Idle == CombatState && EquippedWeapon)
     {
         // Do we have ammo of the correct type?
-        if (CarryingAmmo())
+        if (CarryingAmmo() && !EquippedWeapon->AmmoIsFull())
         {
             if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance(); ReloadMontage && AnimInstance)
             {

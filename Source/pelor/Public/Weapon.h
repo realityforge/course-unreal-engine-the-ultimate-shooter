@@ -86,4 +86,6 @@ public:
     void ReloadAmmo(int32 Amount);
 
     FORCEINLINE void SetMovingClip(const bool MovingClip) { bMovingClip = MovingClip; }
+
+    FORCEINLINE bool AmmoIsFull() const { return Ammo >= AmmoCapacity; }
 };
