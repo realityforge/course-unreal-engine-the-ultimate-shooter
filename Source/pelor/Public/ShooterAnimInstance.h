@@ -67,4 +67,15 @@ private:
      */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Turn In Place", meta = (AllowPrivateAccess = "true"))
     float RootYawOffset;
+
+    /**
+     * Rotation curve for this frame. This value is extracted from Rotation curve that is part of the
+     * Idle_Turn_90_(Right|Left) animations and indicates the amount our yaw should be adjusted.
+     */
+    float RotationCurve;
+
+    /**
+     * Rotation curve value for last frame.
+     */
+    float RotationCurveLastFrame;
 };
