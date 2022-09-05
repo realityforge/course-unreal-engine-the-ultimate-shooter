@@ -70,11 +70,11 @@ private:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
     bool bAiming;
 
-    /** Yaw of the Character this frame */
-    float CharacterYaw;
+    /** Yaw of the Character this frame when Turning In Place */
+    float TurnInPlaceCharacterYaw;
 
-    /** Yaw of the Character the previous frame */
-    float CharacterYawLastFrame;
+    /** Yaw of the Character the previous frame when Turning In Place */
+    float TurnInPlaceCharacterYawLastFrame;
 
     /*
      * We set this to the offset between the where the character is facing and where the camera is looking.

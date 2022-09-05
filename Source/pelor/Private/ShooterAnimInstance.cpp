@@ -13,8 +13,8 @@ UShooterAnimInstance::UShooterAnimInstance()
     , MovementOffsetYaw(0)
     , LastMovementOffsetYaw(0)
     , bAiming(false)
-    , CharacterYaw(0)
-    , CharacterYawLastFrame(0)
+    , TurnInPlaceCharacterYaw(0)
+    , TurnInPlaceCharacterYawLastFrame(0)
     , RootYawOffset(0)
     , RotationCurve(0)
     , RotationCurveLastFrame(0)
@@ -117,15 +117,15 @@ void UShooterAnimInstance::TurnInPlace()
         {
             // We have started moving so face in direction we are goin
             RootYawOffset = 0;
-            CharacterYawLastFrame = CharacterYaw = ShooterCharacter->GetActorRotation().Yaw;
+            TurnInPlaceCharacterYawLastFrame = TurnInPlaceCharacterYaw = ShooterCharacter->GetActorRotation().Yaw;
             RotationCurveLastFrame = RotationCurve = 0.f;
         }
         else
         {
-            CharacterYawLastFrame = CharacterYaw;
-            CharacterYaw = ShooterCharacter->GetActorRotation().Yaw;
+            TurnInPlaceCharacterYawLastFrame = TurnInPlaceCharacterYaw;
+            TurnInPlaceCharacterYaw = ShooterCharacter->GetActorRotation().Yaw;
             // Change change in yaw since last frame
-            const float YawDelta{ CharacterYaw - CharacterYawLastFrame };
+            const float YawDelta{ TurnInPlaceCharacterYaw - TurnInPlaceCharacterYawLastFrame };
 
             // Update RootYawOffset clamped to [-180, 180]
             RootYawOffset = UKismetMathLibrary::NormalizeAxis(RootYawOffset - YawDelta);
