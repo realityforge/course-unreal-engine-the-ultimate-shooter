@@ -43,6 +43,9 @@ protected:
     /** Update TurnInPlace variables */
     void TurnInPlace();
 
+    /** Update properties for Leaning while running */
+    void Lean(float DeltaTime);
+
 private:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
     class AShooterCharacter* ShooterCharacter;
@@ -107,4 +110,14 @@ private:
     /** OffsetState used to determine which Aim Offset to use */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Turn In Place", meta = (AllowPrivateAccess = "true"))
     EOffsetState OffsetState;
+
+    /** Yaw of the Character this frame */
+    float CharacterYaw;
+
+    /** Yaw of the Character the previous frame */
+    float CharacterYawLastFrame;
+
+    /** Yaw delta used for leaning in the running blendspace */
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Lean, meta = (AllowPrivateAccess = "true"))
+    float YawDelta;
 };

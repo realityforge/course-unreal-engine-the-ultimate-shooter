@@ -21,6 +21,9 @@ UShooterAnimInstance::UShooterAnimInstance()
     , Pitch(0)
     , bReloading(false)
     , OffsetState(EOffsetState::EOS_Hip)
+    , CharacterYaw(0)
+    , CharacterYawLastFrame(0)
+    , YawDelta(0)
 {
 }
 
@@ -79,6 +82,7 @@ void UShooterAnimInstance::UpdateAnimationProperties(float DeltaTime)
             // }
         }
         TurnInPlace();
+        Lean(DeltaTime);
         if (bReloading)
         {
             OffsetState = EOffsetState::EOS_Reloading;
@@ -160,5 +164,24 @@ void UShooterAnimInstance::TurnInPlace()
                 RotationCurveLastFrame = RotationCurve = 0;
             }
         }
+    }
+}
+
+void UShooterAnimInstance::Lean(const float DeltaTime)
+{
+    checkf(ShooterCharacter,
+           TEXT("ShooterCharacter expected to be non-null. "
+                "Only called from a context where ShooterCharacter is not null"));
+    CharacterYawLastFrame = CharacterYaw;
+    CharacterYaw = ShooterCharacter->GetActorRotation().Yaw;
+
+    const float CharacterYawDelta{ CharacterYaw - CharacterYawLastFrame };
+    const float Target{ CharacterYawDelta / DeltaTime };
+    const float CurrentYaw{ FMath::FInterpTo(YawDelta, Target, DeltaTime, 6.f) };
+    YawDelta = FMath::Clamp(CurrentYaw, -90.f, 90.f);
+
+    if (GEngine)
+    {
+        GEngine->AddOnScreenDebugMessage(2, 0, FColor::Blue, FString::Printf(TEXT("YawDelta=%f"), YawDelta));
     }
 }
