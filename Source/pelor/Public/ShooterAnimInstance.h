@@ -6,6 +6,23 @@
 #include "CoreMinimal.h"
 #include "ShooterAnimInstance.generated.h"
 
+/** An enum representing the "aiming state" used to select Aiming Offset animation  */
+UENUM(BlueprintType)
+enum class EOffsetState : uint8
+{
+    // Character is Aiming down sites
+    EOS_Aiming UMETA(DisplayName = "Aiming"),
+    // Aiming from the hip
+    EOS_Hip UMETA(DisplayName = "Hip Firing"),
+    // Character is not aiming but reloading
+    EOS_Reloading UMETA(DisplayName = "Reloading"),
+    // Character is in air and thus we ignore "yaw" as (in the future) air control will allow you to twist to direction
+    // shooting but we will still use pitch to control Aiming offset
+    EOS_InAir UMETA(DisplayName = "In Air"),
+
+    EOS_MAX UMETA(DisplayName = "DefaultMAX")
+};
+
 /**
  *
  */
@@ -86,4 +103,8 @@ private:
     /** True while reloading, used to prevent Aim Offset while reloading*/
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Turn In Place", meta = (AllowPrivateAccess = "true"))
     bool bReloading;
+
+    /** OffsetState used to determine which Aim Offset to use */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Turn In Place", meta = (AllowPrivateAccess = "true"))
+    EOffsetState OffsetState;
 };

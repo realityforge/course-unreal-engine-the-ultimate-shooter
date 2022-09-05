@@ -20,6 +20,7 @@ UShooterAnimInstance::UShooterAnimInstance()
     , RotationCurveLastFrame(0)
     , Pitch(0)
     , bReloading(false)
+    , OffsetState(EOffsetState::EOS_Hip)
 {
 }
 
@@ -78,6 +79,22 @@ void UShooterAnimInstance::UpdateAnimationProperties(float DeltaTime)
             // }
         }
         TurnInPlace();
+        if (bReloading)
+        {
+            OffsetState = EOffsetState::EOS_Reloading;
+        }
+        else if (bIsInAir)
+        {
+            OffsetState = EOffsetState::EOS_InAir;
+        }
+        else if (ShooterCharacter->GetAiming())
+        {
+            OffsetState = EOffsetState::EOS_Aiming;
+        }
+        else
+        {
+            OffsetState = EOffsetState::EOS_Hip;
+        }
     }
 }
 
