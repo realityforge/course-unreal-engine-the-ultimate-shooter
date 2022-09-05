@@ -32,7 +32,7 @@ void UShooterAnimInstance::UpdateAnimationProperties(float DeltaTime)
         ShooterCharacter = Cast<AShooterCharacter>(TryGetPawnOwner());
     }
     // Ensure ShooterCharacter is present ... unsure why this would not be the case?
-    if (nullptr != ShooterCharacter)
+    if (ShooterCharacter)
     {
         // Copy aiming property from character
         bAiming = ShooterCharacter->GetAiming();
