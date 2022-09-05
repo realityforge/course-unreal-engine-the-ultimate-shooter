@@ -21,8 +21,8 @@ UShooterAnimInstance::UShooterAnimInstance()
     , Pitch(0)
     , bReloading(false)
     , OffsetState(EOffsetState::EOS_Hip)
-    , CharacterYaw(0)
-    , CharacterYawLastFrame(0)
+    , CharacterRotation(0.f)
+    , CharacterRotationLastFrame(0.f)
     , YawDelta(0)
 {
 }
@@ -172,16 +172,21 @@ void UShooterAnimInstance::Lean(const float DeltaTime)
     checkf(ShooterCharacter,
            TEXT("ShooterCharacter expected to be non-null. "
                 "Only called from a context where ShooterCharacter is not null"));
-    CharacterYawLastFrame = CharacterYaw;
-    CharacterYaw = ShooterCharacter->GetActorRotation().Yaw;
+    CharacterRotationLastFrame = CharacterRotation;
+    CharacterRotation = ShooterCharacter->GetActorRotation();
 
-    const float CharacterYawDelta{ CharacterYaw - CharacterYawLastFrame };
-    const float Target{ CharacterYawDelta / DeltaTime };
+    const FRotator CharacterRotationDelta{ UKismetMathLibrary::NormalizedDeltaRotator(CharacterRotation,
+                                                                                      CharacterRotationLastFrame) };
+    const float Target{ (float)CharacterRotationDelta.Yaw / DeltaTime };
     const float CurrentYaw{ FMath::FInterpTo(YawDelta, Target, DeltaTime, 6.f) };
     YawDelta = FMath::Clamp(CurrentYaw, -90.f, 90.f);
 
     if (GEngine)
     {
-        GEngine->AddOnScreenDebugMessage(2, 0, FColor::Blue, FString::Printf(TEXT("YawDelta=%f"), YawDelta));
+        GEngine->AddOnScreenDebugMessage(2, 0, FColor::White, FString::Printf(TEXT("YawDelta=%f"), YawDelta));
+        GEngine->AddOnScreenDebugMessage(3,
+                                         0,
+                                         FColor::White,
+                                         FString::Printf(TEXT("CharacterRotation.Yaw=%f"), CharacterRotation.Yaw));
     }
 }
