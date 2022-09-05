@@ -125,10 +125,10 @@ void UShooterAnimInstance::TurnInPlace()
             TurnInPlaceCharacterYawLastFrame = TurnInPlaceCharacterYaw;
             TurnInPlaceCharacterYaw = ShooterCharacter->GetActorRotation().Yaw;
             // Change change in yaw since last frame
-            const float YawDelta{ TurnInPlaceCharacterYaw - TurnInPlaceCharacterYawLastFrame };
+            const float TurnInPlaceYawDelta{ TurnInPlaceCharacterYaw - TurnInPlaceCharacterYawLastFrame };
 
             // Update RootYawOffset clamped to [-180, 180]
-            RootYawOffset = UKismetMathLibrary::NormalizeAxis(RootYawOffset - YawDelta);
+            RootYawOffset = UKismetMathLibrary::NormalizeAxis(RootYawOffset - TurnInPlaceYawDelta);
 
             // This accesses value from the Curve "Turning" that may be part of the animation
             // This Curve is only part of the Idle_Turn_90_(Right|Left) and will return in these
