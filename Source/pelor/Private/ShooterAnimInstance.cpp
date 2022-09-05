@@ -96,7 +96,7 @@ void UShooterAnimInstance::TurnInPlace()
     {
         Pitch = ShooterCharacter->GetBaseAimRotation().Pitch;
 
-        if (Speed > 0)
+        if (Speed > 0 || bIsInAir)
         {
             // We have started moving so face in direction we are goin
             RootYawOffset = 0;
