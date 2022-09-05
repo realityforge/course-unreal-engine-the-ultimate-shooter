@@ -159,19 +159,6 @@ void UShooterAnimInstance::TurnInPlace()
             {
                 RotationCurveLastFrame = RotationCurve = 0;
             }
-
-            // if (GEngine)
-            // {
-            //     GEngine->AddOnScreenDebugMessage(
-            //         0,
-            //         0,
-            //         FColor::Red,
-            //         FString::Printf(TEXT("CharacterYawLastFrame=%f CharacterYaw=%f YawDelta=%f RootYawOffset=%f"),
-            //                         CharacterYawLastFrame,
-            //                         CharacterYaw,
-            //                         YawDelta,
-            //                         RootYawOffset));
-            // }
         }
     }
 }
