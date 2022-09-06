@@ -112,57 +112,57 @@ void UShooterAnimInstance::NativeInitializeAnimation()
 
 void UShooterAnimInstance::TurnInPlace()
 {
-    // We won't turn in place if we are moving or we dont have a character
-    if (ShooterCharacter)
-    {
-        Pitch = ShooterCharacter->GetBaseAimRotation().Pitch;
+    checkf(ShooterCharacter,
+           TEXT("ShooterCharacter expected to be non-null. "
+                "Only called from a context where ShooterCharacter is not null"));
 
-        if (Speed > 0 || bIsInAir)
+    Pitch = ShooterCharacter->GetBaseAimRotation().Pitch;
+
+    if (Speed > 0 || bIsInAir)
+    {
+        // We have started moving so face in direction we are goin
+        RootYawOffset = 0;
+        TurnInPlaceCharacterYawLastFrame = TurnInPlaceCharacterYaw = ShooterCharacter->GetActorRotation().Yaw;
+        RotationCurveLastFrame = RotationCurve = 0.f;
+    }
+    else
+    {
+        TurnInPlaceCharacterYawLastFrame = TurnInPlaceCharacterYaw;
+        TurnInPlaceCharacterYaw = ShooterCharacter->GetActorRotation().Yaw;
+        // Change change in yaw since last frame
+        const float TurnInPlaceYawDelta{ TurnInPlaceCharacterYaw - TurnInPlaceCharacterYawLastFrame };
+
+        // Update RootYawOffset clamped to [-180, 180]
+        RootYawOffset = UKismetMathLibrary::NormalizeAxis(RootYawOffset - TurnInPlaceYawDelta);
+
+        // This accesses value from the Curve "Turning" that may be part of the animation
+        // This Curve is only part of the Idle_Turn_90_(Right|Left) and will return in these
+        // circumstances (and 0 elsewhere). Thus if Turning = 1 we a re turning either left or right,
+        // while Turning = 0 indicates that we are not turning
+        const float Turning{ GetCurveValue(TEXT("Turning")) };
+        if (Turning > 0)
         {
-            // We have started moving so face in direction we are goin
-            RootYawOffset = 0;
-            TurnInPlaceCharacterYawLastFrame = TurnInPlaceCharacterYaw = ShooterCharacter->GetActorRotation().Yaw;
-            RotationCurveLastFrame = RotationCurve = 0.f;
+            RotationCurveLastFrame = RotationCurve;
+            RotationCurve = GetCurveValue(TEXT("Rotation"));
+            const float DeltaRotation{ RotationCurve - RotationCurveLastFrame };
+
+            // RootYawOffset > 0 => turning left
+            // RootYawOffset < 0 => turning right
+
+            RootYawOffset += RootYawOffset > 0 ? -DeltaRotation : DeltaRotation;
+
+            if (const float AbsoluteRootYawOffset = FMath::Abs(RootYawOffset); AbsoluteRootYawOffset > 90.f)
+            {
+                // If our YawOffset is > 90 then 90 step is occuring so we get the left over
+                // and add that to RootYawOffset so that our character is still twisting to
+                // where the camera is aiming
+                const float YawExcess{ AbsoluteRootYawOffset - 90.f };
+                RootYawOffset += RootYawOffset > 0 ? -YawExcess : YawExcess;
+            }
         }
         else
         {
-            TurnInPlaceCharacterYawLastFrame = TurnInPlaceCharacterYaw;
-            TurnInPlaceCharacterYaw = ShooterCharacter->GetActorRotation().Yaw;
-            // Change change in yaw since last frame
-            const float TurnInPlaceYawDelta{ TurnInPlaceCharacterYaw - TurnInPlaceCharacterYawLastFrame };
-
-            // Update RootYawOffset clamped to [-180, 180]
-            RootYawOffset = UKismetMathLibrary::NormalizeAxis(RootYawOffset - TurnInPlaceYawDelta);
-
-            // This accesses value from the Curve "Turning" that may be part of the animation
-            // This Curve is only part of the Idle_Turn_90_(Right|Left) and will return in these
-            // circumstances (and 0 elsewhere). Thus if Turning = 1 we a re turning either left or right,
-            // while Turning = 0 indicates that we are not turning
-            const float Turning{ GetCurveValue(TEXT("Turning")) };
-            if (Turning > 0)
-            {
-                RotationCurveLastFrame = RotationCurve;
-                RotationCurve = GetCurveValue(TEXT("Rotation"));
-                const float DeltaRotation{ RotationCurve - RotationCurveLastFrame };
-
-                // RootYawOffset > 0 => turning left
-                // RootYawOffset < 0 => turning right
-
-                RootYawOffset += RootYawOffset > 0 ? -DeltaRotation : DeltaRotation;
-
-                if (const float AbsoluteRootYawOffset = FMath::Abs(RootYawOffset); AbsoluteRootYawOffset > 90.f)
-                {
-                    // If our YawOffset is > 90 then 90 step is occuring so we get the left over
-                    // and add that to RootYawOffset so that our character is still twisting to
-                    // where the camera is aiming
-                    const float YawExcess{ AbsoluteRootYawOffset - 90.f };
-                    RootYawOffset += RootYawOffset > 0 ? -YawExcess : YawExcess;
-                }
-            }
-            else
-            {
-                RotationCurveLastFrame = RotationCurve = 0;
-            }
+            RotationCurveLastFrame = RotationCurve = 0;
         }
     }
 }
