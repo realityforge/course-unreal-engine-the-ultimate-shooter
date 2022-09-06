@@ -372,6 +372,14 @@ bool AShooterCharacter::TraceCrosshairToWorld(FHitResult& OutHitResult, FVector&
     return false;
 }
 
+void AShooterCharacter::CrouchButtonPressed()
+{
+    if (!GetCharacterMovement()->IsFalling())
+    {
+        bCrouching = !bCrouching;
+    }
+}
+
 void AShooterCharacter::AimingButtonPressed()
 {
     bAiming = true;
@@ -782,4 +790,7 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
     // Reload button pressed
     PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &AShooterCharacter::ReloadButtonPressed);
+
+    // Crouch button pressed
+    PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &AShooterCharacter::CrouchButtonPressed);
 }

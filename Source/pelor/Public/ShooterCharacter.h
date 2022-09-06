@@ -86,6 +86,8 @@ protected:
 
     bool TraceCrosshairToWorld(FHitResult& OutHitResult, FVector& OutHitLocation) const;
 
+    void CrouchButtonPressed();
+
     void AimingButtonPressed();
     void AimingButtonReleased();
 
