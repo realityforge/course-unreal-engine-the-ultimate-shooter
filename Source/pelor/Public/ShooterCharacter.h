@@ -338,6 +338,10 @@ private:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Combat, meta = (AllowPrivateAccess = "true"))
     USceneComponent* HandSceneComponent;
 
+    /** True when character is crouching */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
+    bool bCrouching;
+
     void UpdateFovBasedOnAimingStatus(float DeltaTime);
     void UpdateLookRateBasedOnAimingStatus();
     void CalculateCrosshairSpreadMultiplier(float DeltaTime);
@@ -390,6 +394,7 @@ public:
     FORCEINLINE const AItem* GetItemShowingInfoBox() const { return ItemShowingInfoBox; }
     FORCEINLINE ECombatState GetCombatState() const { return CombatState; }
     FORCEINLINE bool GetAiming() const { return bAiming; }
+    FORCEINLINE bool GetCrouching() const { return bCrouching; }
     float GetCrosshairSpreadMultiplier() const;
     FORCEINLINE int8 GetOverlappedItemCount() const { return OverlappedItemCount; }
 
