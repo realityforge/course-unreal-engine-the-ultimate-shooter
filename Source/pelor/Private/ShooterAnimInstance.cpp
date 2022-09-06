@@ -180,13 +180,4 @@ void UShooterAnimInstance::Lean(const float DeltaTime)
     const float Target{ (float)CharacterRotationDelta.Yaw / DeltaTime };
     const float CurrentYaw{ FMath::FInterpTo(YawDelta, Target, DeltaTime, 6.f) };
     YawDelta = FMath::Clamp(CurrentYaw, -90.f, 90.f);
-
-    if (GEngine)
-    {
-        GEngine->AddOnScreenDebugMessage(2, 0, FColor::White, FString::Printf(TEXT("YawDelta=%f"), YawDelta));
-        GEngine->AddOnScreenDebugMessage(3,
-                                         0,
-                                         FColor::White,
-                                         FString::Printf(TEXT("CharacterRotation.Yaw=%f"), CharacterRotation.Yaw));
-    }
 }
