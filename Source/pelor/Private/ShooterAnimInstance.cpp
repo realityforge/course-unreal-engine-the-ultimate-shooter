@@ -73,13 +73,6 @@ void UShooterAnimInstance::UpdateAnimationProperties(float DeltaTime)
             {
                 LastMovementOffsetYaw = MovementOffsetYaw;
             }
-            // if (nullptr != GEngine)
-            // {
-            // 	const FString DebugMessage1 = FString::Printf(TEXT("MovementOffsetYaw=%f"), MovementOffsetYaw);
-            // 	const FString DebugMessage2 = FString::Printf(TEXT("LastMovementOffsetYaw=%f"), LastMovementOffsetYaw);
-            // 	GEngine->AddOnScreenDebugMessage(1, 0, FColor::Red, DebugMessage1);
-            // 	GEngine->AddOnScreenDebugMessage(2, 0, FColor::Green, DebugMessage2);
-            // }
         }
         TurnInPlace();
         Lean(DeltaTime);
