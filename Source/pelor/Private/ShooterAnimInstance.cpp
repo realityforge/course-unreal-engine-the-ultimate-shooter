@@ -120,10 +120,6 @@ void UShooterAnimInstance::TurnInPlace()
                 "Only called from a context where ShooterCharacter is not null"));
 
     Pitch = ShooterCharacter->GetBaseAimRotation().Pitch;
-    if (GEngine)
-    {
-        GEngine->AddOnScreenDebugMessage(3, -1, FColor::White, FString::Printf(TEXT("TurnInPlace:: Pitch=%f"), Pitch));
-    }
 
     if (Speed > 0 || bIsInAir)
     {
@@ -175,35 +171,6 @@ void UShooterAnimInstance::TurnInPlace()
         {
             RotationCurveLastFrame = RotationCurve = 0;
         }
-    }
-    if (GEngine)
-    {
-        GEngine->AddOnScreenDebugMessage(
-            4,
-            -1,
-            FColor::White,
-            FString::Printf(TEXT("RotationCurve=%f RotationCurveLastFrame=%f"), RotationCurve, RotationCurveLastFrame));
-        GEngine->AddOnScreenDebugMessage(5,
-                                         -1,
-                                         FColor::White,
-                                         FString::Printf(TEXT("RootYawOffset=%f"), RootYawOffset));
-        GEngine->AddOnScreenDebugMessage(6,
-                                         -1,
-                                         FColor::White,
-                                         FString::Printf(TEXT("Turning=%f"), GetCurveValue(TEXT("Turning"))));
-        GEngine->AddOnScreenDebugMessage(
-            7,
-            -1,
-            FColor::White,
-            FString::Printf(TEXT("TurnInPlaceCharacterYawLastFrame=%f TurnInPlaceCharacterYaw=%f"),
-                            TurnInPlaceCharacterYawLastFrame,
-                            TurnInPlaceCharacterYaw));
-
-        FName CurrentStateName = GetCurrentStateName(GetStateMachineIndex(FName("Crouch Idle Lower Body")));
-        GEngine->AddOnScreenDebugMessage(7,
-                                         -1,
-                                         FColor::White,
-                                         FString::Printf(TEXT("CurrentStateName=%s"), *CurrentStateName.ToString()));
     }
 }
 
