@@ -140,7 +140,7 @@ void UShooterAnimInstance::TurnInPlace()
 
         // This accesses value from the Curve "Turning" that may be part of the animation
         // This Curve is only part of the Idle_Turn_90_(Right|Left) and will return in these
-        // circumstances (and 0 elsewhere). Thus if Turning = 1 we a re turning either left or right,
+        // circumstances (and 0 elsewhere). Thus if Turning = 1 we are turning either left or right,
         // while Turning = 0 indicates that we are not turning
         const float Turning{ GetCurveValue(TEXT("Turning")) };
         if (Turning > 0)
