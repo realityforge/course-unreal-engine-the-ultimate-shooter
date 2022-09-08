@@ -420,7 +420,7 @@ void AShooterCharacter::ReloadWeapon()
                 AnimInstance->Montage_Play(ReloadMontage);
                 AnimInstance->Montage_JumpToSection(EquippedWeapon->GetReloadMontageSectionName());
             }
-            CombatState = ECombatState::ECS_Firing;
+            CombatState = ECombatState::ECS_Reloading;
         }
     }
 }
