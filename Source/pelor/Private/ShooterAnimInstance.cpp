@@ -44,7 +44,7 @@ void UShooterAnimInstance::UpdateAnimationProperties(float DeltaTime)
         bCrouching = ShooterCharacter->GetCrouching();
 
         // Set flag for exposure to animation blueprints when character is reloading
-        bReloading = ShooterCharacter->GetCombatState() == ECombatState::ECS_Reloading;
+        bReloading = ECombatState::ECS_Reloading == ShooterCharacter->GetCombatState();
 
         // Extract the lateral velocity and place in Speed variable
         {
