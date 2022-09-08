@@ -144,6 +144,9 @@ void UShooterAnimInstance::TurnInPlace()
             // RootYawOffset > 0 => turning left
             // RootYawOffset < 0 => turning right
 
+            // The Rotation curve goes from -90 to 0 for both left and right turning.
+            // (This is what the tutorial did). It seems to make more sense to rotate from 90->0 and 90->0
+            // and thus simplify this code ... but ... tutorial 🤷🏻‍
             RootYawOffset += (RootYawOffset > 0 ? -DeltaRotation : DeltaRotation);
 
             if (const float AbsoluteRootYawOffset = FMath::Abs(RootYawOffset); AbsoluteRootYawOffset > 90.f)
