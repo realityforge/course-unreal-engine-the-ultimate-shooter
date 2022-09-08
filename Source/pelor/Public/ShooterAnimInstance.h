@@ -124,4 +124,8 @@ private:
     /** True when the character is crouching */
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Crouching, meta = (AllowPrivateAccess = "true"))
     bool bCrouching;
+
+    /** True when the character is turning in place */
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
+    bool bTurningInPlace;
 };

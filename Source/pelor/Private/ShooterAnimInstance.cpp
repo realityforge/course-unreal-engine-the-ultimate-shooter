@@ -24,6 +24,7 @@ UShooterAnimInstance::UShooterAnimInstance()
     , CharacterRotation(0.f)
     , CharacterRotationLastFrame(0.f)
     , YawDelta(0)
+    , bTurningInPlace(false)
 {
 }
 
@@ -145,6 +146,7 @@ void UShooterAnimInstance::TurnInPlace()
         const float Turning{ GetCurveValue(TEXT("Turning")) };
         if (Turning > 0)
         {
+            bTurningInPlace = true;
             RotationCurveLastFrame = RotationCurve;
             RotationCurve = GetCurveValue(TEXT("Rotation"));
             const float DeltaRotation{ RotationCurve - RotationCurveLastFrame };
@@ -169,6 +171,7 @@ void UShooterAnimInstance::TurnInPlace()
         }
         else
         {
+            bTurningInPlace = false;
             RotationCurveLastFrame = RotationCurve = 0;
         }
     }
