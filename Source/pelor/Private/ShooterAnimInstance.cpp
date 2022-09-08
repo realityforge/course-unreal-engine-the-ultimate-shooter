@@ -124,7 +124,7 @@ void UShooterAnimInstance::TurnInPlace()
 
     if (Speed > 0 || bIsInAir)
     {
-        // We have started moving so face in direction we are goin
+        // We have started moving so face in direction we are going
         RootYawOffset = 0;
         TurnInPlaceCharacterYawLastFrame = TurnInPlaceCharacterYaw = ShooterCharacter->GetActorRotation().Yaw;
         RotationCurveLastFrame = RotationCurve = 0.f;
