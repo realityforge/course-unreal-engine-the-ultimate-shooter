@@ -173,7 +173,7 @@ void UShooterAnimInstance::Lean(const float DeltaTime)
 
     const FRotator CharacterRotationDelta{ UKismetMathLibrary::NormalizedDeltaRotator(CharacterRotation,
                                                                                       CharacterRotationLastFrame) };
-    const float Target{ (float)CharacterRotationDelta.Yaw / DeltaTime };
+    const float Target{ static_cast<float>(CharacterRotationDelta.Yaw) / DeltaTime };
     const float CurrentYaw{ FMath::FInterpTo(YawDelta, Target, DeltaTime, 6.f) };
     YawDelta = FMath::Clamp(CurrentYaw, -90.f, 90.f);
 }
