@@ -144,7 +144,7 @@ void UShooterAnimInstance::TurnInPlace()
             // RootYawOffset > 0 => turning left
             // RootYawOffset < 0 => turning right
 
-            RootYawOffset += RootYawOffset > 0 ? -DeltaRotation : DeltaRotation;
+            RootYawOffset += (RootYawOffset > 0 ? -DeltaRotation : DeltaRotation);
 
             if (const float AbsoluteRootYawOffset = FMath::Abs(RootYawOffset); AbsoluteRootYawOffset > 90.f)
             {
@@ -152,7 +152,8 @@ void UShooterAnimInstance::TurnInPlace()
                 // and add that to RootYawOffset so that our character is still twisting to
                 // where the camera is aiming
                 const float YawExcess{ AbsoluteRootYawOffset - 90.f };
-                RootYawOffset += RootYawOffset > 0 ? -YawExcess : YawExcess;
+                RootYawOffset += (RootYawOffset > 0 ? -YawExcess : YawExcess);
+                // RootYawOffset > 0 ? RootYawOffset -= YawExcess : RootYawOffset += YawExcess;
             }
         }
         else
