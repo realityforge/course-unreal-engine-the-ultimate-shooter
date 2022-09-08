@@ -14,10 +14,10 @@
 
 set -euo pipefail
 
-if [ "$#" -neq 1 ]; then
+if [[ "$#" != "1" ]]; then
   echo "$0: Must be invoked with a single argument."
   exit 1
+else
+  # Format Source code using clang-format
+  git diff --name-only HEAD | grep -E "^$@" | grep -i -e "\.h$" -e "\.cpp$" | grep -e "^Source/" | xargs clang-format -i
 fi
-
-# Format Source code using clang-format
-git diff  --name-only HEAD | grep -E "^${@}"  | grep -i -e "\.h$" -e "\.cpp$" | grep -e "^Source/" | xargs clang-format -i
