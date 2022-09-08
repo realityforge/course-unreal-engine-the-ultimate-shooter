@@ -14,7 +14,7 @@
 
 set -euo pipefail
 
-if [ $# -neq 1 ]; then
+if [ "$#" -neq 1 ]; then
   echo "$0: Must be invoked with a single argument."
   exit 1
 fi
