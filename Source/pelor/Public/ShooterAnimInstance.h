@@ -43,6 +43,9 @@ protected:
     /** Update TurnInPlace variables */
     void TurnInPlace();
 
+    /** Update RecoilStrength variable */
+    void CalculateRecoilStrength();
+
     /** Update properties for Leaning while running */
     void Lean(float DeltaTime);
 
@@ -124,6 +127,10 @@ private:
     /** True when the character is crouching */
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Crouching, meta = (AllowPrivateAccess = "true"))
     bool bCrouching;
+
+    /** Change the strength of the recoil based on whether character is turning in place or aiming */
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
+    float RecoilStrength;
 
     /** True when the character is turning in place */
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))

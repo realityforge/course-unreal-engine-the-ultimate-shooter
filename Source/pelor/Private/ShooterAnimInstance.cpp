@@ -24,6 +24,7 @@ UShooterAnimInstance::UShooterAnimInstance()
     , CharacterRotation(0.f)
     , CharacterRotationLastFrame(0.f)
     , YawDelta(0)
+    , RecoilStrength(1.f)
     , bTurningInPlace(false)
 {
 }
@@ -78,6 +79,7 @@ void UShooterAnimInstance::UpdateAnimationProperties(float DeltaTime)
             }
         }
         TurnInPlace();
+        CalculateRecoilStrength();
         Lean(DeltaTime);
         if (bReloading)
         {
@@ -175,6 +177,44 @@ void UShooterAnimInstance::TurnInPlace()
             RotationCurveLastFrame = RotationCurve = 0;
         }
     }
+}
+
+void UShooterAnimInstance::CalculateRecoilStrength()
+{
+    // Note: This is a bit of a mess ... but I didn't want to vary too much from tutorial
+    //  in case can not figure out stuff in future lessons. In part most of this is just attempting to get
+    //  the feel of the animation "right"
+    if (bReloading)
+    {
+        // Recoil strength also determines the weighting of the reloading animation slot
+        // so we have to set it to 1 while reloading so we see reloading animation in all
+        // it's glory. It also has no recoil animation so strength has no impact on actual "recoil
+        RecoilStrength = 1.f;
+    }
+    else if (bTurningInPlace)
+    {
+        RecoilStrength = 0.f;
+    }
+    else if (bCrouching)
+    {
+        RecoilStrength = 0.1f;
+    }
+    else if (bAiming)
+    {
+        RecoilStrength = 1.f;
+    }
+    else
+    {
+        RecoilStrength = 0.5f;
+    }
+    // UE_LOG(LogTemp,
+    //        Log,
+    //        TEXT("bReloading = %d bTurningInPlace = %d bCrouching = %d bAiming = %d RecoilStrength =  %f"),
+    //        bReloading,
+    //        bTurningInPlace,
+    //        bCrouching,
+    //        bAiming,
+    //        RecoilStrength);
 }
 
 void UShooterAnimInstance::Lean(const float DeltaTime)
