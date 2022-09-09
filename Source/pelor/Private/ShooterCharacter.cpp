@@ -462,6 +462,7 @@ void AShooterCharacter::GrabClip()
         EquippedWeapon->SetMovingClip(true);
     }
 }
+
 void AShooterCharacter::ReleaseClip()
 {
     EquippedWeapon->SetMovingClip(false);
