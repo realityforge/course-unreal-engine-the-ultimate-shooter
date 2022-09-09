@@ -305,6 +305,19 @@ void AShooterCharacter::FireWeapon()
     }
 }
 
+void AShooterCharacter::Jump()
+{
+    if (bCrouching)
+    {
+        bCrouching = false;
+        UpdateMaxWalkSpeed();
+    }
+    else
+    {
+        Super::Jump();
+    }
+}
+
 bool AShooterCharacter::GetBeamEndLocation(const FVector& MuzzleEndLocation, FVector& OutBeamLocation) const
 {
     if (nullptr != GEngine && nullptr != GEngine->GameViewport)

@@ -74,6 +74,8 @@ protected:
      */
     void FireWeapon();
 
+    virtual void Jump() override;
+
     /**
      * Trace a line from the MuzzleEndLocation to where the crosshair is aiming.
      *
