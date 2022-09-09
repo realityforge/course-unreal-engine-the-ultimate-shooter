@@ -78,6 +78,10 @@ AShooterCharacter::AShooterCharacter()
 
     // Crouching variables
     , bCrouching(false)
+
+    // Movement Speeds
+    , BaseMovementSpeed(650.f)
+    , CrouchMovementSpeed(350.f)
 {
     // Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need
     // it.
@@ -155,6 +159,7 @@ void AShooterCharacter::BeginPlay()
     }
 
     InitializeAmmoMap();
+    GetCharacterMovement()->MaxWalkSpeed = BaseMovementSpeed;
 }
 
 void AShooterCharacter::MouseLookRight(const float Value)
@@ -372,12 +377,18 @@ bool AShooterCharacter::TraceCrosshairToWorld(FHitResult& OutHitResult, FVector&
     return false;
 }
 
+void AShooterCharacter::UpdateMaxWalkSpeed() const
+{
+    GetCharacterMovement()->MaxWalkSpeed = bCrouching ? CrouchMovementSpeed : BaseMovementSpeed;
+}
+
 void AShooterCharacter::CrouchButtonPressed()
 {
     if (!GetCharacterMovement()->IsFalling())
     {
         bCrouching = !bCrouching;
     }
+    UpdateMaxWalkSpeed();
 }
 
 void AShooterCharacter::AimingButtonPressed()

@@ -85,6 +85,7 @@ protected:
     bool GetBeamEndLocation(const FVector& MuzzleEndLocation, FVector& OutBeamLocation) const;
 
     bool TraceCrosshairToWorld(FHitResult& OutHitResult, FVector& OutHitLocation) const;
+    void UpdateMaxWalkSpeed() const;
 
     void CrouchButtonPressed();
 
@@ -343,6 +344,14 @@ private:
     /** True when character is crouching */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
     bool bCrouching;
+
+    /** Speed when the character is not crouching */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
+    float BaseMovementSpeed;
+
+    /** Speed when the character is crouching */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
+    float CrouchMovementSpeed;
 
     void UpdateFovBasedOnAimingStatus(float DeltaTime);
     void UpdateLookRateBasedOnAimingStatus();
