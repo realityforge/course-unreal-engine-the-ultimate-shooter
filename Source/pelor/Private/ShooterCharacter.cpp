@@ -103,7 +103,7 @@ AShooterCharacter::AShooterCharacter()
 
         // Move the camera to the right and up so that the center of the screen is not the character.
         // This will allow us to put the cross-hair in the center
-        CameraBoom->SocketOffset = FVector(0.F, 50.F, 70.F);
+        CameraBoom->SocketOffset = FVector(0.F, 50.F, 45.F);
     }
 
     // Create a Camera, attach it to the boom so it can follow the character
