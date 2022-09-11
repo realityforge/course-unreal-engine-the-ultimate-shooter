@@ -373,6 +373,8 @@ private:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Movement, meta = (AllowPrivateAccess = "true"))
     float CrouchCapsuleHalfHeight;
 
+    bool bAimingButtonPressed;
+
     void UpdateFovBasedOnAimingStatus(float DeltaTime);
     void UpdateLookRateBasedOnAimingStatus();
     void CalculateCrosshairSpreadMultiplier(float DeltaTime);

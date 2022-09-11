@@ -88,6 +88,8 @@ AShooterCharacter::AShooterCharacter()
     , StandingCapsuleHalfHeight(90.f)
     , CrouchCapsuleHalfHeight(50.f)
 
+    , bAimingButtonPressed(false)
+
 {
     // Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need
     // it.
@@ -438,7 +440,13 @@ void AShooterCharacter::Aim()
 
 void AShooterCharacter::AimingButtonPressed()
 {
-    Aim();
+    bAimingButtonPressed = true;
+    if (ECombatState::ECS_Reloading != CombatState)
+    {
+        // We only aim when we reload.
+        // Partially this is to ensure that the reload animation plays in full when aiming
+        Aim();
+    }
 }
 
 void AShooterCharacter::StopAiming()
@@ -453,6 +461,7 @@ void AShooterCharacter::StopAiming()
 
 void AShooterCharacter::AimingButtonReleased()
 {
+    bAimingButtonPressed = false;
     StopAiming();
 }
 
@@ -487,6 +496,10 @@ void AShooterCharacter::ReloadWeapon()
                 AnimInstance->Montage_JumpToSection(EquippedWeapon->GetReloadMontageSectionName());
             }
             CombatState = ECombatState::ECS_Reloading;
+            if (bAiming)
+            {
+                StopAiming();
+            }
         }
     }
 }
@@ -506,6 +519,10 @@ void AShooterCharacter::FinishReload()
     }
     // Ready to fire or reload again
     CombatState = ECombatState::ECS_Idle;
+    if (bAimingButtonPressed)
+    {
+        Aim();
+    }
 }
 
 void AShooterCharacter::GrabClip()
