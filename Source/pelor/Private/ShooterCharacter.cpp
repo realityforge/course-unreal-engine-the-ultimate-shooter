@@ -89,7 +89,7 @@ AShooterCharacter::AShooterCharacter()
 
     // Create a Camera Boom (pulls in towards the character if there is a collision)
     {
-        // Create new ActorSubobject named "CameraBoom" of type USpringArmComponent
+        // Create new ActorSubObject named "CameraBoom" of type USpringArmComponent
         CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 
         // Attaches the CameraBoom to this character
@@ -108,7 +108,7 @@ AShooterCharacter::AShooterCharacter()
 
     // Create a Camera, attach it to the boom so it can follow the character
     {
-        // Create new ActorSubobject named "FollowCamera" of type UCameraComponent
+        // Create new ActorSubObject named "FollowCamera" of type UCameraComponent
         FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 
         // Attaches the Camera to the CameraBoom at the "socket" with the name specified by
