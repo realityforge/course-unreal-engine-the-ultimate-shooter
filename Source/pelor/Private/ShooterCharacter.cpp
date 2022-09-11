@@ -429,14 +429,19 @@ void AShooterCharacter::CrouchButtonPressed()
     UpdateMaxWalkSpeed();
 }
 
-void AShooterCharacter::AimingButtonPressed()
+void AShooterCharacter::Aim()
 {
     bAiming = true;
     // Make sure we slow down when we start aiming
     GetCharacterMovement()->MaxWalkSpeed = CrouchMovementSpeed;
 }
 
-void AShooterCharacter::AimingButtonReleased()
+void AShooterCharacter::AimingButtonPressed()
+{
+    Aim();
+}
+
+void AShooterCharacter::StopAiming()
 {
     bAiming = false;
     if (!bCrouching)
@@ -444,6 +449,11 @@ void AShooterCharacter::AimingButtonReleased()
         // If we are not crouching and we stop aiming then return to base speed
         GetCharacterMovement()->MaxWalkSpeed = BaseMovementSpeed;
     }
+}
+
+void AShooterCharacter::AimingButtonReleased()
+{
+    StopAiming();
 }
 
 void AShooterCharacter::ReloadButtonPressed()

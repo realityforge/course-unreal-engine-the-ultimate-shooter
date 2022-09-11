@@ -93,8 +93,10 @@ protected:
     void UpdateMaxWalkSpeed() const;
 
     void CrouchButtonPressed();
+    void Aim();
 
     void AimingButtonPressed();
+    void StopAiming();
     void AimingButtonReleased();
 
     void ReloadButtonPressed();
