@@ -771,7 +771,7 @@ void AShooterCharacter::PickupItem(AItem* Item)
 }
 
 // Called every frame
-void AShooterCharacter::Tick(float DeltaTime)
+void AShooterCharacter::Tick(const float DeltaTime)
 {
     Super::Tick(DeltaTime);
     UpdateFovBasedOnAimingStatus(DeltaTime);
