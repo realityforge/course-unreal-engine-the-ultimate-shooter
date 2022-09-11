@@ -2,6 +2,7 @@
 
 #include "ShooterCharacter.h"
 #include "Camera/CameraComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Engine/SkeletalMeshSocket.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -82,6 +83,11 @@ AShooterCharacter::AShooterCharacter()
     // Movement Speeds
     , BaseMovementSpeed(650.f)
     , CrouchMovementSpeed(350.f)
+
+    , CurrentCapsuleHalfHeight(88.f)
+    , StandingCapsuleHalfHeight(90.f)
+    , CrouchCapsuleHalfHeight(50.f)
+
 {
     // Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need
     // it.
@@ -316,6 +322,25 @@ void AShooterCharacter::Jump()
     {
         Super::Jump();
     }
+}
+
+void AShooterCharacter::DeriveCapsuleHalfHeight(const float DeltaTime) const
+{
+    const float TargetCapsuleHalfHeight{ bCrouching ? CrouchCapsuleHalfHeight : StandingCapsuleHalfHeight };
+    const float LastFrameCapsuleHalfHeight = GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
+    const float CurrentFrameCapsuleHalfHeight{
+        FMath::FInterpTo(LastFrameCapsuleHalfHeight, TargetCapsuleHalfHeight, DeltaTime, 20.f)
+    };
+
+    // -'ve value if interpolating towards crouch, +'ve if interpolating towards stand, else 0 if in target state
+    const float DeltaCurrentFrameCapsuleHalfHeight{ CurrentFrameCapsuleHalfHeight - LastFrameCapsuleHalfHeight };
+
+    // Offset the mesh by inverse of delta so that the character remains standing on the ground and does not go below
+    // ground as capsule shrinks
+    const FVector MeshOffset{ 0.f, 0.f, -DeltaCurrentFrameCapsuleHalfHeight };
+    GetMesh()->AddLocalOffset(MeshOffset);
+
+    GetCapsuleComponent()->SetCapsuleHalfHeight(CurrentFrameCapsuleHalfHeight, true);
 }
 
 bool AShooterCharacter::GetBeamEndLocation(const FVector& MuzzleEndLocation, FVector& OutBeamLocation) const
@@ -778,6 +803,7 @@ void AShooterCharacter::Tick(const float DeltaTime)
     CalculateCrosshairSpreadMultiplier(DeltaTime);
     UpdateLookRateBasedOnAimingStatus();
     TraceForItems();
+    DeriveCapsuleHalfHeight(DeltaTime);
 }
 
 // Called to bind functionality to input

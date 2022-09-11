@@ -76,6 +76,9 @@ protected:
 
     virtual void Jump() override;
 
+    /** Recalculates CurrentCapsuleHalfHeight when crouching/standing */
+    void DeriveCapsuleHalfHeight(float DeltaTime) const;
+
     /**
      * Trace a line from the MuzzleEndLocation to where the crosshair is aiming.
      *
@@ -354,6 +357,17 @@ private:
     /** Speed when the character is crouching */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
     float CrouchMovementSpeed;
+
+    /** Current Half-height of capsule (for collision) */
+    float CurrentCapsuleHalfHeight;
+
+    /** Half-height of capsule when not crouching */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Movement, meta = (AllowPrivateAccess = "true"))
+    float StandingCapsuleHalfHeight;
+
+    /** Half-height of capsule when crouching */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Movement, meta = (AllowPrivateAccess = "true"))
+    float CrouchCapsuleHalfHeight;
 
     void UpdateFovBasedOnAimingStatus(float DeltaTime);
     void UpdateLookRateBasedOnAimingStatus();
