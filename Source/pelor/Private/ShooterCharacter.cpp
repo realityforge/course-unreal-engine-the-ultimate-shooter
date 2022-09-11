@@ -30,12 +30,12 @@ AShooterCharacter::AShooterCharacter()
     , BaseMouseLookUpRate(0.F)
     , HipMouseLookRightRate(1.F)
     , HipMouseLookUpRate(1.F)
-    , AimingMouseLookRightRate(0.4F)
-    , AimingMouseLookUpRate(0.4F)
+    , AimingMouseLookRightRate(0.6F)
+    , AimingMouseLookUpRate(0.6F)
 
     // Camera FOV properties
     , DefaultCameraFOV(0.F) // Will be set in BeginPlay so 0 is just a placeholder
-    , CameraZoomedFOV(35.F)
+    , CameraZoomedFOV(25.F)
     , CameraCurrentFOV(0.F)
     , CameraFOVInterpolationSpeed(20.F)
 
@@ -109,7 +109,7 @@ AShooterCharacter::AShooterCharacter()
 
         // Move the camera to the right and up so that the center of the screen is not the character.
         // This will allow us to put the cross-hair in the center
-        CameraBoom->SocketOffset = FVector(0.F, 50.F, 45.F);
+        CameraBoom->SocketOffset = FVector(0.F, 35.F, 80.F);
     }
 
     // Create a Camera, attach it to the boom so it can follow the character
