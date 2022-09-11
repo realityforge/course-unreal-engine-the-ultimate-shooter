@@ -220,9 +220,11 @@ private:
     UParticleSystem* BeamParticles;
 
     /** Default FOV for camera */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
     float DefaultCameraFOV;
 
     /** FOV for camera when Zoomed in/Aiming */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
     float CameraZoomedFOV;
 
     /** FOV for camera in current frame */
