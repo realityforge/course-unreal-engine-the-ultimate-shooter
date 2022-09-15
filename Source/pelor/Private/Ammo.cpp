@@ -17,3 +17,13 @@ AAmmo::AAmmo()
     GetInfoBoxWidget()->SetupAttachment(AmmoMesh);
     GetAreaSphere()->SetupAttachment(AmmoMesh);
 }
+
+void AAmmo::BeginPlay()
+{
+    Super::BeginPlay();
+}
+
+void AAmmo::Tick(const float DeltaTime)
+{
+    Super::Tick(DeltaTime);
+}

@@ -17,6 +17,12 @@ class PELOR_API AAmmo : public AItem
 public:
     AAmmo();
 
+protected:
+    virtual void BeginPlay() override;
+
+public:
+    virtual void Tick(float DeltaTime) override;
+
 private:
     /** Mesh for the Ammo Pickup */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Ammo, meta = (AllowPrivateAccess = "true"))
