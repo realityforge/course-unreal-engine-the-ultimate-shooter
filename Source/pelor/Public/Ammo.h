@@ -32,6 +32,7 @@ private:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Ammo, meta = (AllowPrivateAccess = "true"))
     UStaticMeshComponent* AmmoMesh;
 
+    /** Ammo type of the ammo */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Ammo, meta = (AllowPrivateAccess = "true"))
     EAmmoType AmmoType;
 
