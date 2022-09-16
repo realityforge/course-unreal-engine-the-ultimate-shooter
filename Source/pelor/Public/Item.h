@@ -84,6 +84,9 @@ protected:
     // Called when the game starts or when spawned
     virtual void BeginPlay() override;
 
+    /** Sets the items properties based on the specified State */
+    virtual void ApplyPropertiesBasedOnCurrentItemState() const;
+
 public:
     // Called every frame
     virtual void Tick(float DeltaTime) override;
@@ -184,9 +187,6 @@ private:
 
     /** Derives the ActiveStars from the Rarity */
     void DeriveActiveStars();
-
-    /** Sets the items properties based on the specified State */
-    void ApplyPropertiesBasedOnCurrentItemState() const;
 
     /** Called by Pickup timer when pickup should be "complete" */
     void OnCompletePickup();
