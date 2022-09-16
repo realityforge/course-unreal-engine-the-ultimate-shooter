@@ -20,6 +20,9 @@ public:
 protected:
     virtual void BeginPlay() override;
 
+    /** Override method so as to apply same transforms to AmmoMesh as to ItemMesh */
+    virtual void ApplyPropertiesBasedOnCurrentItemState() const override;
+
 public:
     virtual void Tick(float DeltaTime) override;
 
