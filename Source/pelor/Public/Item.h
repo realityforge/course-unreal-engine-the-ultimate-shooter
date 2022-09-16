@@ -209,6 +209,7 @@ public:
         ApplyPropertiesBasedOnCurrentItemState();
     }
 
+    FORCEINLINE int32 GetItemCount() const { return ItemCount; }
     FORCEINLINE USkeletalMeshComponent* GetItemMesh() const { return ItemMesh; }
 
     /** Called by character class when they start the pickup process */
