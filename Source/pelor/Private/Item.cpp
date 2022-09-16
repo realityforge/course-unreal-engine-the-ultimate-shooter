@@ -149,7 +149,6 @@ void AItem::DeriveActiveStars()
 
 void AItem::ApplyPropertiesBasedOnCurrentItemState() const
 {
-    UE_LOG(LogTemp, Warning, TEXT("AItem::ApplyPropertiesBasedOnCurrentItemState() ItemState=%d"), ItemState);
     switch (ItemState)
     {
         case EItemState::EIS_Dropped:
