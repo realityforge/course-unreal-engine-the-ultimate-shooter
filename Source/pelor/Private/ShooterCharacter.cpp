@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "ShooterCharacter.h"
+#include "Ammo.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/WidgetComponent.h"
@@ -784,6 +785,29 @@ void AShooterCharacter::SwapWeapon(AWeapon* WeaponToSwap)
     }
 }
 
+void AShooterCharacter::PickupAmmo(AAmmo* AmmoToPickup)
+{
+    const int32 AmmoCountToAdd = AmmoToPickup->GetItemCount();
+    const EAmmoType AmmoType = AmmoToPickup->GetAmmoType();
+    if (int* AmmoCount = AmmoMap.Find(AmmoType))
+    {
+        *AmmoCount += AmmoCountToAdd;
+    }
+    else
+    {
+        AmmoMap.Add(AmmoType, AmmoCountToAdd);
+    }
+
+    // If the current Weapon uses picked up ammo and weapon is currently empty then initiate a reload
+    if (EquippedWeapon && EquippedWeapon->GetAmmoType() == AmmoType && EquippedWeapon->AmmoIsEmpty())
+    {
+        ReloadWeapon();
+    }
+
+    // Destroy the actor and remove it from the level
+    AmmoToPickup->Destroy();
+}
+
 void AShooterCharacter::InitializeAmmoMap()
 {
     AmmoMap.Add(EAmmoType::EAT_9mm, Initial9mmAmmo);
@@ -826,6 +850,10 @@ void AShooterCharacter::PickupItem(AItem* Item)
     if (const auto Weapon = Cast<AWeapon>(Item))
     {
         SwapWeapon(Weapon);
+    }
+    if (const auto Ammo = Cast<AAmmo>(Item))
+    {
+        PickupAmmo(Ammo);
     }
 }
 

@@ -8,6 +8,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "ShooterCharacter.generated.h"
 
+class AAmmo;
 class AItem;
 class AWeapon;
 class UAnimMontage;
@@ -410,6 +411,9 @@ private:
 
     /** Drops currently equipped weapon and replaces it with TraceHitWeapon if one exists. */
     void SwapWeapon(AWeapon* WeaponToSwap);
+
+    /** Adds specified Ammo to Carried Ammo. */
+    void PickupAmmo(AAmmo* AmmoToPickup);
 
     /** Initialize the AmmoMap with our starting Ammo. */
     void InitializeAmmoMap();
