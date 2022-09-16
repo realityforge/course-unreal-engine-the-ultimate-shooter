@@ -792,7 +792,7 @@ void AShooterCharacter::InitializeAmmoMap()
 
 bool AShooterCharacter::WeaponHasAmmo() const
 {
-    return EquippedWeapon ? EquippedWeapon->GetAmmo() > 0 : false;
+    return EquippedWeapon ? !EquippedWeapon->AmmoIsEmpty() : false;
 }
 
 void AShooterCharacter::FinishCrosshairShootingImpactTimer()

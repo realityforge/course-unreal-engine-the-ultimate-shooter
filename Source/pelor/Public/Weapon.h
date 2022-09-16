@@ -88,4 +88,6 @@ public:
     FORCEINLINE void SetMovingClip(const bool MovingClip) { bMovingClip = MovingClip; }
 
     FORCEINLINE bool AmmoIsFull() const { return Ammo >= AmmoCapacity; }
+
+    FORCEINLINE bool AmmoIsEmpty() const { return 0 == Ammo; }
 };
