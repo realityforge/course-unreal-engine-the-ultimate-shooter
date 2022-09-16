@@ -5,7 +5,7 @@
 #include "Components/SphereComponent.h"
 #include "Components/WidgetComponent.h"
 
-AAmmo::AAmmo()
+AAmmo::AAmmo() : AmmoType(EAmmoType::EAT_9mm), AmmoIconTexture(nullptr)
 {
     AmmoMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("AmmoMesh"));
     SetRootComponent(AmmoMesh);
