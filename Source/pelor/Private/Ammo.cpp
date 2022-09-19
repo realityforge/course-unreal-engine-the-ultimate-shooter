@@ -98,6 +98,8 @@ void AAmmo::OnPickupSphereOverlap([[maybe_unused]] UPrimitiveComponent* Overlapp
     if (nullptr != ShooterCharacter)
     {
         StartItemPickup(ShooterCharacter);
+        // Turn off collision detection on the PickupSphere so we don't try to pickup again as we move
+        // in and out of sphere as it moves to character or character moves away and back
         PickupSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
     }
 }
