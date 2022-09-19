@@ -94,8 +94,7 @@ void AAmmo::OnPickupSphereOverlap([[maybe_unused]] UPrimitiveComponent* Overlapp
                                   [[maybe_unused]] bool bFromSweep,
                                   [[maybe_unused]] const FHitResult& SweepResult)
 {
-    AShooterCharacter* ShooterCharacter = nullptr == OtherActor ? nullptr : Cast<AShooterCharacter>(OtherActor);
-    if (nullptr != ShooterCharacter)
+    if (AShooterCharacter* ShooterCharacter = OtherActor ? Cast<AShooterCharacter>(OtherActor) : nullptr)
     {
         StartItemPickup(ShooterCharacter);
         // Turn off collision detection on the PickupSphere so we don't try to pickup again as we move
