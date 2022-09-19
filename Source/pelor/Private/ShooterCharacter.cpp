@@ -854,6 +854,7 @@ void AShooterCharacter::PickupItem(AItem* Item)
     if (const auto Ammo = Cast<AAmmo>(Item))
     {
         PickupAmmo(Ammo);
+        TraceHitItem = nullptr;
     }
 }
 
