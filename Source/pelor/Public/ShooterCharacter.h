@@ -376,6 +376,24 @@ private:
 
     bool bAimingButtonPressed;
 
+    // The following are the locations where the weapon pickup and other items (i.e. Ammo)
+    // are presented on pickup
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+    USceneComponent* WeaponPresentationComponent;
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+    USceneComponent* PresentationComponent1;
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+    USceneComponent* PresentationComponent2;
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+    USceneComponent* PresentationComponent3;
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+    USceneComponent* PresentationComponent4;
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+    USceneComponent* PresentationComponent5;
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+    USceneComponent* PresentationComponent6;
+
     void UpdateFovBasedOnAimingStatus(float DeltaTime);
     void UpdateLookRateBasedOnAimingStatus();
     void CalculateCrosshairSpreadMultiplier(float DeltaTime);

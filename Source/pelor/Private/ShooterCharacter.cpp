@@ -151,7 +151,25 @@ AShooterCharacter::AShooterCharacter()
         GetCharacterMovement()->AirControl = 0.2F;
     }
 
-    HandSceneComponent = CreateDefaultSubobject<USceneComponent>("HandSceneComponent");
+    HandSceneComponent = CreateDefaultSubobject<USceneComponent>(TEXT("HandSceneComponent"));
+
+    // Places where we present the pick ups on the screen
+    WeaponPresentationComponent = CreateDefaultSubobject<USceneComponent>(TEXT("WeaponPresentationComponent"));
+    PresentationComponent1 = CreateDefaultSubobject<USceneComponent>(TEXT("PresentationComponent1"));
+    PresentationComponent2 = CreateDefaultSubobject<USceneComponent>(TEXT("PresentationComponent2"));
+    PresentationComponent3 = CreateDefaultSubobject<USceneComponent>(TEXT("PresentationComponent3"));
+    PresentationComponent4 = CreateDefaultSubobject<USceneComponent>(TEXT("PresentationComponent4"));
+    PresentationComponent5 = CreateDefaultSubobject<USceneComponent>(TEXT("PresentationComponent5"));
+    PresentationComponent6 = CreateDefaultSubobject<USceneComponent>(TEXT("PresentationComponent6"));
+
+    // Everytime we present an object it is relative to the camera
+    WeaponPresentationComponent->SetupAttachment(FollowCamera);
+    PresentationComponent1->SetupAttachment(FollowCamera);
+    PresentationComponent2->SetupAttachment(FollowCamera);
+    PresentationComponent3->SetupAttachment(FollowCamera);
+    PresentationComponent4->SetupAttachment(FollowCamera);
+    PresentationComponent5->SetupAttachment(FollowCamera);
+    PresentationComponent6->SetupAttachment(FollowCamera);
 }
 
 // Called when the game starts or when spawned
