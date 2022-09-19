@@ -4,6 +4,7 @@
 #include "Components/BoxComponent.h"
 #include "Components/SphereComponent.h"
 #include "Components/WidgetComponent.h"
+#include "ShooterCharacter.h"
 
 AAmmo::AAmmo() : AmmoType(EAmmoType::EAT_9mm), AmmoIconTexture(nullptr)
 {
@@ -20,11 +21,16 @@ AAmmo::AAmmo() : AmmoType(EAmmoType::EAT_9mm), AmmoIconTexture(nullptr)
     GetCollisionBox()->SetupAttachment(AmmoMesh);
     GetInfoBoxWidget()->SetupAttachment(AmmoMesh);
     GetAreaSphere()->SetupAttachment(AmmoMesh);
+
+    PickupSphere = CreateDefaultSubobject<USphereComponent>("AmmoCollisionSphere");
+    PickupSphere->SetupAttachment(AmmoMesh);
+    PickupSphere->SetSphereRadius(50.f);
 }
 
 void AAmmo::BeginPlay()
 {
     Super::BeginPlay();
+    PickupSphere->OnComponentBeginOverlap.AddDynamic(this, &AAmmo::OnPickupSphereOverlap);
 }
 
 void AAmmo::Tick(const float DeltaTime)
@@ -78,5 +84,20 @@ void AAmmo::ApplyPropertiesBasedOnCurrentItemState() const
             break;
         default:
             checkf(false, TEXT("Unknown ItemState %d"), GetItemState());
+    }
+}
+
+void AAmmo::OnPickupSphereOverlap([[maybe_unused]] UPrimitiveComponent* OverlappedComponent,
+                                  AActor* OtherActor,
+                                  [[maybe_unused]] UPrimitiveComponent* OtherComponent,
+                                  [[maybe_unused]] int32 OtherBodyIndex,
+                                  [[maybe_unused]] bool bFromSweep,
+                                  [[maybe_unused]] const FHitResult& SweepResult)
+{
+    AShooterCharacter* ShooterCharacter = nullptr == OtherActor ? nullptr : Cast<AShooterCharacter>(OtherActor);
+    if (nullptr != ShooterCharacter)
+    {
+        StartItemPickup(ShooterCharacter);
+        PickupSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
     }
 }

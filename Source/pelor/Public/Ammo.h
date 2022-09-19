@@ -24,6 +24,14 @@ protected:
     /** Override method so as to apply same transforms to AmmoMesh as to ItemMesh */
     virtual void ApplyPropertiesBasedOnCurrentItemState() const override;
 
+    UFUNCTION()
+    void OnPickupSphereOverlap(UPrimitiveComponent* OverlappedComponent,
+                               AActor* OtherActor,
+                               UPrimitiveComponent* OtherComponent,
+                               int32 OtherBodyIndex,
+                               bool bFromSweep,
+                               const FHitResult& SweepResult);
+
 public:
     virtual void Tick(float DeltaTime) override;
 
@@ -39,6 +47,10 @@ private:
     /** The texture for the ammo icon */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Ammo, meta = (AllowPrivateAccess = "true"))
     UTexture2D* AmmoIconTexture;
+
+    /** Character overlapping sphere causes the ammo to be picked up. */
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Ammo, meta = (AllowPrivateAccess = "true"))
+    USphereComponent* PickupSphere;
 
 public:
     FORCEINLINE UStaticMeshComponent* GetAmmoMesh() const { return AmmoMesh; };
