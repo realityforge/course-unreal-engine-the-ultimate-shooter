@@ -28,6 +28,20 @@ enum class ECombatState : uint8
     ECS_MAX UMETA(DisplayName = "DefaultMAX")
 };
 
+USTRUCT(BlueprintType)
+struct FPresentationLocation
+{
+    GENERATED_BODY()
+
+    /** Scene component to that identifies position to present item at */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+    USceneComponent* SceneComponent;
+
+    /** Number of items being presented at this time. */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+    int32 ItemCount;
+};
+
 UCLASS()
 class PELOR_API AShooterCharacter : public ACharacter
 {
@@ -394,6 +408,9 @@ private:
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
     USceneComponent* PresentationComponent6;
 
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+    TArray<FPresentationLocation> PresentationLocations;
+
     void UpdateFovBasedOnAimingStatus(float DeltaTime);
     void UpdateLookRateBasedOnAimingStatus();
     void CalculateCrosshairSpreadMultiplier(float DeltaTime);
@@ -443,6 +460,8 @@ private:
     UFUNCTION()
     void FinishCrosshairShootingImpactTimer();
 
+    void SetupPresentationLocations();
+
 public:
     FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
     FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; }
@@ -452,6 +471,7 @@ public:
     FORCEINLINE bool GetCrouching() const { return bCrouching; }
     float GetCrosshairSpreadMultiplier() const;
     FORCEINLINE int8 GetOverlappedItemCount() const { return OverlappedItemCount; }
+    FPresentationLocation GetPresentationLocationAt(int32 Index);
 
     /**
      * Add Amount to OverlappedItemCount and update bShouldTraceForItems if OverlappedItemCount > 0.

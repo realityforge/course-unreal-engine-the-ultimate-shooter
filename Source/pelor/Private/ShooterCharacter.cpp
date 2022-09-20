@@ -187,6 +187,8 @@ void AShooterCharacter::BeginPlay()
 
     InitializeAmmoMap();
     GetCharacterMovement()->MaxWalkSpeed = BaseMovementSpeed;
+
+    SetupPresentationLocations();
 }
 
 void AShooterCharacter::MouseLookRight(const float Value)
@@ -842,9 +844,26 @@ void AShooterCharacter::FinishCrosshairShootingImpactTimer()
     bCrosshairShootingImpactActive = false;
 }
 
+void AShooterCharacter::SetupPresentationLocations()
+{
+    // const FPresentationLocation WeaponPresentationLocation{ WeaponPresentationComponent, 0 };
+    PresentationLocations.Add(FPresentationLocation{ WeaponPresentationComponent, 0 });
+    PresentationLocations.Add(FPresentationLocation{ PresentationComponent1, 0 });
+    PresentationLocations.Add(FPresentationLocation{ PresentationComponent2, 0 });
+    PresentationLocations.Add(FPresentationLocation{ PresentationComponent3, 0 });
+    PresentationLocations.Add(FPresentationLocation{ PresentationComponent4, 0 });
+    PresentationLocations.Add(FPresentationLocation{ PresentationComponent5, 0 });
+    PresentationLocations.Add(FPresentationLocation{ PresentationComponent6, 0 });
+}
+
 float AShooterCharacter::GetCrosshairSpreadMultiplier() const
 {
     return CrosshairSpreadMultiplier;
+}
+
+FPresentationLocation AShooterCharacter::GetPresentationLocationAt(const int32 Index)
+{
+    return Index <= PresentationLocations.Num() ? PresentationLocations[Index] : FPresentationLocation();
 }
 
 void AShooterCharacter::IncrementOverlappedItemCount(const int8 Amount)
