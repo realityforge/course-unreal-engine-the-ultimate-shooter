@@ -27,6 +27,7 @@ AItem::AItem()
     , EquipSound(nullptr)
     , Character(nullptr)
     , ZCurveTime(0.7f)
+    , ItemType(EItemType::EIT_MAX)
 {
     // Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
     PrimaryActorTick.bCanEverTick = true;
