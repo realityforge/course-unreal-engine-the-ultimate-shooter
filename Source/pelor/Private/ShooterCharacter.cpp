@@ -87,6 +87,11 @@ AShooterCharacter::AShooterCharacter()
 
     , bAimingButtonPressed(false)
 
+    , bShouldPlayPickupSound(true)
+    , PickupSoundResetTime(0.2f)
+    , bShouldPlayEquipSound(true)
+    , EquipSoundResetTime(0.2f)
+
 {
     // Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need
     // it.
@@ -568,6 +573,16 @@ void AShooterCharacter::ReleaseClip()
     EquippedWeapon->SetMovingClip(false);
 }
 
+void AShooterCharacter::ResetPickupSoundTimer()
+{
+    bShouldPlayPickupSound = true;
+}
+
+void AShooterCharacter::ResetEquipSoundTimer()
+{
+    bShouldPlayEquipSound = true;
+}
+
 void AShooterCharacter::UpdateFovBasedOnAimingStatus(const float DeltaTime)
 {
     if (const float TargetFOV = bAiming ? CameraZoomedFOV : DefaultCameraFOV; CameraCurrentFOV != TargetFOV)
@@ -867,6 +882,24 @@ int32 AShooterCharacter::GetBestPresentationIndex()
         }
     }
     return CurrentIndex;
+}
+
+void AShooterCharacter::StartPickupSoundTimer()
+{
+    bShouldPlayPickupSound = false;
+    GetWorldTimerManager().SetTimer(PickupSoundTimer,
+                                    this,
+                                    &AShooterCharacter::ResetPickupSoundTimer,
+                                    PickupSoundResetTime);
+}
+
+void AShooterCharacter::StartEquipSoundTimer()
+{
+    bShouldPlayEquipSound = false;
+    GetWorldTimerManager().SetTimer(EquipSoundTimer,
+                                    this,
+                                    &AShooterCharacter::ResetEquipSoundTimer,
+                                    EquipSoundResetTime);
 }
 
 float AShooterCharacter::GetCrosshairSpreadMultiplier() const

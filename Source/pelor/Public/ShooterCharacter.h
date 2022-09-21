@@ -400,6 +400,24 @@ private:
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
     TArray<FPresentationLocation> PresentationLocations;
 
+    FTimerHandle PickupSoundTimer;
+    bool bShouldPlayPickupSound;
+
+    /** The time to wait until another pickup sound can play */
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Items, meta = (AllowPrivateAccess = "true"))
+    float PickupSoundResetTime;
+
+    void ResetPickupSoundTimer();
+
+    FTimerHandle EquipSoundTimer;
+    bool bShouldPlayEquipSound;
+
+    /** The time to wait until another equip sound can play */
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Items, meta = (AllowPrivateAccess = "true"))
+    float EquipSoundResetTime;
+
+    void ResetEquipSoundTimer();
+
     void UpdateFovBasedOnAimingStatus(float DeltaTime);
     void UpdateLookRateBasedOnAimingStatus();
     void CalculateCrosshairSpreadMultiplier(float DeltaTime);
@@ -458,6 +476,8 @@ public:
     FORCEINLINE ECombatState GetCombatState() const { return CombatState; }
     FORCEINLINE bool GetAiming() const { return bAiming; }
     FORCEINLINE bool GetCrouching() const { return bCrouching; }
+    FORCEINLINE bool ShouldPlayPickupSound() const { return bShouldPlayPickupSound; }
+    FORCEINLINE bool ShouldPlayEquipSound() const { return bShouldPlayEquipSound; }
     float GetCrosshairSpreadMultiplier() const;
     FORCEINLINE int8 GetOverlappedItemCount() const { return OverlappedItemCount; }
     FPresentationLocation GetPresentationLocationAt(int32 Index);
@@ -478,4 +498,7 @@ public:
      * presented in slot as a "better" presentation location.
      */
     int32 GetBestPresentationIndex();
+
+    void StartPickupSoundTimer();
+    void StartEquipSoundTimer();
 };

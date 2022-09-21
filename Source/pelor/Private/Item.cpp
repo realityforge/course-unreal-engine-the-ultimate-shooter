@@ -235,15 +235,16 @@ void AItem::OnCompletePickup()
 {
     if (Character)
     {
+        if (EquipSound && Character->ShouldPlayEquipSound())
+        {
+            Character->StartEquipSoundTimer();
+            UGameplayStatics::PlaySound2D(this, EquipSound);
+        }
+
         Character->DecrementItemCountAtPresentationLocation(PresentationIndex);
         PresentationIndex = 0;
         Character->PickupItem(this);
         Character = nullptr;
-    }
-
-    if (EquipSound)
-    {
-        UGameplayStatics::PlaySound2D(this, EquipSound);
     }
 
     // Reset scale back to normal
@@ -321,8 +322,9 @@ void AItem::StartItemPickup(AShooterCharacter* CharacterPerformingPickup)
 
     // Schedule a timer for completion of pickup
     GetWorldTimerManager().SetTimer(ItemPickupTimer, this, &AItem::OnCompletePickup, ZCurveTime);
-    if (PickupSound)
+    if (PickupSound && Character->ShouldPlayPickupSound())
     {
+        Character->StartPickupSoundTimer();
         UGameplayStatics::PlaySound2D(this, PickupSound);
     }
 }
