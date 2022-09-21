@@ -28,6 +28,7 @@ AItem::AItem()
     , Character(nullptr)
     , ZCurveTime(0.7f)
     , ItemType(EItemType::EIT_MAX)
+    , PresentationIndex(0)
 {
     // Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
     PrimaryActorTick.bCanEverTick = true;
@@ -234,6 +235,8 @@ void AItem::OnCompletePickup()
 {
     if (Character)
     {
+        Character->DecrementItemCountAtPresentationLocation(PresentationIndex);
+        PresentationIndex = 0;
         Character->PickupItem(this);
         Character = nullptr;
     }
@@ -261,7 +264,8 @@ void AItem::ItemPickingUpTick(const float DeltaTime)
         // thus we calculate the distance between StartLocation and ItemPresentationLocation
         // to determine the factor which we must multiple the ZCurveValue by to get Z of item
 
-        const FVector ItemPresentationLocation{ Character->GetItemPresentationLocation() };
+        const FVector ItemPresentationLocation =
+            Character->GetPresentationLocationAt(PresentationIndex).SceneComponent->GetComponentLocation();
 
         // Calculate a vector from start location to presentation location ... but only including z component
         // TODO: This is horrendously inefficient but trying not to deviate from course too much
@@ -301,6 +305,10 @@ void AItem::StartItemPickup(AShooterCharacter* CharacterPerformingPickup)
     checkf(CharacterPerformingPickup, TEXT("Character MUST be supplied"));
     // Character performing pickup
     Character = CharacterPerformingPickup;
+
+    PresentationIndex = Character->GetBestPresentationIndex();
+    Character->IncrementItemCountAtPresentationLocation(PresentationIndex);
+
     // Get the location of the item now as this is where we will start the pickup process
     ItemPickupStartLocation = GetActorLocation();
     bPickingUpActive = true;

@@ -185,6 +185,10 @@ private:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
     EItemType ItemType;
 
+    /** The index of presentation location that item is being presented */
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
+    int32 PresentationIndex;
+
     UFUNCTION()
     void OnAreaSphereOverlap(UPrimitiveComponent* OverlappedComponent,
                              AActor* OtherActor,

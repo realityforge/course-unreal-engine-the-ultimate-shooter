@@ -315,17 +315,6 @@ private:
     /** The item currently hit by our trace in TraceForItems ... may be null */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Combat, meta = (AllowPrivateAccess = "true"))
     AItem* TraceHitItem;
-    /**
-     * The distance forward of the camera that we want to present an Item during pickup.
-     * (This is combined with ItemPresentationElevation) to locate the Item presentation location.
-     */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Items, meta = (AllowPrivateAccess = "true"))
-    float ItemPresentationDistance;
-    /**
-     * The distance up of the camera that we want to present an Item during pickup.
-     */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Items, meta = (AllowPrivateAccess = "true"))
-    float ItemPresentationElevation;
 
     /** Map to keep track of ammo of the different ammo types */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Items, meta = (AllowPrivateAccess = "true"))
@@ -472,6 +461,8 @@ public:
     float GetCrosshairSpreadMultiplier() const;
     FORCEINLINE int8 GetOverlappedItemCount() const { return OverlappedItemCount; }
     FPresentationLocation GetPresentationLocationAt(int32 Index);
+    void IncrementItemCountAtPresentationLocation(int32 Index);
+    void DecrementItemCountAtPresentationLocation(int32 Index);
 
     /**
      * Add Amount to OverlappedItemCount and update bShouldTraceForItems if OverlappedItemCount > 0.
@@ -479,10 +470,12 @@ public:
      */
     void IncrementOverlappedItemCount(int8 Amount);
 
-    /**
-     * Returns the location where an item is presented to the user during a pickup sequence.
-     */
-    FVector GetItemPresentationLocation() const;
-
     void PickupItem(AItem* Item);
+
+    /**
+     * Return the index of PresentationLocation in PresentationLocations array that the next ammo pickup will
+     * be presented at. The presentation order is left ro right, with presentation location with less items being
+     * presented in slot as a "better" presentation location.
+     */
+    int32 GetBestPresentationIndex();
 };

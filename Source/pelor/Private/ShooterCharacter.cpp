@@ -67,10 +67,6 @@ AShooterCharacter::AShooterCharacter()
 
     , TraceHitItem(nullptr)
 
-    // Variables controlling where the item is presented
-    , ItemPresentationDistance(250.f)
-    , ItemPresentationElevation(65.f)
-
     // Ammo variables
     , Initial9mmAmmo(85)
     , InitialARAmmo(120)
@@ -856,6 +852,23 @@ void AShooterCharacter::SetupPresentationLocations()
     PresentationLocations.Add(FPresentationLocation{ PresentationComponent6, 0 });
 }
 
+int32 AShooterCharacter::GetBestPresentationIndex()
+{
+    int32 CurrentIndex = 1;
+    int32 LowestCount = INT_MAX;
+    const int32 Count = PresentationLocations.Num();
+    // Index 0 is Weapon presentation index so we skip it for ammo presentation
+    for (uint i = 1; i < Count; i++)
+    {
+        if (PresentationLocations[i].ItemCount < LowestCount)
+        {
+            LowestCount = PresentationLocations[i].ItemCount;
+            CurrentIndex = i;
+        }
+    }
+    return CurrentIndex;
+}
+
 float AShooterCharacter::GetCrosshairSpreadMultiplier() const
 {
     return CrosshairSpreadMultiplier;
@@ -866,20 +879,26 @@ FPresentationLocation AShooterCharacter::GetPresentationLocationAt(const int32 I
     return Index <= PresentationLocations.Num() ? PresentationLocations[Index] : FPresentationLocation();
 }
 
+void AShooterCharacter::IncrementItemCountAtPresentationLocation(const int32 Index)
+{
+    if (Index <= PresentationLocations.Num())
+    {
+        PresentationLocations[Index].ItemCount++;
+    }
+}
+
+void AShooterCharacter::DecrementItemCountAtPresentationLocation(int32 Index)
+{
+    if (Index <= PresentationLocations.Num())
+    {
+        PresentationLocations[Index].ItemCount--;
+    }
+}
+
 void AShooterCharacter::IncrementOverlappedItemCount(const int8 Amount)
 {
     OverlappedItemCount = FMath::Max(OverlappedItemCount + Amount, 0);
     bShouldTraceForItems = 0 != OverlappedItemCount;
-}
-
-FVector AShooterCharacter::GetItemPresentationLocation() const
-{
-    const FVector CameraWorldLocation{ FollowCamera->GetComponentLocation() };
-    const FVector CameraForward{ FollowCamera->GetForwardVector() };
-    // CameraUp is always up in the world as our camera does not allow tilting
-    // const FVector CameraUp{ FollowCamera->GetUpVector() };
-    return CameraWorldLocation + CameraForward * ItemPresentationDistance
-        + FVector(0.f, 0.f, ItemPresentationElevation);
 }
 
 void AShooterCharacter::PickupItem(AItem* Item)
