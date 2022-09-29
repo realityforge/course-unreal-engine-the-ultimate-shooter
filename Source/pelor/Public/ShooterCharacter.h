@@ -302,7 +302,7 @@ private:
      * It is triggered by looking at the item within the items AreaSphere.
      */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Items, meta = (AllowPrivateAccess = "true"))
-    const AItem* ItemShowingInfoBox;
+    AItem* ItemShowingInfoBox;
 
     /** The currently equipped weapon */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))

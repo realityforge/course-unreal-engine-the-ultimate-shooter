@@ -68,6 +68,9 @@ void AItem::BeginPlay()
         AreaSphere->OnComponentEndOverlap.AddDynamic(this, &AItem::OnAreaSphereEndOverlap);
     }
     ApplyPropertiesBasedOnCurrentItemState();
+
+    // Make sure we initialize the custom depth setup
+    InitializeCustomDepth();
 }
 
 // Called every frame
@@ -229,6 +232,21 @@ void AItem::ApplyPropertiesBasedOnCurrentItemState() const
         default:
             checkf(false, TEXT("Unknown ItemState %d"), ItemState);
     }
+}
+
+void AItem::InitializeCustomDepth()
+{
+    DisableCustomDepth();
+}
+
+void AItem::EnableCustomDepth()
+{
+    ItemMesh->SetRenderCustomDepth(true);
+}
+
+void AItem::DisableCustomDepth()
+{
+    ItemMesh->SetRenderCustomDepth(false);
 }
 
 void AItem::OnCompletePickup()

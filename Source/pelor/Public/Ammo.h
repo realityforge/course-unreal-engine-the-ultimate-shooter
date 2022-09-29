@@ -32,6 +32,9 @@ protected:
                                bool bFromSweep,
                                const FHitResult& SweepResult);
 
+    virtual void EnableCustomDepth() override;
+    virtual void DisableCustomDepth() override;
+
 public:
     virtual void Tick(float DeltaTime) override;
 

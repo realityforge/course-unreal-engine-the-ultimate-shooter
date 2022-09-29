@@ -102,3 +102,13 @@ void AAmmo::OnPickupSphereOverlap([[maybe_unused]] UPrimitiveComponent* Overlapp
         PickupSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
     }
 }
+
+void AAmmo::EnableCustomDepth()
+{
+    AmmoMesh->SetRenderCustomDepth(true);
+}
+
+void AAmmo::DisableCustomDepth()
+{
+    AmmoMesh->SetRenderCustomDepth(false);
+}

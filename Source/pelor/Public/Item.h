@@ -89,12 +89,19 @@ public:
     // Sets default values for this actor's properties
     AItem();
 
+    // These methods should probably be protected and we abstract the pickup
+
+    virtual void EnableCustomDepth();
+    virtual void DisableCustomDepth();
+
 protected:
     // Called when the game starts or when spawned
     virtual void BeginPlay() override;
 
     /** Sets the items properties based on the specified State */
     virtual void ApplyPropertiesBasedOnCurrentItemState() const;
+
+    virtual void InitializeCustomDepth();
 
 public:
     // Called every frame
