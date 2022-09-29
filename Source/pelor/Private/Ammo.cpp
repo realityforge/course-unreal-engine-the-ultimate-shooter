@@ -38,7 +38,7 @@ void AAmmo::Tick(const float DeltaTime)
     Super::Tick(DeltaTime);
 }
 
-void AAmmo::ApplyPropertiesBasedOnCurrentItemState() const
+void AAmmo::ApplyPropertiesBasedOnCurrentItemState()
 {
     Super::ApplyPropertiesBasedOnCurrentItemState();
 

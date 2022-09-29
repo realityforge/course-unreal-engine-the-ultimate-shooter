@@ -22,7 +22,7 @@ protected:
     virtual void BeginPlay() override;
 
     /** Override method so as to apply same transforms to AmmoMesh as to ItemMesh */
-    virtual void ApplyPropertiesBasedOnCurrentItemState() const override;
+    virtual void ApplyPropertiesBasedOnCurrentItemState() override;
 
     UFUNCTION()
     void OnPickupSphereOverlap(UPrimitiveComponent* OverlappedComponent,

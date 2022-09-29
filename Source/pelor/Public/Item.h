@@ -100,7 +100,7 @@ protected:
     virtual void BeginPlay() override;
 
     /** Sets the items properties based on the specified State */
-    virtual void ApplyPropertiesBasedOnCurrentItemState() const;
+    virtual void ApplyPropertiesBasedOnCurrentItemState();
 
     virtual void InitializeCustomDepth();
 

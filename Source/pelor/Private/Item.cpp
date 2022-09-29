@@ -176,7 +176,7 @@ void AItem::DeriveActiveStars()
     }
 }
 
-void AItem::ApplyPropertiesBasedOnCurrentItemState() const
+void AItem::ApplyPropertiesBasedOnCurrentItemState()
 {
     switch (ItemState)
     {
@@ -196,6 +196,10 @@ void AItem::ApplyPropertiesBasedOnCurrentItemState() const
             break;
 
         case EItemState::EIS_Dropping:
+
+            // Re-enable glowing on dropping
+            EnableGlowMaterial();
+
             ItemMesh->SetSimulatePhysics(true);
             ItemMesh->SetEnableGravity(true);
             ItemMesh->SetVisibility(true);
@@ -218,6 +222,12 @@ void AItem::ApplyPropertiesBasedOnCurrentItemState() const
             {
                 InfoBoxWidget->SetVisibility(false);
             }
+            // Stop glowing post equip
+            DisableGlowMaterial();
+
+            // Stop outline post equip
+            DisableCustomDepth();
+
             ItemMesh->SetSimulatePhysics(false);
             ItemMesh->SetEnableGravity(false);
             ItemMesh->SetVisibility(true);
@@ -238,6 +248,10 @@ void AItem::ApplyPropertiesBasedOnCurrentItemState() const
             {
                 InfoBoxWidget->SetVisibility(false);
             }
+
+            // Stop glowing post equip
+            DisableGlowMaterial();
+
             ItemMesh->SetSimulatePhysics(false);
             ItemMesh->SetEnableGravity(false);
             ItemMesh->SetVisibility(true);
@@ -302,11 +316,6 @@ void AItem::OnCompletePickup()
 
     // Reset scale back to normal
     SetActorScale3D(FVector(1));
-
-    // Stop glowing post pickup
-    DisableGlowMaterial();
-    // Stop outline effect
-    DisableCustomDepth();
 
     bPickingUpActive = false;
 }

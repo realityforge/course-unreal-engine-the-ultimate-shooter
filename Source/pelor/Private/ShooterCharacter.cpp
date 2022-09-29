@@ -685,10 +685,6 @@ void AShooterCharacter::SetItemInfoBoxVisibility(const bool bVisibility) const
         {
             ItemShowingInfoBox->EnableCustomDepth();
         }
-        else
-        {
-            ItemShowingInfoBox->DisableCustomDepth();
-        }
     }
 }
 
@@ -793,16 +789,6 @@ void AShooterCharacter::EquipWeapon(AWeapon* Weapon)
         // Actually record the weapon as equipped
         EquippedWeapon = Weapon;
         EquippedWeapon->UpdateItemState(EItemState::EIS_Equipped);
-
-        // We do the following here ... because this project has lots of bad code.
-        // In my own project I would probably clear these states in UpdateItemState
-        // Now we do it here and in Item::OnCompletePickup() so that both default
-        // weapon and other picked up items (i.e. ammo) are all setup correctly
-
-        // Stop glowing post equip
-        Weapon->DisableGlowMaterial();
-        // Stop outline post equip
-        Weapon->DisableCustomDepth();
     }
 }
 
