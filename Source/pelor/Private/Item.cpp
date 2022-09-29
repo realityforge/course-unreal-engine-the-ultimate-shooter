@@ -83,6 +83,27 @@ void AItem::Tick(const float DeltaTime)
     ItemPickingUpTick(DeltaTime);
 }
 
+void AItem::EnableGlowMaterial()
+{
+    SetGlowBlendAlpha(0.f);
+}
+
+// ReSharper disable once CppMemberFunctionMayBeConst
+void AItem::SetGlowBlendAlpha(const float Value)
+{
+    if (DynamicMaterialInstance)
+    {
+        // GlowBlendAlpha is the name of the parameter in M_SMG that controls whether material
+        // purely "glow" (value = 0) or purely smg (value = 1)
+        DynamicMaterialInstance->SetScalarParameterValue(TEXT("GlowBlendAlpha"), Value);
+    }
+}
+
+void AItem::DisableGlowMaterial()
+{
+    SetGlowBlendAlpha(1.f);
+}
+
 // ReSharper disable once CppMemberFunctionMayBeConst
 void AItem::OnAreaSphereOverlap([[maybe_unused]] UPrimitiveComponent* OverlappedComponent,
                                 AActor* OtherActor,
@@ -249,6 +270,7 @@ void AItem::OnConstruction(const FTransform& Transform)
         // Create a material instance dynamic parented to the "MaterialInstance".
         DynamicMaterialInstance = UMaterialInstanceDynamic::Create(MaterialInstance, this);
         ItemMesh->SetMaterial(MaterialIndex, DynamicMaterialInstance);
+        EnableGlowMaterial();
     }
 }
 
@@ -280,6 +302,11 @@ void AItem::OnCompletePickup()
 
     // Reset scale back to normal
     SetActorScale3D(FVector(1));
+
+    // Stop glowing post pickup
+    DisableGlowMaterial();
+    // Stop outline effect
+    DisableCustomDepth();
 
     bPickingUpActive = false;
 }

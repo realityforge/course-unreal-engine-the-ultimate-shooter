@@ -114,6 +114,10 @@ public:
     // Called every frame
     virtual void Tick(float DeltaTime) override;
 
+    void EnableGlowMaterial();
+    void SetGlowBlendAlpha(float Value);
+    void DisableGlowMaterial();
+
     // private section for state for actor
 
 private:
