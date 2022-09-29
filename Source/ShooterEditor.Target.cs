@@ -3,11 +3,11 @@
 using UnrealBuildTool;
 using System.Collections.Generic;
 
-public class pelorTarget : TargetRules
+public class ShooterEditorTarget : TargetRules
 {
-	public pelorTarget(TargetInfo Target) : base(Target)
+	public ShooterEditorTarget(TargetInfo Target) : base(Target)
 	{
-		Type = TargetType.Game;
+		Type = TargetType.Editor;
 		DefaultBuildSettings = BuildSettingsVersion.V2;
 
 		ExtraModuleNames.AddRange( new string[] { "pelor" } );
