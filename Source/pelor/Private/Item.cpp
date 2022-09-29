@@ -29,6 +29,9 @@ AItem::AItem()
     , ZCurveTime(0.7f)
     , ItemType(EItemType::EIT_MAX)
     , PresentationIndex(0)
+    , MaterialIndex(0)
+    , DynamicMaterialInstance(nullptr)
+    , MaterialInstance(nullptr)
 {
     // Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
     PrimaryActorTick.bCanEverTick = true;
@@ -237,6 +240,16 @@ void AItem::ApplyPropertiesBasedOnCurrentItemState() const
 void AItem::InitializeCustomDepth()
 {
     DisableCustomDepth();
+}
+
+void AItem::OnConstruction(const FTransform& Transform)
+{
+    if (MaterialInstance)
+    {
+        // Create a material instance dynamic parented to the "MaterialInstance".
+        DynamicMaterialInstance = UMaterialInstanceDynamic::Create(MaterialInstance, this);
+        ItemMesh->SetMaterial(MaterialIndex, DynamicMaterialInstance);
+    }
 }
 
 void AItem::EnableCustomDepth()

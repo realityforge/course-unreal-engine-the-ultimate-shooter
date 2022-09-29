@@ -7,6 +7,7 @@
 #include "Item.generated.h"
 
 class AShooterCharacter;
+class UMaterialInstanceDynamic;
 class UBoxComponent;
 class UCurveFloat;
 class USoundCue;
@@ -104,6 +105,12 @@ protected:
     virtual void InitializeCustomDepth();
 
 public:
+    /**
+     * Called when an instance of this class is placed (in editor) or spawned.
+     * This is the C++ version of the "Blueprint Construction Script"
+     * @param	Transform			The transform the actor was constructed at.
+     */
+    virtual void OnConstruction(const FTransform& Transform) override;
     // Called every frame
     virtual void Tick(float DeltaTime) override;
 
@@ -195,6 +202,21 @@ private:
     /** The index of presentation location that item is being presented */
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
     int32 PresentationIndex;
+
+    // Index of material we want to modify at runtime
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
+    int32 MaterialIndex;
+
+    /**
+     * Dynamic instance that we can change at runtime.
+     * Set in C++ from MaterialInstance ... so no need to edit elsewhere.
+     */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
+    UMaterialInstanceDynamic* DynamicMaterialInstance;
+
+    /** MaterialInstance used with DynamicMaterialInstance that can be configured in blueprints. */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
+    UMaterialInstance* MaterialInstance;
 
     UFUNCTION()
     void OnAreaSphereOverlap(UPrimitiveComponent* OverlappedComponent,
