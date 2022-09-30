@@ -21,7 +21,6 @@ void AWeapon::Tick(const float DeltaTime)
 
     if (GetItemState() == EItemState::EIS_Dropping && bFalling)
     {
-        UE_LOG(LogTemp, Warning, TEXT("Falling and dropping"));
         // If the item is dropping we ensure that it still remains upright.
         // (i.e. no roll and no pitch values - just yaw)
         const FRotator MeshRotation{ 0.F, GetItemMesh()->GetComponentRotation().Yaw, 0.F };
