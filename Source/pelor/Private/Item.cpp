@@ -231,6 +231,7 @@ void AItem::ApplyPropertiesBasedOnCurrentItemState()
             CollisionBox->SetCollisionResponseToAllChannels(ECR_Ignore);
             CollisionBox->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
             CollisionBox->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+            TriggerPulseTimer();
             break;
 
         case EItemState::EIS_Dropping:
@@ -286,6 +287,7 @@ void AItem::ApplyPropertiesBasedOnCurrentItemState()
             {
                 InfoBoxWidget->SetVisibility(false);
             }
+            GetWorldTimerManager().ClearTimer(PulseTimer);
 
             // Stop glowing post equip
             DisableGlowMaterial();
