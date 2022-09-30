@@ -696,7 +696,7 @@ void AShooterCharacter::TraceForItems()
         if (FHitResult ItemTraceResult; TraceCrosshairToWorld(ItemTraceResult, Ignored))
         {
             // if trace touched an actor, try to resolve if into an Item. Cast will go to NULL if actor is not an item
-            if (TraceHitItem = Cast<AItem>(ItemTraceResult.GetActor()); nullptr != TraceHitItem)
+            if (TraceHitItem = Cast<AItem>(ItemTraceResult.GetActor()); TraceHitItem)
             {
                 if (ItemShowingInfoBox != TraceHitItem)
                 {
