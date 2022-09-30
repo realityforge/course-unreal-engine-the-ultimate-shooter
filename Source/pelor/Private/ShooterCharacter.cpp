@@ -685,6 +685,10 @@ void AShooterCharacter::SetItemInfoBoxVisibility(const bool bVisibility) const
         {
             ItemShowingInfoBox->EnableCustomDepth();
         }
+        else
+        {
+            ItemShowingInfoBox->DisableCustomDepth();
+        }
     }
 }
 

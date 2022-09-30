@@ -36,6 +36,7 @@ AItem::AItem()
 
     // Dynamic Material Pulse Curve
     , PulseCurve(nullptr)
+    , EquippingPulseCurve(nullptr)
     , PulseCurveTime(5.f)
 
     // Dynamic Material Parameters
@@ -119,11 +120,17 @@ void AItem::DisableGlowMaterial()
 // ReSharper disable once CppMemberFunctionMayBeConst
 void AItem::UpdatePulseParameters()
 {
-    if (EItemState::EIS_Dropped == GetItemState() && PulseCurve && DynamicMaterialInstance)
+    // ReSharper disable once CppTooWideScopeInitStatement
+    const UCurveVector* Curve = EItemState::EIS_Dropped == GetItemState() ? PulseCurve
+        : EItemState::EIS_Equipping == GetItemState()                     ? EquippingPulseCurve
+                                                                          : nullptr;
+    if (Curve && DynamicMaterialInstance)
     {
         // The time that has passed since we started the timer
-        const float ElapsedTime = GetWorldTimerManager().GetTimerElapsed(PulseTimer);
-        const FVector CurveValue = PulseCurve->GetVectorValue(ElapsedTime);
+        const float ElapsedTime = GetWorldTimerManager().GetTimerElapsed(
+            EItemState::EIS_Dropped == GetItemState() ? PulseTimer : ItemPickupTimer);
+
+        const FVector CurveValue = Curve->GetVectorValue(ElapsedTime);
 
         // Convert the curve values multiplied by the factors configured for actor as parameters for dynamic material
 
@@ -288,9 +295,6 @@ void AItem::ApplyPropertiesBasedOnCurrentItemState()
                 InfoBoxWidget->SetVisibility(false);
             }
             GetWorldTimerManager().ClearTimer(PulseTimer);
-
-            // Stop glowing post equip
-            DisableGlowMaterial();
 
             ItemMesh->SetSimulatePhysics(false);
             ItemMesh->SetEnableGravity(false);

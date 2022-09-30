@@ -229,6 +229,10 @@ private:
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
     UCurveVector* PulseCurve;
 
+    /** Curve to drive dynamic Material properties during equipping */
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
+    UCurveVector* EquippingPulseCurve;
+
     FTimerHandle PulseTimer;
 
     /** Duration of the PulseTimer */
