@@ -5,6 +5,7 @@
 #include "Components/BoxComponent.h"
 #include "Components/SphereComponent.h"
 #include "Components/WidgetComponent.h"
+#include "Curves/CurveVector.h"
 #include "Kismet/GameplayStatics.h"
 #include "ShooterCharacter.h"
 #include "Sound/SoundCue.h"
@@ -32,6 +33,15 @@ AItem::AItem()
     , MaterialIndex(0)
     , DynamicMaterialInstance(nullptr)
     , MaterialInstance(nullptr)
+
+    // Dynamic Material Pulse Curve
+    , PulseCurve(nullptr)
+    , PulseCurveTime(5.f)
+
+    // Dynamic Material Parameters
+    , GlowAmount(15.f)
+    , FresnelExponent(3.f)
+    , FresnelReflectFraction(4.f)
 {
     // Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
     PrimaryActorTick.bCanEverTick = true;
@@ -74,6 +84,7 @@ void AItem::BeginPlay()
 
     // Make sure we initialize the custom depth setup
     InitializeCustomDepth();
+    TriggerPulseTimer();
 }
 
 // Called every frame
@@ -81,6 +92,7 @@ void AItem::Tick(const float DeltaTime)
 {
     Super::Tick(DeltaTime);
     ItemPickingUpTick(DeltaTime);
+    UpdatePulseParameters();
 }
 
 void AItem::EnableGlowMaterial()
@@ -102,6 +114,32 @@ void AItem::SetGlowBlendAlpha(const float Value)
 void AItem::DisableGlowMaterial()
 {
     SetGlowBlendAlpha(1.f);
+}
+
+// ReSharper disable once CppMemberFunctionMayBeConst
+void AItem::UpdatePulseParameters()
+{
+    if (EItemState::EIS_Dropped == GetItemState() && PulseCurve)
+    {
+        // The time that has passed since we started the timer
+        const float ElapsedTime = GetWorldTimerManager().GetTimerElapsed(PulseTimer);
+        const FVector CurveValue = PulseCurve->GetVectorValue(ElapsedTime);
+
+        // Convert the curve values multiplied by the factors configured for actor as parameters for dynamic material
+
+        DynamicMaterialInstance->SetScalarParameterValue(TEXT("GlowDegree"), CurveValue.X * GlowAmount);
+        DynamicMaterialInstance->SetScalarParameterValue(TEXT("FresnelExponent"), CurveValue.Y * FresnelExponent);
+        DynamicMaterialInstance->SetScalarParameterValue(TEXT("FresnelBaseReflectFraction"),
+                                                         CurveValue.Z * FresnelReflectFraction);
+    }
+}
+
+void AItem::TriggerPulseTimer()
+{
+    if (EItemState::EIS_Dropped == GetItemState())
+    {
+        GetWorldTimerManager().SetTimer(PulseTimer, this, &AItem::TriggerPulseTimer, PulseCurveTime);
+    }
 }
 
 // ReSharper disable once CppMemberFunctionMayBeConst

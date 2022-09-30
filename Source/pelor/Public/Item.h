@@ -7,6 +7,7 @@
 #include "Item.generated.h"
 
 class AShooterCharacter;
+class UCurveVector;
 class UMaterialInstanceDynamic;
 class UBoxComponent;
 class UCurveFloat;
@@ -118,6 +119,8 @@ public:
     void SetGlowBlendAlpha(float Value);
     void DisableGlowMaterial();
 
+    void UpdatePulseParameters();
+
     // private section for state for actor
 
 private:
@@ -221,6 +224,28 @@ private:
     /** MaterialInstance used with DynamicMaterialInstance that can be configured in blueprints. */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
     UMaterialInstance* MaterialInstance;
+
+    /** Curve to drive dynamic Material properties */
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
+    UCurveVector* PulseCurve;
+
+    FTimerHandle PulseTimer;
+
+    /** Duration of the PulseTimer */
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
+    float PulseCurveTime;
+
+    // The following values are extracted from PulseCurve and set from C++ and used to set DynamicMaterialInstance
+    // from C++ and thus are not accessible from Blueprints
+
+    UPROPERTY(VisibleAnywhere, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
+    float GlowAmount;
+    UPROPERTY(VisibleAnywhere, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
+    float FresnelExponent;
+    UPROPERTY(VisibleAnywhere, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
+    float FresnelReflectFraction;
+
+    void TriggerPulseTimer();
 
     UFUNCTION()
     void OnAreaSphereOverlap(UPrimitiveComponent* OverlappedComponent,
