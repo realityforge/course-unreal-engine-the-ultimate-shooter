@@ -119,7 +119,7 @@ void AItem::DisableGlowMaterial()
 // ReSharper disable once CppMemberFunctionMayBeConst
 void AItem::UpdatePulseParameters()
 {
-    if (EItemState::EIS_Dropped == GetItemState() && PulseCurve)
+    if (EItemState::EIS_Dropped == GetItemState() && PulseCurve && DynamicMaterialInstance)
     {
         // The time that has passed since we started the timer
         const float ElapsedTime = GetWorldTimerManager().GetTimerElapsed(PulseTimer);
