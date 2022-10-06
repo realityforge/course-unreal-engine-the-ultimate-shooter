@@ -179,6 +179,10 @@ void AShooterCharacter::BeginPlay()
     Super::BeginPlay();
 
     EquipWeapon(SpawnDefaultWeapon());
+    if (EquippedWeapon)
+    {
+        Inventory.Add(EquippedWeapon);
+    }
 
     if (nullptr != FollowCamera)
     {
@@ -948,7 +952,15 @@ void AShooterCharacter::PickupItem(AItem* Item)
 {
     if (const auto Weapon = Cast<AWeapon>(Item))
     {
-        SwapWeapon(Weapon);
+        if (Inventory.Num() < INVENTORY_CAPACITY)
+        {
+            Inventory.Add(Weapon);
+        }
+        else
+        {
+            // Inventory is full so swap with current equipped weapon
+            SwapWeapon(Weapon);
+        }
     }
     if (const auto Ammo = Cast<AAmmo>(Item))
     {

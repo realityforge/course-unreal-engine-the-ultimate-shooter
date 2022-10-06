@@ -416,6 +416,12 @@ private:
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Items, meta = (AllowPrivateAccess = "true"))
     float EquipSoundResetTime;
 
+    /** The items held in our inventory */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Inventory, meta = (AllowPrivateAccess = "true"))
+    TArray<AItem*> Inventory;
+
+    const int32 INVENTORY_CAPACITY{ 6 /* 1 default + 5 other slots */ };
+
     void ResetEquipSoundTimer();
 
     void UpdateFovBasedOnAimingStatus(float DeltaTime);

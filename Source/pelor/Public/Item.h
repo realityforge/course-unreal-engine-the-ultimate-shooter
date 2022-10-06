@@ -249,6 +249,14 @@ private:
     UPROPERTY(VisibleAnywhere, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
     float FresnelReflectFraction;
 
+    /** Background for this item in inventory. */
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Inventory, meta = (AllowPrivateAccess = "true"))
+    UTexture2D* IconBackground;
+
+    /** Icon for this item in inventory. */
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Inventory, meta = (AllowPrivateAccess = "true"))
+    UTexture2D* IconInventory;
+
     void TriggerPulseTimer();
 
     UFUNCTION()
