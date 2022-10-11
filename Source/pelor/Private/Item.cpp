@@ -44,6 +44,8 @@ AItem::AItem()
     , FresnelExponent(3.f)
     , FresnelReflectFraction(4.f)
 
+    , IconBackground(nullptr)
+    , IconInventory(nullptr)
     , AmmoIcon(nullptr)
 {
     // Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
