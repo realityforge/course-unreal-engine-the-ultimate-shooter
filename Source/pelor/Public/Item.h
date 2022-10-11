@@ -261,6 +261,10 @@ private:
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Inventory, meta = (AllowPrivateAccess = "true"))
     UTexture2D* AmmoIcon;
 
+    /** Slot in the Inventory array */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Inventory, meta = (AllowPrivateAccess = "true"))
+    int32 InventoryIndex;
+
     void TriggerPulseTimer();
 
     UFUNCTION()
@@ -302,6 +306,8 @@ public:
 
     FORCEINLINE int32 GetItemCount() const { return ItemCount; }
     FORCEINLINE USkeletalMeshComponent* GetItemMesh() const { return ItemMesh; }
+    FORCEINLINE int32 GetInventoryIndex() const { return InventoryIndex; }
+    FORCEINLINE void SetInventoryIndex(const int32 InventoryIndex) { this->InventoryIndex = InventoryIndex; }
 
     /** Called by character class when they start the pickup process */
     void StartItemPickup(AShooterCharacter* CharacterPerformingPickup);

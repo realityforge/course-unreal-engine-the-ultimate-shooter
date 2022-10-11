@@ -182,6 +182,7 @@ void AShooterCharacter::BeginPlay()
     if (EquippedWeapon)
     {
         Inventory.Add(EquippedWeapon);
+        EquippedWeapon->SetInventoryIndex(0);
     }
 
     if (nullptr != FollowCamera)
@@ -954,6 +955,8 @@ void AShooterCharacter::PickupItem(AItem* Item)
     {
         if (Inventory.Num() < INVENTORY_CAPACITY)
         {
+            // Set the inventory index on item when we place it in the inventory
+            Weapon->SetInventoryIndex(Inventory.Num());
             Inventory.Add(Weapon);
             Weapon->UpdateItemState(EItemState::EIS_Carried);
         }
