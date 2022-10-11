@@ -307,7 +307,7 @@ public:
     FORCEINLINE int32 GetItemCount() const { return ItemCount; }
     FORCEINLINE USkeletalMeshComponent* GetItemMesh() const { return ItemMesh; }
     FORCEINLINE int32 GetInventoryIndex() const { return InventoryIndex; }
-    FORCEINLINE void SetInventoryIndex(const int32 InventoryIndex) { this->InventoryIndex = InventoryIndex; }
+    FORCEINLINE void SetInventoryIndex(const int32 NewInventoryIndex) { InventoryIndex = NewInventoryIndex; }
 
     /** Called by character class when they start the pickup process */
     void StartItemPickup(AShooterCharacter* CharacterPerformingPickup);
