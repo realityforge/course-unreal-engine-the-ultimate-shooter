@@ -257,6 +257,10 @@ private:
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Inventory, meta = (AllowPrivateAccess = "true"))
     UTexture2D* IconInventory;
 
+    /** Icon for the ammo associated with item in inventory. */
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Inventory, meta = (AllowPrivateAccess = "true"))
+    UTexture2D* AmmoIcon;
+
     void TriggerPulseTimer();
 
     UFUNCTION()

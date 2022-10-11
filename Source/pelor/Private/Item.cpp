@@ -43,6 +43,8 @@ AItem::AItem()
     , GlowAmount(15.f)
     , FresnelExponent(3.f)
     , FresnelReflectFraction(4.f)
+
+    , AmmoIcon(nullptr)
 {
     // Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
     PrimaryActorTick.bCanEverTick = true;
