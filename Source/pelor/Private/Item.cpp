@@ -313,7 +313,30 @@ void AItem::ApplyPropertiesBasedOnCurrentItemState()
             CollisionBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
             break;
         case EItemState::EIS_Carried:
-            checkf(false, TEXT("EIS_Carried not yet implemented"));
+            // Make sure we hide the widget once we equip the item if it is currently visible.
+            // Useful when we are picking it up off the ground
+            if (InfoBoxWidget)
+            {
+                InfoBoxWidget->SetVisibility(false);
+            }
+            // Stop glowing post equip
+            DisableGlowMaterial();
+
+            // Stop outline post equip
+            DisableCustomDepth();
+
+            ItemMesh->SetSimulatePhysics(false);
+            ItemMesh->SetEnableGravity(false);
+            ItemMesh->SetVisibility(false);
+            ItemMesh->SetCollisionResponseToAllChannels(ECR_Ignore);
+            ItemMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+            AreaSphere->SetCollisionResponseToAllChannels(ECR_Ignore);
+            AreaSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+            CollisionBox->SetCollisionResponseToAllChannels(ECR_Ignore);
+            CollisionBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
             break;
         default:
             checkf(false, TEXT("Unknown ItemState %d"), ItemState);

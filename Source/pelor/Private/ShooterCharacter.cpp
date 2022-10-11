@@ -955,6 +955,7 @@ void AShooterCharacter::PickupItem(AItem* Item)
         if (Inventory.Num() < INVENTORY_CAPACITY)
         {
             Inventory.Add(Weapon);
+            Weapon->UpdateItemState(EItemState::EIS_Carried);
         }
         else
         {
