@@ -98,14 +98,6 @@ void UShooterAnimInstance::UpdateAnimationProperties(float DeltaTime)
             OffsetState = EOffsetState::EOS_Hip;
         }
     }
-    if (GEngine)
-    {
-        GEngine->AddOnScreenDebugMessage(1,
-                                         -1,
-                                         FColor::White,
-                                         FString::Printf(TEXT("MovementOffsetYaw=%f"), MovementOffsetYaw));
-        GEngine->AddOnScreenDebugMessage(9, -1, FColor::White, FString::Printf(TEXT("Speed=%f"), Speed));
-    }
 }
 
 void UShooterAnimInstance::NativeInitializeAnimation()
