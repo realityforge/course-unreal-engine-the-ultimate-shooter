@@ -24,6 +24,8 @@ enum class ECombatState : uint8
     ECS_Firing UMETA(DisplayName = "Firing"),
     // Character is reloading
     ECS_Reloading UMETA(DisplayName = "Reloading"),
+    // Character is equipping an item
+    ECS_Equipping UMETA(DisplayName = "Equipping"),
 
     ECS_MAX UMETA(DisplayName = "DefaultMAX")
 };
@@ -131,6 +133,10 @@ protected:
     /** Called from animation reload montage when hand releases clip after placing it back in */
     UFUNCTION(BlueprintCallable)
     void ReleaseClip();
+
+    /** Called from animation equip montage when equip is complete */
+    UFUNCTION(BlueprintCallable)
+    void FinishEquip();
 
 public:
     // Called every frame
@@ -337,6 +343,10 @@ private:
     /** Animation when reloading occurs */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
     UAnimMontage* ReloadMontage;
+
+    /** Animation when equipping occurs */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
+    UAnimMontage* EquipMontage;
 
     /*
      * During reloads, we show the character grabbing the clip and replacing the clip. The way we have

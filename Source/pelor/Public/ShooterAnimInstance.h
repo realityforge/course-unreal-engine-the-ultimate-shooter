@@ -128,6 +128,10 @@ private:
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Crouching, meta = (AllowPrivateAccess = "true"))
     bool bCrouching;
 
+    /** True when the character is equipping */
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Crouching, meta = (AllowPrivateAccess = "true"))
+    bool bEquipping;
+
     /** Change the strength of the recoil based on whether character is turning in place or aiming */
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
     float RecoilStrength;

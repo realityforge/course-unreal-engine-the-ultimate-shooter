@@ -73,6 +73,7 @@ AShooterCharacter::AShooterCharacter()
 
     // Combat variables
     , CombatState(ECombatState::ECS_Idle)
+    , EquipMontage(nullptr)
 
     // Crouching variables
     , bCrouching(false)
@@ -578,6 +579,11 @@ void AShooterCharacter::ReleaseClip()
     EquippedWeapon->SetMovingClip(false);
 }
 
+void AShooterCharacter::FinishEquip()
+{
+    CombatState = ECombatState::ECS_Idle;
+}
+
 void AShooterCharacter::ResetPickupSoundTimer()
 {
     bShouldPlayPickupSound = true;
@@ -855,6 +861,16 @@ void AShooterCharacter::EquipWeapon(AWeapon* Weapon)
         // Actually record the weapon as equipped
         EquippedWeapon = Weapon;
         EquippedWeapon->UpdateItemState(EItemState::EIS_Equipped);
+        // If it is not the first equip and we have an EquipMontage configured then start the animation montage
+        if (-1 != OldInventoryIndex && EquipMontage)
+        {
+            if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance(); EquipMontage && AnimInstance)
+            {
+                AnimInstance->Montage_Play(EquipMontage);
+                AnimInstance->Montage_JumpToSection(FName("Equip"));
+            }
+            CombatState = ECombatState::ECS_Equipping;
+        }
     }
 }
 

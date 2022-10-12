@@ -47,6 +47,9 @@ void UShooterAnimInstance::UpdateAnimationProperties(float DeltaTime)
         // Set flag for exposure to animation blueprints when character is reloading
         bReloading = ECombatState::ECS_Reloading == ShooterCharacter->GetCombatState();
 
+        // Set flag for exposure to animation blueprints when character is equipping
+        bEquipping = ECombatState::ECS_Equipping == ShooterCharacter->GetCombatState();
+
         // Extract the lateral velocity and place in Speed variable
         {
             FVector Velocity{ ShooterCharacter->GetVelocity() };
@@ -176,7 +179,7 @@ void UShooterAnimInstance::CalculateRecoilStrength()
     // Note: This is a bit of a mess ... but I didn't want to vary too much from tutorial
     //  in case can not figure out stuff in future lessons. In part most of this is just attempting to get
     //  the feel of the animation "right"
-    if (bReloading)
+    if (bReloading || bEquipping)
     {
         // Recoil strength also determines the weighting of the reloading animation slot
         // so we have to set it to 1 while reloading so we see reloading animation in all
