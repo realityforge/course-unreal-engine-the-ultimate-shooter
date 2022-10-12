@@ -73,6 +73,7 @@ AShooterCharacter::AShooterCharacter()
 
     // Combat variables
     , CombatState(ECombatState::ECS_Idle)
+    , ReloadMontage(nullptr)
     , EquipMontage(nullptr)
 
     // Crouching variables
