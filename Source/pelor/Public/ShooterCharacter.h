@@ -42,6 +42,8 @@ struct FPresentationLocation
     int32 ItemCount;
 };
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FEquipItemDelegate, int32, OldInventoryIndex, int32, NewInventoryIndex);
+
 UCLASS()
 class PELOR_API AShooterCharacter : public ACharacter
 {
@@ -421,6 +423,10 @@ private:
     TArray<AItem*> Inventory;
 
     const int32 INVENTORY_CAPACITY{ 6 /* 1 default + 5 other slots */ };
+
+    /** Delegate for sending InventoryIndex information to InventoryBar when Equipping Weapon */
+    UPROPERTY(BlueprintAssignable, Category = Delegates, meta = (AllowPrivateAccess = "true"))
+    FEquipItemDelegate EquipItemDelegate;
 
     void ResetEquipSoundTimer();
 
