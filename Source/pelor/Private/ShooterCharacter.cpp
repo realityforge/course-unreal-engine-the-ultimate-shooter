@@ -881,6 +881,7 @@ void AShooterCharacter::SwapWeapon(AWeapon* WeaponToSwap)
     {
         // Swap the weapon we have equipped with current equipped inventory
         Inventory[EquippedWeaponInventoryIndex] = WeaponToSwap;
+        WeaponToSwap->SetInventoryIndex(EquippedWeaponInventoryIndex);
     }
     else
     {
