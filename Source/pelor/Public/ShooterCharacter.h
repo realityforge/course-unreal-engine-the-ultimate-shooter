@@ -27,7 +27,7 @@ enum class ECombatState : uint8
     // Character is equipping an item
     ECS_Equipping UMETA(DisplayName = "Equipping"),
 
-    ECS_MAX UMETA(DisplayName = "DefaultMAX")
+    ECS_Max UMETA(DisplayName = "DefaultMAX")
 };
 
 USTRUCT(BlueprintType)
