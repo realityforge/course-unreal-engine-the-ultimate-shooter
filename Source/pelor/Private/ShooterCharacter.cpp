@@ -862,6 +862,7 @@ void AShooterCharacter::OnSelectButtonPressed()
     if (TraceHitItem)
     {
         TraceHitItem->StartItemPickup(this);
+        TraceHitItem = nullptr;
     }
 }
 
@@ -1030,7 +1031,6 @@ void AShooterCharacter::PickupItem(AItem* Item)
     if (const auto Ammo = Cast<AAmmo>(Item))
     {
         PickupAmmo(Ammo);
-        TraceHitItem = nullptr;
     }
 }
 
