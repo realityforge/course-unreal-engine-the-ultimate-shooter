@@ -704,8 +704,11 @@ void AShooterCharacter::TraceForItems()
         FVector Ignored;
         if (FHitResult ItemTraceResult; TraceCrosshairToWorld(ItemTraceResult, Ignored))
         {
-            // if trace touched an actor, try to resolve if into an Item. Cast will go to NULL if actor is not an item
-            if (TraceHitItem = Cast<AItem>(ItemTraceResult.GetActor()); TraceHitItem)
+            TraceHitItem = Cast<AItem>(ItemTraceResult.GetActor());
+            // if trace touched an actor, try to resolve if into an Item. Cast will go to NULL if
+            // actor is not an item. We should also ignore the item if it is part way through equipping as we
+            // previously have picked it up and it has not completed
+            if (TraceHitItem && EItemState::EIS_Equipping != TraceHitItem->GetItemState())
             {
                 if (ItemShowingInfoBox != TraceHitItem)
                 {
@@ -724,6 +727,8 @@ void AShooterCharacter::TraceForItems()
                 // We are no longer looking at an item so hide infobox if it was previously showing
                 SetItemInfoBoxVisibility(false);
                 ItemShowingInfoBox = nullptr;
+                // Null TraceHitItem as it must be equipping and we do not want it interactable
+                TraceHitItem = nullptr;
             }
         }
     }
