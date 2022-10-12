@@ -838,9 +838,15 @@ void AShooterCharacter::EquipWeapon(AWeapon* Weapon)
             // Add the weapon to the socket
             HandSocket->AttachActor(Weapon, GetMesh());
         }
-        // Send "event" that we are changing weapon
-        EquipItemDelegate.Broadcast(EquippedWeapon ? EquippedWeapon->GetInventoryIndex() : -1,
-                                    Weapon->GetInventoryIndex());
+        const int32 OldInventoryIndex = EquippedWeapon ? EquippedWeapon->GetInventoryIndex() : -1;
+        const int32 NewInventoryIndex = Weapon->GetInventoryIndex();
+
+        // Skip broadcast when same index which can happen when we swap a weapon
+        if (OldInventoryIndex != NewInventoryIndex)
+        {
+            // Send "event" that we are changing weapon
+            EquipItemDelegate.Broadcast(OldInventoryIndex, NewInventoryIndex);
+        }
         // Actually record the weapon as equipped
         EquippedWeapon = Weapon;
         EquippedWeapon->UpdateItemState(EItemState::EIS_Equipped);
