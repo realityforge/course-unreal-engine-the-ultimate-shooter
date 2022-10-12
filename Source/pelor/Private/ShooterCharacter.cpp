@@ -746,6 +746,49 @@ void AShooterCharacter::FireButtonReleased()
     bFireButtonPressed = false;
 }
 
+void AShooterCharacter::DefaultWeaponEquipPressed()
+{
+    ExchangeInventoryIndex(EquippedWeapon->GetInventoryIndex(), 0);
+}
+
+void AShooterCharacter::Weapon1EquipPressed()
+{
+    ExchangeInventoryIndex(EquippedWeapon->GetInventoryIndex(), 1);
+}
+
+void AShooterCharacter::Weapon2EquipPressed()
+{
+    ExchangeInventoryIndex(EquippedWeapon->GetInventoryIndex(), 2);
+}
+
+void AShooterCharacter::Weapon3EquipPressed()
+{
+    ExchangeInventoryIndex(EquippedWeapon->GetInventoryIndex(), 3);
+}
+
+void AShooterCharacter::Weapon4EquipPressed()
+{
+    ExchangeInventoryIndex(EquippedWeapon->GetInventoryIndex(), 4);
+}
+
+void AShooterCharacter::Weapon5EquipPressed()
+{
+    ExchangeInventoryIndex(EquippedWeapon->GetInventoryIndex(), 5);
+}
+
+void AShooterCharacter::ExchangeInventoryIndex(const int32 CurrentItemIndex, const int32 NewItemIndex)
+{
+    // Only exchange if we are selecting something other than what we currently have selected
+    // and there is an item in the slot we want to exchange with
+    if (CurrentItemIndex != NewItemIndex && NewItemIndex < Inventory.Num())
+    {
+        const auto OldEquippedWeapon = EquippedWeapon;
+        const auto NewWeapon = Cast<AWeapon>(Inventory[NewItemIndex]);
+        EquipWeapon(NewWeapon);
+        OldEquippedWeapon->UpdateItemState(EItemState::EIS_Carried);
+    }
+}
+
 void AShooterCharacter::StartAutoFireTimer()
 {
     CombatState = ECombatState::ECS_Firing;
@@ -823,6 +866,21 @@ void AShooterCharacter::OnSelectButtonReleased() {}
 
 void AShooterCharacter::SwapWeapon(AWeapon* WeaponToSwap)
 {
+    const int32 EquippedWeaponInventoryIndex = EquippedWeapon->GetInventoryIndex();
+    if (Inventory.Num() - 1 >= EquippedWeaponInventoryIndex)
+    {
+        // Swap the weapon we have equipped with current equipped inventory
+        Inventory[EquippedWeaponInventoryIndex] = WeaponToSwap;
+    }
+    else
+    {
+        // No idea why this would occur
+        UE_LOG(LogTemp,
+               Warning,
+               TEXT("Unexpected SwapWeapon bad EquippedWeaponInventoryIndex=%d"),
+               EquippedWeaponInventoryIndex);
+    }
+
     DropWeapon();
     EquipWeapon(WeaponToSwap);
     if (ItemShowingInfoBox == WeaponToSwap)
@@ -1022,4 +1080,14 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
     // Crouch button pressed
     PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &AShooterCharacter::CrouchButtonPressed);
+
+    PlayerInputComponent->BindAction("DefaultWeaponEquip",
+                                     IE_Pressed,
+                                     this,
+                                     &AShooterCharacter::DefaultWeaponEquipPressed);
+    PlayerInputComponent->BindAction("Weapon1Equip", IE_Pressed, this, &AShooterCharacter::Weapon1EquipPressed);
+    PlayerInputComponent->BindAction("Weapon2Equip", IE_Pressed, this, &AShooterCharacter::Weapon2EquipPressed);
+    PlayerInputComponent->BindAction("Weapon3Equip", IE_Pressed, this, &AShooterCharacter::Weapon3EquipPressed);
+    PlayerInputComponent->BindAction("Weapon4Equip", IE_Pressed, this, &AShooterCharacter::Weapon4EquipPressed);
+    PlayerInputComponent->BindAction("Weapon5Equip", IE_Pressed, this, &AShooterCharacter::Weapon5EquipPressed);
 }

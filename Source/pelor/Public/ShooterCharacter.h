@@ -436,6 +436,15 @@ private:
     void FireButtonPressed();
     void FireButtonReleased();
 
+    void DefaultWeaponEquipPressed();
+    void Weapon1EquipPressed();
+    void Weapon2EquipPressed();
+    void Weapon3EquipPressed();
+    void Weapon4EquipPressed();
+    void Weapon5EquipPressed();
+
+    void ExchangeInventoryIndex(const int32 CurrentItemIndex, const int32 NewItemIndex);
+
     void StartAutoFireTimer();
 
     UFUNCTION()
