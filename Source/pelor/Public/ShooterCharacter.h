@@ -138,6 +138,10 @@ protected:
     UFUNCTION(BlueprintCallable)
     void FinishEquip();
 
+    /** Called from animation equip montage when equip montage reaches place where we should swap the weapon */
+    UFUNCTION(BlueprintCallable)
+    void EquipWeaponSwap();
+
 public:
     // Called every frame
     virtual void Tick(float DeltaTime) override;
@@ -324,6 +328,13 @@ private:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Combat, meta = (AllowPrivateAccess = "true"))
     AItem* TraceHitItem;
 
+    /** True if we should drop weapon currently holding when we equip the next */
+    bool bPendingDrop;
+
+    /** The weapon that will be equipped when our equip montage reaches correct place */
+    UPROPERTY(VisibleAnywhere, Category = Combat, meta = (AllowPrivateAccess = "true"))
+    AWeapon* PendingEquippedWeapon;
+
     /** Map to keep track of ammo of the different ammo types */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Items, meta = (AllowPrivateAccess = "true"))
     TMap<EAmmoType, int32> AmmoMap;
@@ -458,6 +469,7 @@ private:
     void Weapon3EquipPressed();
     void Weapon4EquipPressed();
     void Weapon5EquipPressed();
+    void StartWeaponEquip(AWeapon* Weapon);
 
     void ExchangeInventoryIndex(const int32 CurrentItemIndex, const int32 NewItemIndex);
 

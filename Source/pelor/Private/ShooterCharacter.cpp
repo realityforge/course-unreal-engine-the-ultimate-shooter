@@ -66,6 +66,7 @@ AShooterCharacter::AShooterCharacter()
     , DefaultWeaponClass(nullptr)
 
     , TraceHitItem(nullptr)
+    , bPendingDrop(false)
 
     // Ammo variables
     , Initial9mmAmmo(85)
@@ -585,6 +586,16 @@ void AShooterCharacter::FinishEquip()
     CombatState = ECombatState::ECS_Idle;
 }
 
+void AShooterCharacter::EquipWeaponSwap()
+{
+    if (PendingEquippedWeapon)
+    {
+        const auto Weapon = PendingEquippedWeapon;
+        PendingEquippedWeapon = nullptr;
+        EquipWeapon(Weapon);
+    }
+}
+
 void AShooterCharacter::ResetPickupSoundTimer()
 {
     bShouldPlayPickupSound = true;
@@ -788,16 +799,33 @@ void AShooterCharacter::Weapon5EquipPressed()
     ExchangeInventoryIndex(EquippedWeapon->GetInventoryIndex(), 5);
 }
 
+void AShooterCharacter::StartWeaponEquip(AWeapon* const Weapon)
+{
+    checkf(nullptr != Weapon, TEXT("Invalid weapon passed to StartWeaponEquip"));
+    // If it is not the first equip and we have an EquipMontage configured then start the animation montage
+    if (EquippedWeapon && EquipMontage)
+    {
+        if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance(); EquipMontage && AnimInstance)
+        {
+            AnimInstance->Montage_Play(EquipMontage);
+            AnimInstance->Montage_JumpToSection(FName("Equip"));
+        }
+        PendingEquippedWeapon = Weapon;
+        CombatState = ECombatState::ECS_Equipping;
+    }
+    else
+    {
+        EquipWeapon(Weapon);
+    }
+}
+
 void AShooterCharacter::ExchangeInventoryIndex(const int32 CurrentItemIndex, const int32 NewItemIndex)
 {
     // Only exchange if we are selecting something other than what we currently have selected
     // and there is an item in the slot we want to exchange with
     if (ECombatState::ECS_Idle == CombatState && CurrentItemIndex != NewItemIndex && NewItemIndex < Inventory.Num())
     {
-        const auto OldEquippedWeapon = EquippedWeapon;
-        const auto NewWeapon = Cast<AWeapon>(Inventory[NewItemIndex]);
-        EquipWeapon(NewWeapon);
-        OldEquippedWeapon->UpdateItemState(EItemState::EIS_Carried);
+        StartWeaponEquip(Cast<AWeapon>(Inventory[NewItemIndex]));
     }
 }
 
@@ -838,41 +866,39 @@ AWeapon* AShooterCharacter::SpawnDefaultWeapon() const
     return nullptr != DefaultWeaponClass ? GetWorld()->SpawnActor<AWeapon>(DefaultWeaponClass) : nullptr;
 }
 
-void AShooterCharacter::EquipWeapon(AWeapon* Weapon)
+void AShooterCharacter::EquipWeapon(AWeapon* const Weapon)
 {
     checkf(nullptr != Weapon, TEXT("Invalid weapon passed to EquipWeapon"));
-    if (nullptr != Weapon)
-    {
-        // Find the socket we have created in the mesh
-        const USkeletalMeshSocket* HandSocket = GetMesh()->GetSocketByName(FName("hand_r_socket"));
-        if (nullptr != HandSocket)
-        {
-            // Add the weapon to the socket
-            HandSocket->AttachActor(Weapon, GetMesh());
-        }
-        const int32 OldInventoryIndex = EquippedWeapon ? EquippedWeapon->GetInventoryIndex() : -1;
-        const int32 NewInventoryIndex = Weapon->GetInventoryIndex();
 
-        // Skip broadcast when same index which can happen when we swap a weapon
-        if (OldInventoryIndex != NewInventoryIndex)
-        {
-            // Send "event" that we are changing weapon
-            EquipItemDelegate.Broadcast(OldInventoryIndex, NewInventoryIndex);
-        }
-        // Actually record the weapon as equipped
-        EquippedWeapon = Weapon;
-        EquippedWeapon->UpdateItemState(EItemState::EIS_Equipped);
-        // If it is not the first equip and we have an EquipMontage configured then start the animation montage
-        if (-1 != OldInventoryIndex && EquipMontage)
-        {
-            if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance(); EquipMontage && AnimInstance)
-            {
-                AnimInstance->Montage_Play(EquipMontage);
-                AnimInstance->Montage_JumpToSection(FName("Equip"));
-            }
-            CombatState = ECombatState::ECS_Equipping;
-        }
+    if (bPendingDrop)
+    {
+        DropWeapon();
+        bPendingDrop = false;
     }
+    else if (EquippedWeapon)
+    {
+        // If this path happens then we are swapping a weapon so the old weapon should be marked as Carried
+        EquippedWeapon->UpdateItemState(EItemState::EIS_Carried);
+    }
+    // Find the socket we have created in the mesh
+    const USkeletalMeshSocket* HandSocket = GetMesh()->GetSocketByName(FName("hand_r_socket"));
+    if (nullptr != HandSocket)
+    {
+        // Add the weapon to the socket
+        HandSocket->AttachActor(Weapon, GetMesh());
+    }
+    const int32 OldInventoryIndex = EquippedWeapon ? EquippedWeapon->GetInventoryIndex() : -1;
+    const int32 NewInventoryIndex = Weapon->GetInventoryIndex();
+
+    // Skip broadcast when same index which can happen when we swap a weapon
+    if (OldInventoryIndex != NewInventoryIndex)
+    {
+        // Send "event" that we are changing weapon
+        EquipItemDelegate.Broadcast(OldInventoryIndex, NewInventoryIndex);
+    }
+    // Actually record the weapon as equipped
+    EquippedWeapon = Weapon;
+    EquippedWeapon->UpdateItemState(EItemState::EIS_Equipped);
 }
 
 void AShooterCharacter::DropWeapon() const
@@ -914,8 +940,8 @@ void AShooterCharacter::SwapWeapon(AWeapon* WeaponToSwap)
                EquippedWeaponInventoryIndex);
     }
 
-    DropWeapon();
-    EquipWeapon(WeaponToSwap);
+    bPendingDrop = true;
+    StartWeaponEquip(WeaponToSwap);
     if (ItemShowingInfoBox == WeaponToSwap)
     {
         ItemShowingInfoBox = nullptr;
