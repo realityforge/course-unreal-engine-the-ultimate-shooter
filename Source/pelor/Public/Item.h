@@ -310,7 +310,14 @@ public:
     FORCEINLINE void SetInventoryIndex(const int32 NewInventoryIndex) { InventoryIndex = NewInventoryIndex; }
 
     /** Called by character class when they start the pickup process */
-    void StartItemPickup(AShooterCharacter* CharacterPerformingPickup);
+    void StartItemPickup(AShooterCharacter* CharacterPerformingPickup, const bool bForcePlaySound = false);
+
+    /**
+     * Play the pickup sound.
+     *
+     * @param bForcePlaySound true if we should always play sound, false if it should be rate limited.
+     */
+    void PlayPickupSound(const bool bForcePlaySound = false);
 
     /**
      * Play the equip sound.

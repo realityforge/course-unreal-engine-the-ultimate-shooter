@@ -435,7 +435,7 @@ void AItem::ItemPickingUpTick(const float DeltaTime)
     }
 }
 
-void AItem::StartItemPickup(AShooterCharacter* CharacterPerformingPickup)
+void AItem::StartItemPickup(AShooterCharacter* CharacterPerformingPickup, const bool bForcePlaySound)
 {
     checkf(CharacterPerformingPickup, TEXT("Character MUST be supplied"));
     // Character performing pickup
@@ -456,9 +456,20 @@ void AItem::StartItemPickup(AShooterCharacter* CharacterPerformingPickup)
 
     // Schedule a timer for completion of pickup
     GetWorldTimerManager().SetTimer(ItemPickupTimer, this, &AItem::OnCompletePickup, ZCurveTime);
-    if (PickupSound && Character->ShouldPlayPickupSound())
+    PlayPickupSound(bForcePlaySound);
+}
+
+void AItem::PlayPickupSound(const bool bForcePlaySound)
+{
+    checkf(bForcePlaySound || Character,
+           TEXT("Character expected to be non-null or bForcePlaySound true in PlayPickupSound"));
+    if (PickupSound && (bForcePlaySound || Character->ShouldPlayPickupSound()))
     {
-        Character->StartPickupSoundTimer();
+        if (!bForcePlaySound)
+        {
+            // forcing play sound indicates we are not rate limiting so we don't need to set timer
+            Character->StartPickupSoundTimer();
+        }
         UGameplayStatics::PlaySound2D(this, PickupSound);
     }
 }

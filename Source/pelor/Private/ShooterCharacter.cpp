@@ -917,7 +917,7 @@ void AShooterCharacter::OnSelectButtonPressed()
 {
     if (ECombatState::ECS_Idle == GetCombatState() && TraceHitItem)
     {
-        TraceHitItem->StartItemPickup(this);
+        TraceHitItem->StartItemPickup(this, true);
         TraceHitItem = nullptr;
     }
 }
