@@ -899,6 +899,8 @@ void AShooterCharacter::EquipWeapon(AWeapon* const Weapon)
     // Actually record the weapon as equipped
     EquippedWeapon = Weapon;
     EquippedWeapon->UpdateItemState(EItemState::EIS_Equipped);
+    // force play the equip sound as we do not want it sometimes suppressed
+    EquippedWeapon->PlayEquipSound(true);
 }
 
 void AShooterCharacter::DropWeapon() const

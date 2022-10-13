@@ -374,12 +374,7 @@ void AItem::OnCompletePickup()
 {
     if (Character)
     {
-        if (EquipSound && Character->ShouldPlayEquipSound())
-        {
-            Character->StartEquipSoundTimer();
-            UGameplayStatics::PlaySound2D(this, EquipSound);
-        }
-
+        PlayEquipSound();
         Character->DecrementItemCountAtPresentationLocation(PresentationIndex);
         PresentationIndex = 0;
         Character->PickupItem(this);
@@ -465,5 +460,20 @@ void AItem::StartItemPickup(AShooterCharacter* CharacterPerformingPickup)
     {
         Character->StartPickupSoundTimer();
         UGameplayStatics::PlaySound2D(this, PickupSound);
+    }
+}
+
+void AItem::PlayEquipSound(const bool bForcePlaySound)
+{
+    checkf(bForcePlaySound || Character,
+           TEXT("Character expected to be non-null or bForcePlaySound true in PlayEquipSound"));
+
+    if (EquipSound && (bForcePlaySound || Character->ShouldPlayEquipSound()))
+    {
+        if (!bForcePlaySound)
+        {
+            Character->StartEquipSoundTimer();
+        }
+        UGameplayStatics::PlaySound2D(this, EquipSound);
     }
 }
