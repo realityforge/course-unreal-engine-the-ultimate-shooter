@@ -697,7 +697,7 @@ void AShooterCharacter::CalculateCrosshairSpreadMultiplier(const float DeltaTime
 void AShooterCharacter::SetItemInfoBoxVisibility(const bool bVisibility) const
 {
     // This functionality should probably be moved to the Item as a "HighlightItem(...)" or similar
-    // and this would make it possible to ide the (Enable|Disable)CustomDepth() and GetInfoBoxWidget()
+    // and this would make it possible to hide the (Enable|Disable)CustomDepth() and GetInfoBoxWidget()
     if (nullptr != ItemShowingInfoBox)
     {
         if (UWidgetComponent* PickupWidget = ItemShowingInfoBox->GetInfoBoxWidget(); nullptr != PickupWidget)
