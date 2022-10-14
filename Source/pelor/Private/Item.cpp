@@ -374,7 +374,6 @@ void AItem::OnCompletePickup()
 {
     if (Character)
     {
-        PlayEquipSound();
         Character->DecrementItemCountAtPresentationLocation(PresentationIndex);
         PresentationIndex = 0;
         Character->PickupItem(this);
