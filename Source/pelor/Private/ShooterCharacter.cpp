@@ -824,7 +824,8 @@ void AShooterCharacter::ExchangeInventoryIndex(const int32 CurrentItemIndex, con
 {
     // Only exchange if we are selecting something other than what we currently have selected
     // and there is an item in the slot we want to exchange with
-    if (ECombatState::ECS_Idle == CombatState && CurrentItemIndex != NewItemIndex && NewItemIndex < Inventory.Num())
+    if ((ECombatState::ECS_Idle == CombatState || ECombatState::ECS_Equipping == CombatState)
+        && CurrentItemIndex != NewItemIndex && NewItemIndex < Inventory.Num())
     {
         StartWeaponEquip(Cast<AWeapon>(Inventory[NewItemIndex]));
     }
