@@ -738,6 +738,7 @@ void AShooterCharacter::TraceForItems()
                     // Show currently targeted info box
                     ItemShowingInfoBox = TraceHitItem;
                     SetItemInfoBoxVisibility(true);
+                    TraceHitItem->SetCharacterInventoryFull(INVENTORY_CAPACITY == Inventory.Num());
                 }
             }
             else

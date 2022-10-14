@@ -265,6 +265,14 @@ private:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Inventory, meta = (AllowPrivateAccess = "true"))
     int32 InventoryIndex;
 
+    /**
+     * True when the characters inventory is full.
+     *
+     * My-gods what a terrible design - argh! Keeping it to align with tutorial...
+     */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Inventory, meta = (AllowPrivateAccess = "true"))
+    bool bCharacterInventoryFull;
+
     void TriggerPulseTimer();
 
     UFUNCTION()
@@ -308,6 +316,10 @@ public:
     FORCEINLINE USkeletalMeshComponent* GetItemMesh() const { return ItemMesh; }
     FORCEINLINE int32 GetInventoryIndex() const { return InventoryIndex; }
     FORCEINLINE void SetInventoryIndex(const int32 NewInventoryIndex) { InventoryIndex = NewInventoryIndex; }
+    FORCEINLINE void SetCharacterInventoryFull(const bool bNewCharacterInventoryFull)
+    {
+        bCharacterInventoryFull = bNewCharacterInventoryFull;
+    }
 
     /** Called by character class when they start the pickup process */
     void StartItemPickup(AShooterCharacter* CharacterPerformingPickup, const bool bForcePlaySound = false);
