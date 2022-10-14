@@ -806,10 +806,15 @@ void AShooterCharacter::StartWeaponEquip(AWeapon* const Weapon)
     // If it is not the first equip and we have an EquipMontage configured then start the animation montage
     if (EquippedWeapon && EquipMontage)
     {
-        if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance(); EquipMontage && AnimInstance)
+        // If we are already in animation for equipping another weapon then do not restart animation but
+        // change the weapon that will be equipped
+        if (!PendingEquippedWeapon)
         {
-            AnimInstance->Montage_Play(EquipMontage);
-            AnimInstance->Montage_JumpToSection(FName("Equip"));
+            if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance(); EquipMontage && AnimInstance)
+            {
+                AnimInstance->Montage_Play(EquipMontage);
+                AnimInstance->Montage_JumpToSection(FName("Equip"));
+            }
         }
         PendingEquippedWeapon = Weapon;
         CombatState = ECombatState::ECS_Equipping;
