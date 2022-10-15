@@ -179,6 +179,7 @@ void AItem::OnAreaSphereEndOverlap([[maybe_unused]] UPrimitiveComponent* Overlap
     if (nullptr != ShooterCharacter)
     {
         ShooterCharacter->IncrementOverlappedItemCount(-1);
+        ShooterCharacter->MaybeUnHighlightInventoryIndex();
         if (ShooterCharacter->GetItemShowingInfoBox() == this && nullptr != InfoBoxWidget)
         {
             InfoBoxWidget->SetVisibility(false);
@@ -377,6 +378,7 @@ void AItem::OnCompletePickup()
         Character->DecrementItemCountAtPresentationLocation(PresentationIndex);
         PresentationIndex = 0;
         Character->PickupItem(this);
+        Character->MaybeUnHighlightInventoryIndex();
         Character = nullptr;
     }
 

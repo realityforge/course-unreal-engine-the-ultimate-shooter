@@ -45,6 +45,7 @@ struct FPresentationLocation
 };
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FEquipItemDelegate, int32, OldInventoryIndex, int32, NewInventoryIndex);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FHighlightIconDelegate, int32, InventoryIndex, bool, bStartAnimation);
 
 UCLASS()
 class PELOR_API AShooterCharacter : public ACharacter
@@ -449,6 +450,14 @@ private:
     UPROPERTY(BlueprintAssignable, Category = Delegates, meta = (AllowPrivateAccess = "true"))
     FEquipItemDelegate EquipItemDelegate;
 
+    /** Delegate for sending signal to InventoryBar when inventory slot should play animation slot */
+    UPROPERTY(BlueprintAssignable, Category = Delegates, meta = (AllowPrivateAccess = "true"))
+    FHighlightIconDelegate HighlightIconDelegate;
+
+    /** Current inventory slot that is highlighted. -1 indicates no highlight */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Inventory, meta = (AllowPrivateAccess = "true"))
+    int32 HighlightedInventoryIndex;
+
     void ResetEquipSoundTimer();
 
     void UpdateFovBasedOnAimingStatus(float DeltaTime);
@@ -472,6 +481,9 @@ private:
     void StartWeaponEquip(AWeapon* Weapon);
 
     void ExchangeInventoryIndex(const int32 CurrentItemIndex, const int32 NewItemIndex);
+
+    int32 GetEmptyInventoryIndex();
+    void HighlightInventoryIndex();
 
     void StartAutoFireTimer();
 
@@ -544,4 +556,7 @@ public:
 
     void StartPickupSoundTimer();
     void StartEquipSoundTimer();
+
+    // Called from Item ... so terribly bad idea
+    void MaybeUnHighlightInventoryIndex();
 };

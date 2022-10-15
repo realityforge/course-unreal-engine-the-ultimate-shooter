@@ -95,6 +95,9 @@ AShooterCharacter::AShooterCharacter()
     , bShouldPlayEquipSound(true)
     , EquipSoundResetTime(0.2f)
 
+    // Inventory Icon Naimation properties
+    , HighlightedInventoryIndex(-1)
+
 {
     // Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need
     // it.
@@ -723,6 +726,23 @@ void AShooterCharacter::TraceForItems()
         if (FHitResult ItemTraceResult; TraceCrosshairToWorld(ItemTraceResult, Ignored))
         {
             TraceHitItem = Cast<AItem>(ItemTraceResult.GetActor());
+
+            const auto TraceHitWeapon = Cast<AWeapon>(TraceHitItem);
+            if (TraceHitWeapon)
+            {
+                if (-1 == HighlightedInventoryIndex)
+                {
+                    // Not highlighting a slot so highlight one
+                    HighlightInventoryIndex();
+                }
+            }
+            else
+            {
+                // Unhighlight a slot if one is highlighted
+                // May get here if we are tracing something other than a weapon or our trace hits nothing
+                MaybeUnHighlightInventoryIndex();
+            }
+
             // if trace touched an actor, try to resolve if into an Item. Cast will go to NULL if
             // actor is not an item. We should also ignore the item if it is part way through equipping as we
             // previously have picked it up and it has not completed
@@ -833,6 +853,48 @@ void AShooterCharacter::ExchangeInventoryIndex(const int32 CurrentItemIndex, con
         && CurrentItemIndex != NewItemIndex && NewItemIndex < Inventory.Num())
     {
         StartWeaponEquip(Cast<AWeapon>(Inventory[NewItemIndex]));
+    }
+}
+
+int32 AShooterCharacter::GetEmptyInventoryIndex()
+{
+    const int32 CurrentSize = Inventory.Num();
+    for (int32 i = 0; i < CurrentSize; i++)
+    {
+        if (nullptr == Inventory[i])
+        {
+            return i;
+        }
+    }
+
+    if (CurrentSize < INVENTORY_CAPACITY)
+    {
+        return CurrentSize;
+    }
+
+    // -1 indicates there are no free inventory slots
+    return -1;
+}
+
+void AShooterCharacter::HighlightInventoryIndex()
+{
+    const int32 EmptyInventoryIndex{ GetEmptyInventoryIndex() };
+    HighlightedInventoryIndex = EmptyInventoryIndex;
+    // UE_LOG(LogTemp, Warning, TEXT("HighlightInventoryIndex() HighlightedInventoryIndex=%d"),
+    // HighlightedInventoryIndex);
+    HighlightIconDelegate.Broadcast(HighlightedInventoryIndex, true);
+}
+
+void AShooterCharacter::MaybeUnHighlightInventoryIndex()
+{
+    if (-1 != HighlightedInventoryIndex)
+    {
+        // UE_LOG(LogTemp,
+        //        Warning,
+        //        TEXT("MaybeUnHighlightInventoryIndex() HighlightedInventoryIndex=%d"),
+        //        HighlightedInventoryIndex);
+        HighlightIconDelegate.Broadcast(HighlightedInventoryIndex, false);
+        HighlightedInventoryIndex = -1;
     }
 }
 
