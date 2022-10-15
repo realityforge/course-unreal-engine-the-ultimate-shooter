@@ -44,10 +44,15 @@ AItem::AItem()
     , FresnelExponent(3.f)
     , FresnelReflectFraction(4.f)
 
-    , IconBackground(nullptr)
     , IconInventory(nullptr)
     , AmmoIcon(nullptr)
     , InventoryIndex(0)
+
+    , GlowColor(0, 0, 0)
+    , LightColor(0, 0, 0)
+    , DarkColor(0, 0, 0)
+    , NumberOfStars(1)
+    , ItemBackground(nullptr)
 {
     // Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
     PrimaryActorTick.bCanEverTick = true;
@@ -350,12 +355,67 @@ void AItem::InitializeCustomDepth()
     DisableCustomDepth();
 }
 
+// OnConstruction is invoked when the item is placed
 void AItem::OnConstruction(const FTransform& Transform)
 {
+    // Load the data from the ItemRarityDataTable
+
+    // TODO: Why are we not using ItemRarityDataTable field rather than embedding path name?
+    //       If we use field then the tool would make sure we track usages and renames...
+    // const FString RarityTablePath{ TEXT("DataTable'/Game/_Game/DataTable/ItemRarityTable.ItemRarityTable'") };
+    // const UDataTable* RarityTable =
+    //     Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, ToCStr(RarityTablePath)));
+
+    // Note: Could uncomment RarityTable above and use that here rather than field ...
+    //       This way makes ure UnrealEditor can track references but it does add extra weight at runtime ...
+    //       so maybe not worth it... Is there a way to have properties that are editor only?
+    UDataTable* RarityDataTable = ItemRarityDataTable;
+    if (RarityDataTable)
+    {
+        // TODO: Rather than searching by name I would normally add a column to row for Rarity type and find by that
+        //       but doing it this way maintains the way the course does it
+
+        FName RowName;
+        switch (Rarity)
+        {
+            case EItemRarity::EIR_Damaged:
+                RowName = FName("Damaged");
+                break;
+            case EItemRarity::EIR_Common:
+                RowName = FName("Common");
+                break;
+            case EItemRarity::EIR_Uncommon:
+                RowName = FName("Uncommon");
+                break;
+            case EItemRarity::EIR_Rare:
+                RowName = FName("Rare");
+                break;
+            case EItemRarity::EIR_Legendary:
+                RowName = FName("Legendary");
+                break;
+        }
+
+        const FItemRarityTable* Row = RarityDataTable->FindRow<FItemRarityTable>(RowName, TEXT(""));
+        // Just make sure our datatable has the row matching in it
+        if (Row)
+        {
+            GlowColor = Row->GlowColor;
+            LightColor = Row->LightColor;
+            DarkColor = Row->DarkColor;
+            NumberOfStars = Row->NumberOfStars;
+            ItemBackground = Row->ItemBackground;
+            if (ItemMesh)
+            {
+                // Why not set a field that can be viewed in editor that we then copy to Mesh? as separate step
+                ItemMesh->SetCustomDepthStencilValue(Row->CustomDepthStencil);
+            }
+        }
+    }
     if (MaterialInstance)
     {
         // Create a material instance dynamic parented to the "MaterialInstance".
         DynamicMaterialInstance = UMaterialInstanceDynamic::Create(MaterialInstance, this);
+        DynamicMaterialInstance->SetVectorParameterValue(TEXT("FresnelColor"), GlowColor);
         ItemMesh->SetMaterial(MaterialIndex, DynamicMaterialInstance);
         EnableGlowMaterial();
     }
