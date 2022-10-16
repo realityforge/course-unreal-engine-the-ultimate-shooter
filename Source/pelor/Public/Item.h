@@ -285,7 +285,7 @@ private:
 
     /** Icon for this item in inventory. */
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Inventory, meta = (AllowPrivateAccess = "true"))
-    UTexture2D* IconInventory;
+    UTexture2D* InventoryIcon;
 
     /** Icon for the ammo associated with item in inventory. */
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Inventory, meta = (AllowPrivateAccess = "true"))
@@ -359,6 +359,11 @@ public:
     FORCEINLINE EItemState GetItemState() const { return ItemState; }
     FORCEINLINE USoundCue* GetPickupSound() const { return PickupSound; }
     FORCEINLINE USoundCue* GetEquipSound() const { return EquipSound; }
+    FORCEINLINE void SetItemName(const FString& NewItemName) { ItemName = NewItemName; }
+    FORCEINLINE void SetPickupSound(USoundCue* const NewPickupSound) { PickupSound = NewPickupSound; }
+    FORCEINLINE void SetEquipSound(USoundCue* const NewEquipSound) { EquipSound = NewEquipSound; }
+    FORCEINLINE void SetInventoryIcon(UTexture2D* const NewInventoryIcon) { InventoryIcon = NewInventoryIcon; }
+    FORCEINLINE void SetAmmoIcon(UTexture2D* const NewAmmoIcon) { AmmoIcon = NewAmmoIcon; }
     FORCEINLINE void UpdateItemState(const EItemState NewItemState)
     {
         this->ItemState = NewItemState;

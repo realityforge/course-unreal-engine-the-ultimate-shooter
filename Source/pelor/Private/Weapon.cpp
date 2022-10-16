@@ -28,6 +28,52 @@ void AWeapon::Tick(const float DeltaTime)
     }
 }
 
+void AWeapon::OnConstruction(const FTransform& Transform)
+{
+    Super::OnConstruction(Transform);
+
+    if (WeaponDataTable.IsPending())
+    {
+        WeaponDataTable =
+            Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, *WeaponDataTable.ToString()));
+    }
+
+    if (WeaponDataTable.IsValid())
+    {
+        FName RowName;
+        switch (WeaponType)
+        {
+            case EWeaponType::EWT_SMG:
+                RowName = FName("SubmachineGun");
+                break;
+            case EWeaponType::EWT_AssaultRifle:
+                RowName = FName("AssaultRifle");
+                break;
+        }
+
+        // Just make sure our datatable has the row matching in it
+        if (const FWeaponDataTable* Row = WeaponDataTable->FindRow<FWeaponDataTable>(RowName, TEXT("")))
+        {
+            checkf(
+                Row->WeaponType == WeaponType,
+                TEXT(
+                    "WeaponDataTable has a row under name %s that is expected to have a WeaponType of %d but does not"),
+                *RowName.ToString(),
+                WeaponType);
+            AmmoType = Row->AmmoType;
+            Ammo = Row->Ammo;
+            AmmoCapacity = Row->AmmoCapacity;
+            AmmoCapacity = Row->AmmoCapacity;
+            SetPickupSound(Row->PickupSound);
+            SetEquipSound(Row->EquipSound);
+            GetItemMesh()->SetSkeletalMesh(Row->ItemMesh);
+            SetItemName(Row->ItemName);
+            SetInventoryIcon(Row->InventoryIcon);
+            SetAmmoIcon(Row->AmmoIcon);
+        }
+    }
+}
+
 void AWeapon::ThrowWeapon()
 {
     UE_LOG(LogTemp, Warning, TEXT("AWeapon::ThrowWeapon()"));

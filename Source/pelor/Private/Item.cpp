@@ -44,7 +44,7 @@ AItem::AItem()
     , FresnelExponent(3.f)
     , FresnelReflectFraction(4.f)
 
-    , IconInventory(nullptr)
+    , InventoryIcon(nullptr)
     , AmmoIcon(nullptr)
     , InventoryIndex(0)
 
@@ -358,17 +358,6 @@ void AItem::InitializeCustomDepth()
 // OnConstruction is invoked when the item is placed
 void AItem::OnConstruction(const FTransform& Transform)
 {
-    // Load the data from the ItemRarityDataTable
-
-    // TODO: Why are we not using ItemRarityDataTable field rather than embedding path name?
-    //       If we use field then the tool would make sure we track usages and renames...
-    // const FString RarityTablePath{ TEXT("DataTable'/Game/_Game/DataTable/ItemRarityTable.ItemRarityTable'") };
-    // const UDataTable* RarityTable =
-    //     Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, ToCStr(RarityTablePath)));
-
-    // Note: Could uncomment RarityTable above and use that here rather than field ...
-    //       This way makes ure UnrealEditor can track references but it does add extra weight at runtime ...
-    //       so maybe not worth it... Is there a way to have properties that are editor only?
     if (const UDataTable* RarityDataTable = ItemRarityDataTable)
     {
         // TODO: Rather than searching by name I would normally add a column to row for Rarity type and find by that

@@ -16,6 +16,52 @@ enum class EWeaponType : uint8
     EWT_MAX UMETA(DisplayName = "DefaultMax")
 };
 
+USTRUCT(BlueprintType)
+struct FWeaponDataTable : public FTableRowBase
+{
+    GENERATED_BODY()
+
+    /** The type of weapon that this row defines. */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    EWeaponType WeaponType;
+
+    /** The type of Ammo that the weapon uses. */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    EAmmoType AmmoType;
+
+    /** The type of Ammo that the weapon uses. */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    int32 Ammo;
+
+    /** Maximum amount of Ammo that the Weapon can load */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    int32 AmmoCapacity;
+
+    /** The sound cue when a character (or player only?) picks up item */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    USoundCue* PickupSound;
+
+    /** The sound cue when a character equips item */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    USoundCue* EquipSound;
+
+    /** Mesh representation of the item */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    USkeletalMesh* ItemMesh;
+
+    /** Name of the item */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    FString ItemName;
+
+    /** Icon for this item in inventory. */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UTexture2D* InventoryIcon;
+
+    /** UI Icon for the ammo associated with item used by inventory. */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UTexture2D* AmmoIcon;
+};
+
 /**
  *
  */
@@ -68,7 +114,12 @@ private:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Properties", meta = (AllowPrivateAccess = "true"))
     FName ClipBoneName;
 
+    /** Data table for weapon properties */
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Building, meta = (AllowPrivateAccess = "true"))
+    TSoftObjectPtr<UDataTable> WeaponDataTable;
+
 public:
+    virtual void OnConstruction(const FTransform& Transform) override;
     // Adds impulse forward and down thus throwing the Weapon
     void ThrowWeapon();
 
