@@ -369,8 +369,7 @@ void AItem::OnConstruction(const FTransform& Transform)
     // Note: Could uncomment RarityTable above and use that here rather than field ...
     //       This way makes ure UnrealEditor can track references but it does add extra weight at runtime ...
     //       so maybe not worth it... Is there a way to have properties that are editor only?
-    UDataTable* RarityDataTable = ItemRarityDataTable;
-    if (RarityDataTable)
+    if (const UDataTable* RarityDataTable = ItemRarityDataTable)
     {
         // TODO: Rather than searching by name I would normally add a column to row for Rarity type and find by that
         //       but doing it this way maintains the way the course does it
