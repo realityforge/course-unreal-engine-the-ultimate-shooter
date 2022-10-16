@@ -395,9 +395,8 @@ void AItem::OnConstruction(const FTransform& Transform)
                 break;
         }
 
-        const FItemRarityTable* Row = RarityDataTable->FindRow<FItemRarityTable>(RowName, TEXT(""));
         // Just make sure our datatable has the row matching in it
-        if (Row)
+        if (const FItemRarityTable* Row = RarityDataTable->FindRow<FItemRarityTable>(RowName, TEXT("")))
         {
             GlowColor = Row->GlowColor;
             LightColor = Row->LightColor;
