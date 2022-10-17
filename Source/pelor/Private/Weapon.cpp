@@ -30,6 +30,8 @@ void AWeapon::Tick(const float DeltaTime)
 
 void AWeapon::OnConstruction(const FTransform& Transform)
 {
+    // Null out material instance to ensure DynamicMaterialInstance is not created in super call
+    SetMaterialInstance(nullptr);
     Super::OnConstruction(Transform);
 
     if (WeaponDataTable.IsPending())
@@ -70,6 +72,10 @@ void AWeapon::OnConstruction(const FTransform& Transform)
             SetItemName(Row->ItemName);
             SetInventoryIcon(Row->InventoryIcon);
             SetAmmoIcon(Row->AmmoIcon);
+            SetMaterialInstance(Row->MaterialInstance);
+            SetMaterialIndex(Row->MaterialIndex);
+
+            SetupDynamicMaterialInstance();
         }
     }
 }

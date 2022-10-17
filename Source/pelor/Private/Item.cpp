@@ -355,6 +355,18 @@ void AItem::InitializeCustomDepth()
     DisableCustomDepth();
 }
 
+void AItem::SetupDynamicMaterialInstance()
+{
+    if (MaterialInstance)
+    {
+        // Create a material instance dynamic parented to the "MaterialInstance".
+        DynamicMaterialInstance = UMaterialInstanceDynamic::Create(MaterialInstance, this);
+        DynamicMaterialInstance->SetVectorParameterValue(TEXT("FresnelColor"), GlowColor);
+        ItemMesh->SetMaterial(MaterialIndex, DynamicMaterialInstance);
+        EnableGlowMaterial();
+    }
+}
+
 // OnConstruction is invoked when the item is placed
 void AItem::OnConstruction(const FTransform& Transform)
 {
@@ -398,14 +410,7 @@ void AItem::OnConstruction(const FTransform& Transform)
             }
         }
     }
-    if (MaterialInstance)
-    {
-        // Create a material instance dynamic parented to the "MaterialInstance".
-        DynamicMaterialInstance = UMaterialInstanceDynamic::Create(MaterialInstance, this);
-        DynamicMaterialInstance->SetVectorParameterValue(TEXT("FresnelColor"), GlowColor);
-        ItemMesh->SetMaterial(MaterialIndex, DynamicMaterialInstance);
-        EnableGlowMaterial();
-    }
+    SetupDynamicMaterialInstance();
 }
 
 void AItem::EnableCustomDepth()

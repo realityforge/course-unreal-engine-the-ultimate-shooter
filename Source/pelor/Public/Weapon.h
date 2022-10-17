@@ -60,6 +60,14 @@ struct FWeaponDataTable : public FTableRowBase
     /** UI Icon for the ammo associated with item used by inventory. */
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UTexture2D* AmmoIcon;
+
+    /** MaterialInstance that can is configured in blueprints. */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UMaterialInstance* MaterialInstance;
+
+    /** Index of the glow material we want to modify at runtime */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    int32 MaterialIndex;
 };
 
 /**

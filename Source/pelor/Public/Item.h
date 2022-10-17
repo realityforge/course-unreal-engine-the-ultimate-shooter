@@ -138,6 +138,7 @@ protected:
     virtual void ApplyPropertiesBasedOnCurrentItemState();
 
     virtual void InitializeCustomDepth();
+    void SetupDynamicMaterialInstance();
 
 public:
     /**
@@ -364,6 +365,11 @@ public:
     FORCEINLINE void SetEquipSound(USoundCue* const NewEquipSound) { EquipSound = NewEquipSound; }
     FORCEINLINE void SetInventoryIcon(UTexture2D* const NewInventoryIcon) { InventoryIcon = NewInventoryIcon; }
     FORCEINLINE void SetAmmoIcon(UTexture2D* const NewAmmoIcon) { AmmoIcon = NewAmmoIcon; }
+    FORCEINLINE void SetMaterialInstance(UMaterialInstance* const NewMaterialInstance)
+    {
+        MaterialInstance = NewMaterialInstance;
+    }
+    FORCEINLINE void SetMaterialIndex(int32 const NewMaterialIndex) { MaterialIndex = NewMaterialIndex; }
     FORCEINLINE void UpdateItemState(const EItemState NewItemState)
     {
         this->ItemState = NewItemState;
