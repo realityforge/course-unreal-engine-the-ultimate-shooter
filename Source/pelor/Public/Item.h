@@ -25,7 +25,7 @@ enum class EItemRarity : uint8
     EIR_Rare UMETA(DisplayName = "Rare"),
     EIR_Legendary UMETA(DisplayName = "Legendary"),
 
-    EIR_MAX UMETA(Hidden, DisplayName = "DefaultMAX")
+    EIR_Max UMETA(Hidden)
 };
 
 UENUM(BlueprintType)
@@ -71,7 +71,7 @@ enum class EItemState : uint8
      */
     EIS_Dropping UMETA(DisplayName = "Dropping"),
 
-    EIS_MAX UMETA(Hidden, DisplayName = "DefaultMAX")
+    EIS_Max UMETA(Hidden)
 };
 
 UENUM(BlueprintType)
@@ -80,7 +80,7 @@ enum class EItemType : uint8
     EIT_Ammo UMETA(DisplayName = "Ammo"),
     EIT_Weapon UMETA(DisplayName = "Weapon"),
 
-    EIT_MAX UMETA(Hidden, DisplayName = "DefaultMAX")
+    EIT_Max UMETA(Hidden)
 };
 
 USTRUCT(BlueprintType)

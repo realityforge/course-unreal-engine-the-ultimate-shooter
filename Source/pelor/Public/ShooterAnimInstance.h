@@ -20,7 +20,7 @@ enum class EOffsetState : uint8
     // shooting but we will still use pitch to control Aiming offset
     EOS_InAir UMETA(DisplayName = "In Air"),
 
-    EOS_MAX UMETA(DisplayName = "DefaultMAX")
+    EOS_Max UMETA(Hidden)
 };
 
 /**

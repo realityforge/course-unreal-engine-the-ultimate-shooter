@@ -11,5 +11,5 @@ enum class EWeaponType : uint8
     EWT_SMG UMETA(DisplayName = "SubmachineGun"),
     EWT_AssaultRifle UMETA(DisplayName = "AssaultRifle"),
 
-    EWT_Max UMETA(DisplayName = "DefaultMax")
+    EWT_Max UMETA(Hidden)
 };
