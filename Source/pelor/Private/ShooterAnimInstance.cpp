@@ -5,6 +5,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "ShooterCharacter.h"
+#include "Weapon.h"
 
 UShooterAnimInstance::UShooterAnimInstance()
     : ShooterCharacter(nullptr)
@@ -26,6 +27,8 @@ UShooterAnimInstance::UShooterAnimInstance()
     , YawDelta(0)
     , RecoilStrength(1.f)
     , bTurningInPlace(false)
+    , EquippedWeaponType(EWeaponType::EWT_Max)
+    , bShouldUseFabrik(false)
 {
 }
 
@@ -49,6 +52,8 @@ void UShooterAnimInstance::UpdateAnimationProperties(float DeltaTime)
 
         // Set flag for exposure to animation blueprints when character is equipping
         bEquipping = ECombatState::ECS_Equipping == ShooterCharacter->GetCombatState();
+
+        bShouldUseFabrik = !bReloading && !bEquipping;
 
         // Extract the lateral velocity and place in Speed variable
         {
@@ -81,6 +86,11 @@ void UShooterAnimInstance::UpdateAnimationProperties(float DeltaTime)
                 LastMovementOffsetYaw = MovementOffsetYaw;
             }
         }
+        if (const AWeapon* EquippedWeapon = ShooterCharacter->GetEquippedWeapon())
+        {
+            EquippedWeaponType = EquippedWeapon->GetWeaponType();
+        }
+
         TurnInPlace();
         CalculateRecoilStrength();
         Lean(DeltaTime);

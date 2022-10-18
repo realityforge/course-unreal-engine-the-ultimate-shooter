@@ -4,6 +4,7 @@
 
 #include "Animation/AnimInstance.h"
 #include "CoreMinimal.h"
+#include "WeaponType.h"
 #include "ShooterAnimInstance.generated.h"
 
 /** An enum representing the "aiming state" used to select Aiming Offset animation  */
@@ -139,4 +140,12 @@ private:
     /** True when the character is turning in place */
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
     bool bTurningInPlace;
+
+    /** The equipped weapon type  */
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
+    EWeaponType EquippedWeaponType;
+
+    /** True when not reloading or equipping */
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
+    bool bShouldUseFabrik;
 };

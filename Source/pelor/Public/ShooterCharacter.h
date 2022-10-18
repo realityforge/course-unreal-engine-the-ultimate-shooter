@@ -529,6 +529,7 @@ public:
     FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; }
     FORCEINLINE const AItem* GetItemShowingInfoBox() const { return ItemShowingInfoBox; }
     FORCEINLINE ECombatState GetCombatState() const { return CombatState; }
+    FORCEINLINE AWeapon* GetEquippedWeapon() const { return EquippedWeapon; }
     FORCEINLINE bool GetAiming() const { return bAiming; }
     FORCEINLINE bool GetCrouching() const { return bCrouching; }
     FORCEINLINE bool ShouldPlayPickupSound() const { return bShouldPlayPickupSound; }
