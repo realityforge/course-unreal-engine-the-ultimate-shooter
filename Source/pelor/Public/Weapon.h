@@ -60,6 +60,10 @@ struct FWeaponDataTable : public FTableRowBase
     /** Index of the glow material we want to modify at runtime */
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     int32 MaterialIndex;
+
+    /** Name of the clip bone */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    FName ClipBoneName;
 };
 
 /**
