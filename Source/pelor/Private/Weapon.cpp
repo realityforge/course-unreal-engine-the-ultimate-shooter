@@ -67,6 +67,7 @@ void AWeapon::OnConstruction(const FTransform& Transform)
             AmmoCapacity = Row->AmmoCapacity;
             AmmoCapacity = Row->AmmoCapacity;
             ClipBoneName = Row->ClipBoneName;
+            ReloadMontageSectionName = Row->ReloadMontageSectionName;
             SetPickupSound(Row->PickupSound);
             SetEquipSound(Row->EquipSound);
             GetItemMesh()->SetSkeletalMesh(Row->ItemMesh);

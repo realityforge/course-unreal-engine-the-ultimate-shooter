@@ -64,6 +64,10 @@ struct FWeaponDataTable : public FTableRowBase
     /** Name of the clip bone */
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     FName ClipBoneName;
+
+    /** The animation montage section to reload the weapon */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    FName ReloadMontageSectionName;
 };
 
 /**
@@ -105,7 +109,6 @@ private:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Properties", meta = (AllowPrivateAccess = "true"))
     EAmmoType AmmoType;
 
-    // NOTE: This is bad and should be keyed off WeaponType but ... tutorial
     /** The animation montage section to reload the weapon */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Properties", meta = (AllowPrivateAccess = "true"))
     FName ReloadMontageSectionName;
