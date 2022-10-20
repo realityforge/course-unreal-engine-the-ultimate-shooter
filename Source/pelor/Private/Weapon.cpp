@@ -76,6 +76,7 @@ void AWeapon::OnConstruction(const FTransform& Transform)
             SetAmmoIcon(Row->AmmoIcon);
             SetMaterialInstance(Row->MaterialInstance);
             SetMaterialIndex(Row->MaterialIndex);
+            GetItemMesh()->SetAnimInstanceClass(Row->AnimInstanceType);
 
             SetupDynamicMaterialInstance();
         }

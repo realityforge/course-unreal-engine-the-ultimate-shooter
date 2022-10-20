@@ -68,6 +68,10 @@ struct FWeaponDataTable : public FTableRowBase
     /** The animation montage section to reload the weapon */
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     FName ReloadMontageSectionName;
+
+    /** The AnimInstance associated with the type */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    TSubclassOf<UAnimInstance> AnimInstanceType;
 };
 
 /**
