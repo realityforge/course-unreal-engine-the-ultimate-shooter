@@ -68,6 +68,12 @@ void AWeapon::OnConstruction(const FTransform& Transform)
             AmmoCapacity = Row->AmmoCapacity;
             ClipBoneName = Row->ClipBoneName;
             ReloadMontageSectionName = Row->ReloadMontageSectionName;
+            CrossHairsMiddle = Row->CrossHairsMiddle;
+            CrossHairsLeft = Row->CrossHairsLeft;
+            CrossHairsRight = Row->CrossHairsRight;
+            CrossHairsTop = Row->CrossHairsTop;
+            CrossHairsBottom = Row->CrossHairsBottom;
+
             SetPickupSound(Row->PickupSound);
             SetEquipSound(Row->EquipSound);
             GetItemMesh()->SetSkeletalMesh(Row->ItemMesh);

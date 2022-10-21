@@ -72,6 +72,17 @@ struct FWeaponDataTable : public FTableRowBase
     /** The AnimInstance associated with the type */
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     TSubclassOf<UAnimInstance> AnimInstanceType;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UTexture2D* CrossHairsMiddle;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UTexture2D* CrossHairsLeft;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UTexture2D* CrossHairsRight;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UTexture2D* CrossHairsTop;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UTexture2D* CrossHairsBottom;
 };
 
 /**
@@ -128,6 +139,34 @@ private:
     /** Data table for weapon properties */
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Building, meta = (AllowPrivateAccess = "true"))
     TSoftObjectPtr<UDataTable> WeaponDataTable;
+
+    // Textures for the Weapon Crosshairs
+
+    UPROPERTY(VisibleAnywhere,
+              BlueprintReadOnly,
+              Category = "Crosshair Properties",
+              meta = (AllowPrivateAccess = "true"))
+    UTexture2D* CrossHairsMiddle;
+    UPROPERTY(VisibleAnywhere,
+              BlueprintReadOnly,
+              Category = "Crosshair Properties",
+              meta = (AllowPrivateAccess = "true"))
+    UTexture2D* CrossHairsLeft;
+    UPROPERTY(VisibleAnywhere,
+              BlueprintReadOnly,
+              Category = "Crosshair Properties",
+              meta = (AllowPrivateAccess = "true"))
+    UTexture2D* CrossHairsRight;
+    UPROPERTY(VisibleAnywhere,
+              BlueprintReadOnly,
+              Category = "Crosshair Properties",
+              meta = (AllowPrivateAccess = "true"))
+    UTexture2D* CrossHairsTop;
+    UPROPERTY(VisibleAnywhere,
+              BlueprintReadOnly,
+              Category = "Crosshair Properties",
+              meta = (AllowPrivateAccess = "true"))
+    UTexture2D* CrossHairsBottom;
 
 public:
     virtual void OnConstruction(const FTransform& Transform) override;
