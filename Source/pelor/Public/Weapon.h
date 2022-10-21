@@ -119,7 +119,6 @@ private:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Properties", meta = (AllowPrivateAccess = "true"))
     EWeaponType WeaponType;
 
-    // NOTE: This is bad and should be keyed off WeaponType but ... tutorial
     /** The type of ammo the weapon uses */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Properties", meta = (AllowPrivateAccess = "true"))
     EAmmoType AmmoType;
