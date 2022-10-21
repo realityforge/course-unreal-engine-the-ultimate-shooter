@@ -229,14 +229,6 @@ private:
               meta = (AllowPrivateAccess = "true", ClampMin = "0.0", ClampMax = "1.0", UIMin = "0.0", UIMax = "1.0"))
     float AimingMouseLookUpRate;
 
-    /** Randomized gun shot sound */
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
-    USoundCue* FireSound;
-
-    /** Particle Effect when fire occurs */
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
-    UParticleSystem* MuzzleFlash;
-
     /** Animation when fire occurs */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
     UAnimMontage* HipFireMontage;
@@ -295,10 +287,6 @@ private:
     bool bFireButtonPressed;
     /** True when can fire, false when for weapon to get ready to fire again */
     bool bShouldFire;
-    /**
-     * Rate of automatic gun fire. This should be bigger than WeaponFireDuration as that controls spread of cross hair
-     */
-    float AutomaticFireRate;
     /** A timer between weapon firing */
     FTimerHandle AutomaticFireTimer;
 

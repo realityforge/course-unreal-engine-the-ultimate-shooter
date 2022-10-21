@@ -54,7 +54,6 @@ AShooterCharacter::AShooterCharacter()
     // Automatic fire variables
     , bFireButtonPressed(false)
     , bShouldFire(true)
-    , AutomaticFireRate(0.1F)
 
     // Item trace variables
     , bShouldTraceForItems(false)
@@ -275,7 +274,7 @@ void AShooterCharacter::LookUp(const float Rate)
 
 void AShooterCharacter::PlayFireSound() const
 {
-    if (FireSound)
+    if (USoundCue* FireSound = EquippedWeapon->GetFireSound())
     {
         UGameplayStatics::PlaySound2D(this, FireSound);
     }
@@ -289,7 +288,7 @@ void AShooterCharacter::SendBullet() const
     {
         // The transform relative to the mesh where the socket is located
         const FTransform SocketTransform = BarrelExitSocket->GetSocketTransform(WeaponMesh);
-        if (MuzzleFlash)
+        if (UParticleSystem* MuzzleFlash = EquippedWeapon->GetMuzzleFlash())
         {
             // Actually attach the emitter
             UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), MuzzleFlash, SocketTransform);
@@ -901,7 +900,10 @@ void AShooterCharacter::MaybeUnHighlightInventoryIndex()
 void AShooterCharacter::StartAutoFireTimer()
 {
     CombatState = ECombatState::ECS_Firing;
-    GetWorldTimerManager().SetTimer(AutomaticFireTimer, this, &AShooterCharacter::AutoFireReset, AutomaticFireRate);
+    GetWorldTimerManager().SetTimer(AutomaticFireTimer,
+                                    this,
+                                    &AShooterCharacter::AutoFireReset,
+                                    EquippedWeapon->GetAutoFireRate());
 }
 
 void AShooterCharacter::AutoFireReset()

@@ -83,6 +83,15 @@ struct FWeaponDataTable : public FTableRowBase
     UTexture2D* CrossHairsTop;
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UTexture2D* CrossHairsBottom;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    float AutoFireRate;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UParticleSystem* MuzzleFlash;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    USoundCue* FireSound;
 };
 
 /**
@@ -167,6 +176,18 @@ private:
               meta = (AllowPrivateAccess = "true"))
     UTexture2D* CrossHairsBottom;
 
+    /** The speed at which automatic fire happens */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon Properties", meta = (AllowPrivateAccess = "true"))
+    float AutoFireRate;
+
+    /** Particle system spawned at the BarrelExitSocket */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon Properties", meta = (AllowPrivateAccess = "true"))
+    UParticleSystem* MuzzleFlash;
+
+    /** Sound played when the weapon is fired */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon Properties", meta = (AllowPrivateAccess = "true"))
+    USoundCue* FireSound;
+
 public:
     virtual void OnConstruction(const FTransform& Transform) override;
     // Adds impulse forward and down thus throwing the Weapon
@@ -178,6 +199,9 @@ public:
     FORCEINLINE EAmmoType GetAmmoType() const { return AmmoType; }
     FORCEINLINE FName GetReloadMontageSectionName() const { return ReloadMontageSectionName; }
     FORCEINLINE FName GetClipBoneName() const { return ClipBoneName; }
+    FORCEINLINE float GetAutoFireRate() const { return AutoFireRate; }
+    FORCEINLINE UParticleSystem* GetMuzzleFlash() const { return MuzzleFlash; }
+    FORCEINLINE USoundCue* GetFireSound() const { return FireSound; }
 
     /** Decrement the Ammo but never reduce below 0 */
     void DecrementAmmo();

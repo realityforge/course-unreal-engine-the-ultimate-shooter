@@ -73,6 +73,9 @@ void AWeapon::OnConstruction(const FTransform& Transform)
             CrossHairsRight = Row->CrossHairsRight;
             CrossHairsTop = Row->CrossHairsTop;
             CrossHairsBottom = Row->CrossHairsBottom;
+            AutoFireRate = Row->AutoFireRate;
+            MuzzleFlash = Row->MuzzleFlash;
+            FireSound = Row->FireSound;
 
             SetPickupSound(Row->PickupSound);
             SetEquipSound(Row->EquipSound);
