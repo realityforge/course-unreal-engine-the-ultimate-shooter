@@ -12,3 +12,9 @@ The following are a list of ideas on techniques to learn new skills/tools/techni
 ## Curves
 
 I want to define a single "curve" asset that has multiple curves in it and be able to name each curve axis. To do multiple curves at the moment you can use a CurveVector but there has to be 3 components (X, Y, Z) that can not be renamed. Alternatively maybe we want a curve group that allows presentation of multiple curves at the same time? See AItem::PulseCurve and AItem::EquippingPulseCurve as to why this is done.
+
+Change all properties controlled by datatables to visible and blueprint read-only
+
+Why are FABRIK NODES not moved Inline? (Then based on slot can decide whether they are active)
+
+Also why separate shooting/reloading slots?
