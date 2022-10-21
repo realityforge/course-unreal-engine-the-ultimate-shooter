@@ -112,7 +112,7 @@ private:
     int32 Ammo;
 
     /** Maximum amount of Ammo that this Weapon can load */
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Properties", meta = (AllowPrivateAccess = "true"))
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon Properties", meta = (AllowPrivateAccess = "true"))
     int32 AmmoCapacity;
 
     /** The type of weapon */
@@ -120,11 +120,11 @@ private:
     EWeaponType WeaponType;
 
     /** The type of ammo the weapon uses */
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Properties", meta = (AllowPrivateAccess = "true"))
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon Properties", meta = (AllowPrivateAccess = "true"))
     EAmmoType AmmoType;
 
     /** The animation montage section to reload the weapon */
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Properties", meta = (AllowPrivateAccess = "true"))
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon Properties", meta = (AllowPrivateAccess = "true"))
     FName ReloadMontageSectionName;
 
     /** True when moving the clip while reloading */
@@ -132,7 +132,7 @@ private:
     bool bMovingClip;
 
     /** Name of the clip bone */
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Properties", meta = (AllowPrivateAccess = "true"))
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon Properties", meta = (AllowPrivateAccess = "true"))
     FName ClipBoneName;
 
     /** Data table for weapon properties */
