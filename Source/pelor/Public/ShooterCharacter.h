@@ -37,11 +37,11 @@ struct FPresentationLocation
 
     /** Scene component to that identifies position to present item at */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-    USceneComponent* SceneComponent;
+    USceneComponent* SceneComponent = nullptr;
 
     /** Number of items being presented at this time. */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-    int32 ItemCount;
+    int32 ItemCount = 0;
 };
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FEquipItemDelegate, int32, OldInventoryIndex, int32, NewInventoryIndex);

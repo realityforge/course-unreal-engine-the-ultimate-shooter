@@ -15,83 +15,83 @@ struct FWeaponDataTable : public FTableRowBase
 
     /** The type of weapon that this row defines. */
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    EWeaponType WeaponType;
+    EWeaponType WeaponType = EWeaponType::EWT_Max;
 
     /** The type of Ammo that the weapon uses. */
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    EAmmoType AmmoType;
+    EAmmoType AmmoType = EAmmoType::EAT_Max;
 
     /** The type of Ammo that the weapon uses. */
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    int32 Ammo;
+    int32 Ammo = 0;
 
     /** Maximum amount of Ammo that the Weapon can load */
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    int32 AmmoCapacity;
+    int32 AmmoCapacity = 0;
 
     /** The sound cue when a character (or player only?) picks up item */
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    USoundCue* PickupSound;
+    USoundCue* PickupSound = nullptr;
 
     /** The sound cue when a character equips item */
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    USoundCue* EquipSound;
+    USoundCue* EquipSound = nullptr;
 
     /** Mesh representation of the item */
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    USkeletalMesh* ItemMesh;
+    USkeletalMesh* ItemMesh = nullptr;
 
     /** Name of the item */
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    FString ItemName;
+    FString ItemName{ "" };
 
     /** Icon for this item in inventory. */
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UTexture2D* InventoryIcon;
+    UTexture2D* InventoryIcon = nullptr;
 
     /** UI Icon for the ammo associated with item used by inventory. */
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UTexture2D* AmmoIcon;
+    UTexture2D* AmmoIcon = nullptr;
 
     /** MaterialInstance that can is configured in blueprints. */
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UMaterialInstance* MaterialInstance;
+    UMaterialInstance* MaterialInstance = nullptr;
 
     /** Index of the glow material we want to modify at runtime */
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    int32 MaterialIndex;
+    int32 MaterialIndex = 0;
 
     /** Name of the clip bone */
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    FName ClipBoneName;
+    FName ClipBoneName{ "" };
 
     /** The animation montage section to reload the weapon */
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    FName ReloadMontageSectionName;
+    FName ReloadMontageSectionName{ "" };
 
     /** The AnimInstance associated with the type */
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    TSubclassOf<UAnimInstance> AnimInstanceType;
+    TSubclassOf<UAnimInstance> AnimInstanceType = nullptr;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UTexture2D* CrossHairsMiddle;
+    UTexture2D* CrossHairsMiddle = nullptr;
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UTexture2D* CrossHairsLeft;
+    UTexture2D* CrossHairsLeft = nullptr;
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UTexture2D* CrossHairsRight;
+    UTexture2D* CrossHairsRight = nullptr;
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UTexture2D* CrossHairsTop;
+    UTexture2D* CrossHairsTop = nullptr;
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UTexture2D* CrossHairsBottom;
+    UTexture2D* CrossHairsBottom = nullptr;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    float AutoFireRate;
+    float AutoFireRate = 0.f;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UParticleSystem* MuzzleFlash;
+    UParticleSystem* MuzzleFlash = nullptr;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    USoundCue* FireSound;
+    USoundCue* FireSound = nullptr;
 };
 
 /**

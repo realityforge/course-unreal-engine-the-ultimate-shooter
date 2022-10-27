@@ -90,30 +90,30 @@ struct FItemRarityTable : public FTableRowBase
 
     /** The color on that item glows. */
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    FLinearColor GlowColor;
+    FLinearColor GlowColor{ ForceInitToZero };
 
     /** The Light color on Pickup Info box. */
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    FLinearColor LightColor;
+    FLinearColor LightColor{ ForceInitToZero };
 
     /** The Dark color on Pickup Info box. */
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    FLinearColor DarkColor;
+    FLinearColor DarkColor{ ForceInitToZero };
 
     /** The number of stars in Info Box and elsewhere box. */
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    int32 NumberOfStars;
+    int32 NumberOfStars = 0;
 
     /** The background of the item in the inventory table */
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UTexture2D* ItemBackground;
+    UTexture2D* ItemBackground = nullptr;
 
     /**
      * The value specified for custom depth stencil that controls color in outline.
      * See PP_Highlight shader to see how these values translate into colors
      */
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    int32 CustomDepthStencil;
+    int32 CustomDepthStencil = 0;
 };
 
 UCLASS()
