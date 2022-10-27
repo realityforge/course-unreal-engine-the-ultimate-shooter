@@ -36,8 +36,7 @@ void AWeapon::OnConstruction(const FTransform& Transform)
 
     if (WeaponDataTable.IsPending())
     {
-        WeaponDataTable =
-            Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, *WeaponDataTable.ToString()));
+        WeaponDataTable = WeaponDataTable.LoadSynchronous();
     }
 
     if (WeaponDataTable.IsValid())
