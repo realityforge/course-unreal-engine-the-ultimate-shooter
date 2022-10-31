@@ -75,6 +75,7 @@ void AWeapon::OnConstruction(const FTransform& Transform)
             AutoFireRate = Row->AutoFireRate;
             MuzzleFlash = Row->MuzzleFlash;
             FireSound = Row->FireSound;
+            BoneToHide = Row->BoneToHide;
 
             SetPickupSound(Row->PickupSound);
             SetEquipSound(Row->EquipSound);
@@ -145,4 +146,13 @@ void AWeapon::StopFalling()
 
     bFalling = false;
     UpdateItemState(EItemState::EIS_Dropped);
+}
+
+void AWeapon::BeginPlay()
+{
+    Super::BeginPlay();
+    if (BoneToHide.GetStringLength() > 0)
+    {
+        GetItemMesh()->HideBoneByName(BoneToHide, PBO_None);
+    }
 }
