@@ -50,6 +50,9 @@ void AWeapon::OnConstruction(const FTransform& Transform)
             case EWeaponType::EWT_AssaultRifle:
                 RowName = FName("AssaultRifle");
                 break;
+            case EWeaponType::EWT_Pistol:
+                RowName = FName("Pistol");
+                break;
         }
 
         // Just make sure our datatable has the row matching in it
