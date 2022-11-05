@@ -342,6 +342,12 @@ void AShooterCharacter::FireWeapon()
         EquippedWeapon->DecrementAmmo();
         StartCrosshairShootingImpactTimer();
         StartAutoFireTimer();
+
+        // Super ugly hack to check type of weapon here ... but following a tutorial
+        if (EWeaponType::EWT_Pistol == EquippedWeapon->GetWeaponType())
+        {
+            EquippedWeapon->StartSlideTimer();
+        }
     }
 }
 

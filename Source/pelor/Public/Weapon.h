@@ -115,6 +115,9 @@ protected:
     void StopFalling();
     virtual void BeginPlay() override;
 
+    void FinishMovingSlide();
+    void UpdateSlideDisplacement();
+
 private:
     FTimerHandle ThrowWeaponTimer;
     float ThrowWeaponTime;
@@ -197,6 +200,35 @@ private:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon Properties", meta = (AllowPrivateAccess = "true"))
     FName BoneToHide;
 
+    /** Amount that the slide that the slide is moved during weapon firing */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pistol", meta = (AllowPrivateAccess = "true"))
+    float SlideDisplacement;
+
+    /** Curve for the slide displacement */
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Pistol", meta = (AllowPrivateAccess = "true"))
+    UCurveFloat* SlideDisplacementCurve;
+
+    /** Timer handle for updating SlideDisplacement */
+    FTimerHandle SlideTimer;
+
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Pistol", meta = (AllowPrivateAccess = "true"))
+    float SlideDisplacementDuration;
+
+    /** True when the pistol slide is moving */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pistol", meta = (AllowPrivateAccess = "true"))
+    bool bMovingSlide;
+
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Pistol", meta = (AllowPrivateAccess = "true"))
+    float MaxSlideDisplacement;
+
+    /** Amount that the pistol is rotated during weapon firing */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pistol", meta = (AllowPrivateAccess = "true"))
+    float RecoilRotation;
+
+    /** Max rotation of Pistol when it recoils */
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Pistol", meta = (AllowPrivateAccess = "true"))
+    float MaxRecoilRotation;
+
 public:
     virtual void OnConstruction(const FTransform& Transform) override;
     // Adds impulse forward and down thus throwing the Weapon
@@ -211,6 +243,8 @@ public:
     FORCEINLINE float GetAutoFireRate() const { return AutoFireRate; }
     FORCEINLINE UParticleSystem* GetMuzzleFlash() const { return MuzzleFlash; }
     FORCEINLINE USoundCue* GetFireSound() const { return FireSound; }
+
+    void StartSlideTimer();
 
     /** Decrement the Ammo but never reduce below 0 */
     void DecrementAmmo();
