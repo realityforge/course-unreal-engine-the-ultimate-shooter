@@ -152,7 +152,7 @@ public:
 
 private:
     /** True when in Aim mode */
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Combat, meta = (AllowPrivateAccess = "true"))
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
     bool bAiming;
 
     // UProperty puts it in "section" camera and allows access even though it is private etc
