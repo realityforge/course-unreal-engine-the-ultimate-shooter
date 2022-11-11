@@ -237,10 +237,6 @@ private:
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
     float ZCurveTime;
 
-    /** The category of the item */
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
-    EItemType ItemType;
-
     /** The index of presentation location that item is being presented */
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
     int32 PresentationIndex;
