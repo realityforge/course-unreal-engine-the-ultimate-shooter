@@ -479,10 +479,10 @@ void AShooterCharacter::Aim()
 void AShooterCharacter::AimingButtonPressed()
 {
     bAimingButtonPressed = true;
-    if (ECombatState::ECS_Reloading != CombatState)
+    if (ECombatState::ECS_Reloading != CombatState && ECombatState::ECS_Equipping != CombatState)
     {
-        // We only aim when we reload.
-        // Partially this is to ensure that the reload animation plays in full when aiming
+        // We only aim when we are not reloading or equipping
+        // Partially this is to ensure that the reload/equipping animation plays in full when aiming
         Aim();
     }
 }
@@ -592,6 +592,10 @@ void AShooterCharacter::ReleaseClip()
 void AShooterCharacter::FinishEquip()
 {
     CombatState = ECombatState::ECS_Idle;
+    if (bAimingButtonPressed)
+    {
+        Aim();
+    }
 }
 
 void AShooterCharacter::EquipWeaponSwap()
@@ -843,6 +847,10 @@ void AShooterCharacter::StartWeaponEquip(AWeapon* const Weapon)
         }
         PendingEquippedWeapon = Weapon;
         CombatState = ECombatState::ECS_Equipping;
+        if (bAiming)
+        {
+            StopAiming();
+        }
     }
     else
     {
