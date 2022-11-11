@@ -917,7 +917,7 @@ void AShooterCharacter::AutoFireReset()
     CombatState = ECombatState::ECS_Idle;
     if (WeaponHasAmmo())
     {
-        if (bFireButtonPressed)
+        if (bFireButtonPressed && EquippedWeapon && EquippedWeapon->GetAutomatic())
         {
             // If we are still holding button then fire again
             FireWeapon();

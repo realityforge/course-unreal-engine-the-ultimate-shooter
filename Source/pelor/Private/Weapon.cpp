@@ -11,6 +11,7 @@ AWeapon::AWeapon()
     , AmmoType(EAmmoType::EAT_9mm)
     , ReloadMontageSectionName("Reload SMG")
     , ClipBoneName("smg_clip")
+    , bAutomatic(true)
     , SlideDisplacement(0.f)
     , SlideDisplacementCurve(nullptr)
     , SlideDisplacementDuration(.2f)
@@ -80,6 +81,7 @@ void AWeapon::OnConstruction(const FTransform& Transform)
             AmmoCapacity = Row->AmmoCapacity;
             ClipBoneName = Row->ClipBoneName;
             ReloadMontageSectionName = Row->ReloadMontageSectionName;
+            bAutomatic = Row->bAutomatic;
             CrossHairsMiddle = Row->CrossHairsMiddle;
             CrossHairsLeft = Row->CrossHairsLeft;
             CrossHairsRight = Row->CrossHairsRight;

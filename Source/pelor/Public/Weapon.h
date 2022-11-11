@@ -88,6 +88,9 @@ struct FWeaponDataTable : public FTableRowBase
     float AutoFireRate = 0.f;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    bool bAutomatic;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UParticleSystem* MuzzleFlash = nullptr;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -187,6 +190,9 @@ private:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon Properties", meta = (AllowPrivateAccess = "true"))
     float AutoFireRate;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Properties", meta = (AllowPrivateAccess = "true"))
+    bool bAutomatic;
+
     /** Particle system spawned at the BarrelExitSocket */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon Properties", meta = (AllowPrivateAccess = "true"))
     UParticleSystem* MuzzleFlash;
@@ -243,6 +249,7 @@ public:
     FORCEINLINE float GetAutoFireRate() const { return AutoFireRate; }
     FORCEINLINE UParticleSystem* GetMuzzleFlash() const { return MuzzleFlash; }
     FORCEINLINE USoundCue* GetFireSound() const { return FireSound; }
+    FORCEINLINE bool GetAutomatic() const { return bAutomatic; }
 
     void StartSlideTimer();
 
