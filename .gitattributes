@@ -1,5 +1,6 @@
 # DO NOT EDIT: File is auto-generated
 * -text
+Config/*.ini text=auto
 *.json text
 *.md text
 *.sh text
