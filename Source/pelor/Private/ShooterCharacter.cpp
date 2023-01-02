@@ -1092,7 +1092,7 @@ int32 AShooterCharacter::GetBestPresentationIndex()
     int32 LowestCount = INT_MAX;
     const int32 Count = PresentationLocations.Num();
     // Index 0 is Weapon presentation index so we skip it for ammo presentation
-    for (uint i = 1; i < Count; i++)
+    for (uint8 i = 1; i < Count; i++)
     {
         if (PresentationLocations[i].ItemCount < LowestCount)
         {
