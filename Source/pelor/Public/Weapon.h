@@ -88,7 +88,7 @@ struct FWeaponDataTable : public FTableRowBase
     float AutoFireRate = 0.f;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    bool bAutomatic;
+    bool bAutomatic = false;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UParticleSystem* MuzzleFlash = nullptr;
