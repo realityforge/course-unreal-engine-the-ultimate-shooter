@@ -12,12 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -euo pipefail
-
 if [[ "$#" != "1" ]]; then
   echo "$0: Must be invoked with a single argument."
   exit 1
 else
   # Format Source code using clang-format
-  git diff --name-only HEAD | grep -E "^$@" | grep -i -e "\.h$" -e "\.cpp$" | grep -e "^Source/" | xargs clang-format -i
+  set pattern = "^${1//\\//}"
+  git diff --name-only HEAD | grep -E "${pattern}" | grep -i -e "\.h$" -e "\.cpp$" | grep -e "^Source/" | xargs --no-run-if-empty clang-format -i
 fi
