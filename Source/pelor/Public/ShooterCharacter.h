@@ -473,6 +473,9 @@ private:
     int32 GetEmptyInventoryIndex();
     void HighlightInventoryIndex();
 
+    UFUNCTION(BlueprintCallable)
+    void FootStep();
+
     void StartAutoFireTimer();
 
     UFUNCTION()

@@ -898,6 +898,18 @@ void AShooterCharacter::HighlightInventoryIndex()
     HighlightIconDelegate.Broadcast(HighlightedInventoryIndex, true);
 }
 
+void AShooterCharacter::FootStep()
+{
+    FHitResult HitResult;
+    const FVector Start{ GetActorLocation() };
+    const FVector End{ Start + FVector(0.F, 0.F, -400.F) };
+    FCollisionQueryParams QueryParams;
+    QueryParams.bReturnPhysicalMaterial = true;
+
+    GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_Visibility, QueryParams);
+    UE_LOG(LogTemp, Warning, TEXT("Hit Actor %s"), *HitResult.GetActor()->GetName());
+}
+
 void AShooterCharacter::MaybeUnHighlightInventoryIndex()
 {
     if (-1 != HighlightedInventoryIndex)
