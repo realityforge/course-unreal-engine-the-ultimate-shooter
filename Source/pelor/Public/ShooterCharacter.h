@@ -474,7 +474,7 @@ private:
     void HighlightInventoryIndex();
 
     UFUNCTION(BlueprintCallable)
-    void FootStep();
+    EPhysicalSurface GetSurfaceTypeUnderFoot();
 
     void StartAutoFireTimer();
 

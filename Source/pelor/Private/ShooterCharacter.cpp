@@ -11,8 +11,10 @@
 #include "Item.h"
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystemComponent.h"
+#include "PhysicalMaterials/PhysicalMaterial.h"
 #include "Sound/SoundCue.h"
 #include "Weapon.h"
+#include "pelor.h"
 
 // Sets default values
 AShooterCharacter::AShooterCharacter()
@@ -898,7 +900,7 @@ void AShooterCharacter::HighlightInventoryIndex()
     HighlightIconDelegate.Broadcast(HighlightedInventoryIndex, true);
 }
 
-void AShooterCharacter::FootStep()
+EPhysicalSurface AShooterCharacter::GetSurfaceTypeUnderFoot()
 {
     FHitResult HitResult;
     const FVector Start{ GetActorLocation() };
@@ -907,7 +909,7 @@ void AShooterCharacter::FootStep()
     QueryParams.bReturnPhysicalMaterial = true;
 
     GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_Visibility, QueryParams);
-    UE_LOG(LogTemp, Warning, TEXT("Hit Actor %s"), *HitResult.GetActor()->GetName());
+    return UPhysicalMaterial::DetermineSurfaceType(HitResult.PhysMaterial.Get());
 }
 
 void AShooterCharacter::MaybeUnHighlightInventoryIndex()
