@@ -5,6 +5,7 @@ Saved
 Gemfile.lock
 .vscode
 .vs
+/bazel-*
 /cmake-build-debug/
 *.VC.db
 *.opensdf
