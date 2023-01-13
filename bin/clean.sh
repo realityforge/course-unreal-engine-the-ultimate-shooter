@@ -15,4 +15,4 @@
 set -euo pipefail
 
 # Remove all generated artifacts. This should be done while the Editor is not running...
-rm -rf DerivedDataCache Intermediate Saved cmake-build-debug Binaries Plugins/Developer/RiderLink/Binaries Plugins/Developer/RiderLink/Intermediate
+rm -rf bazel-* DerivedDataCache Intermediate Saved cmake-build-debug Binaries Plugins/Developer/RiderLink/Binaries Plugins/Developer/RiderLink/Intermediate
