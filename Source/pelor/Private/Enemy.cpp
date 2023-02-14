@@ -1,9 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Enemy.h"
+#include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
 
 // Sets default values
-AEnemy::AEnemy()
+AEnemy::AEnemy() : ImpactParticles(nullptr), ImpactSound(nullptr)
 {
     // Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need
     // it.
@@ -30,4 +32,14 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
     Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
-void AEnemy::BulletHit_Implementation(FHitResult HitResult) {}
+void AEnemy::BulletHit_Implementation(FHitResult HitResult)
+{
+    if (ImpactSound)
+    {
+        UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation());
+    }
+    if (ImpactParticles)
+    {
+        UGameplayStatics::SpawnEmitterAtLocation(this, ImpactParticles, HitResult.Location, FRotator(0.f), true);
+    }
+}
