@@ -14,6 +14,8 @@ AEnemy::AEnemy()
 void AEnemy::BeginPlay()
 {
     Super::BeginPlay();
+
+    GetMesh()->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
 }
 
 // Called every frame
@@ -27,3 +29,5 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
     Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
+
+void AEnemy::BulletHit_Implementation(FHitResult HitResult) {}

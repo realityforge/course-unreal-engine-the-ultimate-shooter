@@ -2,12 +2,16 @@
 
 #pragma once
 
+#include "BulletHitInterface.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Enemy.generated.h"
 
+class USoundCue;
+class UParticleSystem;
+
 UCLASS()
-class PELOR_API AEnemy : public ACharacter
+class PELOR_API AEnemy : public ACharacter, public IBulletHitInterface
 {
     GENERATED_BODY()
 
@@ -19,10 +23,20 @@ protected:
     // Called when the game starts or when spawned
     virtual void BeginPlay() override;
 
+    /** Particles to spawn when hit by bullets */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+    UParticleSystem* ImpactParticles;
+
+    /** Sound to play when hit by bullets */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+    USoundCue* ImpactSound;
+
 public:
     // Called every frame
     virtual void Tick(float DeltaTime) override;
 
     // Called to bind functionality to input
     virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+    virtual void BulletHit_Implementation(FHitResult HitResult) override;
 };
