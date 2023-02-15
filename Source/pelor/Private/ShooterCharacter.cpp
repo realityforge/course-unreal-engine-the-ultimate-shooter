@@ -95,7 +95,7 @@ AShooterCharacter::AShooterCharacter()
     , bShouldPlayEquipSound(true)
     , EquipSoundResetTime(0.2f)
 
-    // Inventory Icon Naimation properties
+    // Inventory Icon animation properties
     , HighlightedInventoryIndex(-1)
 
 {
