@@ -103,11 +103,11 @@ protected:
      * Trace a line from the MuzzleEndLocation to where the crosshair is aiming.
      *
      * @param MuzzleEndLocation the start of the line to trace
-     * @param OutBeamLocation the location where the weapon weapon hit or when the weapon shot dissipated depending on
-     *                        whether the return result is true or false.
+     * @param OutHitResult the hit result where the weapon weapon hit or when the weapon shot dissipated depending on
+     * whether the return result is true or false.
      * @return true if a hit occurs, false if no hit occurs
      */
-    bool GetBeamEndLocation(const FVector& MuzzleEndLocation, FVector& OutBeamLocation) const;
+    bool GetBeamEndLocation(const FVector& MuzzleEndLocation, FHitResult& OutHitResult) const;
 
     bool TraceCrosshairToWorld(FHitResult& OutHitResult, FVector& OutHitLocation) const;
     void UpdateMaxWalkSpeed() const;

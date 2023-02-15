@@ -295,13 +295,13 @@ void AShooterCharacter::SendBullet() const
             UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), MuzzleFlash, SocketTransform);
         }
 
-        FVector HitLocation;
+        FHitResult BeamHitResult;
         const FVector MuzzleEndLocation = SocketTransform.GetLocation();
-        if (GetBeamEndLocation(MuzzleEndLocation, HitLocation))
+        if (GetBeamEndLocation(MuzzleEndLocation, BeamHitResult))
         {
             if (nullptr != ImpactParticles)
             {
-                UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticles, HitLocation);
+                UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticles, BeamHitResult.Location);
             }
         }
         if (nullptr != BeamParticles)
@@ -312,7 +312,7 @@ void AShooterCharacter::SendBullet() const
             if (nullptr != Beam)
             {
                 // "Target" is a parameter specified in the particle system definition
-                Beam->SetVectorParameter("Target", HitLocation);
+                Beam->SetVectorParameter("Target", BeamHitResult.Location);
             }
         }
     }
@@ -384,34 +384,37 @@ void AShooterCharacter::DeriveCapsuleHalfHeight(const float DeltaTime) const
     GetCapsuleComponent()->SetCapsuleHalfHeight(CurrentFrameCapsuleHalfHeight, true);
 }
 
-bool AShooterCharacter::GetBeamEndLocation(const FVector& MuzzleEndLocation, FVector& OutBeamLocation) const
+bool AShooterCharacter::GetBeamEndLocation(const FVector& MuzzleEndLocation, FHitResult& OutHitResult) const
 {
     if (nullptr != GEngine && nullptr != GEngine->GameViewport)
     {
         FHitResult TargetHitResult;
-        TraceCrosshairToWorld(TargetHitResult, OutBeamLocation);
+        FVector BeamEndLocation{ 0.F };
+        TraceCrosshairToWorld(TargetHitResult, BeamEndLocation);
 
-        FVector MuzzleEndToHit = OutBeamLocation - MuzzleEndLocation;
+        FVector MuzzleEndToHit = BeamEndLocation - MuzzleEndLocation;
         // Place the end of our trace beyond the location hit by our original trace by 25% so that we
         // are always guaranteed to hit the wall, otherwise numerical instability and changing location
         // of the muzzle (usually due to kick animations) will mean our traces never hit the target
         const FVector WeaponTraceEnd{ MuzzleEndLocation + MuzzleEndToHit * 1.25F };
 
         // Trace a line from Muzzle to target and see if we hit anything along the way
-        if (FHitResult WeaponTraceHit;
-            GetWorld()->LineTraceSingleByChannel(WeaponTraceHit, MuzzleEndLocation, WeaponTraceEnd, ECC_Visibility))
+        if (GetWorld()->LineTraceSingleByChannel(OutHitResult, MuzzleEndLocation, WeaponTraceEnd, ECC_Visibility))
         {
-            OutBeamLocation = WeaponTraceHit.Location;
             return true;
+        }
+        else
+        {
+            OutHitResult.Location = BeamEndLocation;
         }
     }
     else
     {
-        // Make sure the OutBeamLocation is initialised. Otherwise the caller will attempt
+        // Make sure the OutHitResult.Location is initialised. Otherwise the caller will attempt
         // to create particle system in incorrect location. In reality we should change the API
         // of this method to be more than bool (and instead be a tri-state? or maybe return result
         // as part of another out parameter? But this may impact future lessons so avoiding that change for now.
-        OutBeamLocation = MuzzleEndLocation;
+        OutHitResult.Location = MuzzleEndLocation;
     }
 
     return false;
