@@ -36,7 +36,7 @@ void AEnemy::BulletHit_Implementation(FHitResult HitResult)
 {
     if (ImpactSound)
     {
-        UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation());
+        UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, HitResult.Location);
     }
     if (ImpactParticles)
     {
