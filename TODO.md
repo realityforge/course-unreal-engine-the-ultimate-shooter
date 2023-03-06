@@ -1,5 +1,7 @@
 # TODO
 
+* Only use LFS for assets exceeding 100M. Use `find Content -size +100M` to find list after have remove unused assets
+
 * Add tool for performing diffs on unreal assets via textconv gitconfig setting
   https://git-scm.com/docs/gitattributes#_performing_text_diffs_of_binary_files
 
