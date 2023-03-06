@@ -82,6 +82,8 @@ void AWeapon::OnConstruction(const FTransform& Transform)
             ClipBoneName = Row->ClipBoneName;
             ReloadMontageSectionName = Row->ReloadMontageSectionName;
             bAutomatic = Row->bAutomatic;
+            Damage = Row->Damage;
+            HeadShotDamage = Row->HeadShotDamage;
             CrossHairsMiddle = Row->CrossHairsMiddle;
             CrossHairsLeft = Row->CrossHairsLeft;
             CrossHairsRight = Row->CrossHairsRight;

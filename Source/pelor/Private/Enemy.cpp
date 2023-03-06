@@ -2,10 +2,11 @@
 
 #include "Enemy.h"
 #include "Kismet/GameplayStatics.h"
+#include "PhysicsSettingsEnums.h"
 #include "Sound/SoundCue.h"
 
 // Sets default values
-AEnemy::AEnemy() : ImpactParticles(nullptr), ImpactSound(nullptr)
+AEnemy::AEnemy() : ImpactParticles(nullptr), ImpactSound(nullptr), Health(100.f), MaxHealth(100.f)
 {
     // Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need
     // it.
@@ -42,4 +43,15 @@ void AEnemy::BulletHit_Implementation(FHitResult HitResult)
     {
         UGameplayStatics::SpawnEmitterAtLocation(this, ImpactParticles, HitResult.Location, FRotator(0.f), true);
     }
+}
+
+float AEnemy::TakeDamage(float Damage,
+                         FDamageEvent const& DamageEvent,
+                         AController* EventInstigator,
+                         AActor* DamageCauser)
+{
+    // Apply Damage, never going below zero
+    const float NewHealth = Health - Damage;
+    Health = NewHealth <= 0.f ? 0.f : NewHealth;
+    return Damage;
 }

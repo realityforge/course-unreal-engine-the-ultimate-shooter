@@ -91,6 +91,12 @@ struct FWeaponDataTable : public FTableRowBase
     bool bAutomatic = false;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    float Damage;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    float HeadShotDamage;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UParticleSystem* MuzzleFlash = nullptr;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -193,6 +199,14 @@ private:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Properties", meta = (AllowPrivateAccess = "true"))
     bool bAutomatic;
 
+    /** Amount of damage caused when hit with the weapon */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Properties", meta = (AllowPrivateAccess = "true"))
+    float Damage;
+
+    /** Amount of damage caused when hit in the "head" with the weapon */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Properties", meta = (AllowPrivateAccess = "true"))
+    float HeadShotDamage;
+
     /** Particle system spawned at the BarrelExitSocket */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon Properties", meta = (AllowPrivateAccess = "true"))
     UParticleSystem* MuzzleFlash;
@@ -250,6 +264,8 @@ public:
     FORCEINLINE UParticleSystem* GetMuzzleFlash() const { return MuzzleFlash; }
     FORCEINLINE USoundCue* GetFireSound() const { return FireSound; }
     FORCEINLINE bool GetAutomatic() const { return bAutomatic; }
+    FORCEINLINE float GetDamage() const { return Damage; }
+    FORCEINLINE float GetHeadShotDamage() const { return HeadShotDamage; }
 
     void StartSlideTimer();
 

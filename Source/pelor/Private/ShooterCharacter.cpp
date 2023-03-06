@@ -6,6 +6,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/WidgetComponent.h"
+#include "Enemy.h"
 #include "Engine/SkeletalMeshSocket.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -282,7 +283,7 @@ void AShooterCharacter::PlayFireSound() const
     }
 }
 
-void AShooterCharacter::SendBullet() const
+void AShooterCharacter::SendBullet()
 {
     const USkeletalMeshComponent* WeaponMesh = EquippedWeapon->GetItemMesh();
     // This socket indicates where the particle emitter is set to be anchored
@@ -309,6 +310,15 @@ void AShooterCharacter::SendBullet() const
                 {
                     BulletHitInterface->BulletHit_Implementation(BeamHitResult);
                     bUseDefaultParticles = false;
+                }
+                if (Cast<AEnemy>(HitActor))
+                {
+                    UGameplayStatics::ApplyDamage(HitActor,
+                                                  EquippedWeapon->GetDamage(),
+                                                  GetController(),
+                                                  /* DamageCauser */
+                                                  this,
+                                                  UDamageType::StaticClass());
                 }
             }
 

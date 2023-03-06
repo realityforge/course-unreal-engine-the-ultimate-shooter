@@ -86,7 +86,7 @@ protected:
      */
     void LookUp(float Rate);
     void PlayFireSound() const;
-    void SendBullet() const;
+    void SendBullet();
     void PlayGunFireMontage() const;
 
     /**
