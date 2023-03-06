@@ -311,10 +311,15 @@ void AShooterCharacter::SendBullet()
                     BulletHitInterface->BulletHit_Implementation(BeamHitResult);
                     bUseDefaultParticles = false;
                 }
-                if (Cast<AEnemy>(HitActor))
+                if (AEnemy* Enemy = Cast<AEnemy>(HitActor))
                 {
+                    // If we hit the head bone then it is a headshot!
+                    const float Damage = BeamHitResult.BoneName.ToString().Equals(Enemy->GetHeadBone())
+                        ? EquippedWeapon->GetHeadShotDamage()
+                        : EquippedWeapon->GetDamage();
+
                     UGameplayStatics::ApplyDamage(HitActor,
-                                                  EquippedWeapon->GetDamage(),
+                                                  Damage,
                                                   GetController(),
                                                   /* DamageCauser */
                                                   this,

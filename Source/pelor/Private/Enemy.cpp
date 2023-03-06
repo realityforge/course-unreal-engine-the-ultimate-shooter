@@ -6,7 +6,7 @@
 #include "Sound/SoundCue.h"
 
 // Sets default values
-AEnemy::AEnemy() : ImpactParticles(nullptr), ImpactSound(nullptr), Health(100.f), MaxHealth(100.f)
+AEnemy::AEnemy() : ImpactParticles(nullptr), ImpactSound(nullptr), Health(100.f), MaxHealth(100.f), HeadBone("")
 {
     // Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need
     // it.

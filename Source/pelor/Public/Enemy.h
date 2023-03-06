@@ -39,7 +39,13 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
     float MaxHealth;
 
+    /** Name of the bone that identifies the head and thus whether a shot is a considered a "headshot" */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+    FString HeadBone;
+
 public:
+    FORCEINLINE FString GetHeadBone() const { return HeadBone; }
+
     // Called every frame
     virtual void Tick(float DeltaTime) override;
 
