@@ -2,6 +2,7 @@
 
 #include "ShooterCharacter.h"
 #include "Ammo.h"
+#include "BulletHitInterface.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/WidgetComponent.h"
@@ -299,7 +300,19 @@ void AShooterCharacter::SendBullet() const
         const FVector MuzzleEndLocation = SocketTransform.GetLocation();
         if (GetBeamEndLocation(MuzzleEndLocation, BeamHitResult))
         {
-            if (ImpactParticles)
+            bool bUseDefaultParticles = true;
+            // Does the actor we hit implement the  BulletHitInterface?
+            if (AActor* HitActor = BeamHitResult.GetActor())
+            {
+                // The cast will only be successful if the actor implements interface
+                if (IBulletHitInterface* BulletHitInterface = Cast<IBulletHitInterface>(HitActor))
+                {
+                    BulletHitInterface->BulletHit_Implementation(BeamHitResult);
+                    bUseDefaultParticles = false;
+                }
+            }
+
+            if (bUseDefaultParticles && ImpactParticles)
             {
                 UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticles, BeamHitResult.Location);
             }
