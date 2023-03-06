@@ -299,12 +299,12 @@ void AShooterCharacter::SendBullet() const
         const FVector MuzzleEndLocation = SocketTransform.GetLocation();
         if (GetBeamEndLocation(MuzzleEndLocation, BeamHitResult))
         {
-            if (nullptr != ImpactParticles)
+            if (ImpactParticles)
             {
                 UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticles, BeamHitResult.Location);
             }
         }
-        if (nullptr != BeamParticles)
+        if (BeamParticles)
         {
             // The smoke trail particle system starts at the end of the gun and goes to HitLocation
             UParticleSystemComponent* Beam =
