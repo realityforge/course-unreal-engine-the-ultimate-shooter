@@ -2,6 +2,14 @@
 
 * Only use LFS for assets exceeding 100M. Use `find Content -size +100M` to find list after have remove unused assets
 
+* Clean unused assets:
+   https://www.youtube.com/watch?v=W0uDbQZjKFU
+   https://github.com/mamoniem/UnrealEditorPythonScripts/blob/master/Assets/DeleteUnusedAssets.py
+   
+
+* Use consistent naming conventions:
+  https://github.com/mamoniem/UnrealEditorPythonScripts/blob/master/Assets/PrefixAllAssets.py
+
 * Add tool for performing diffs on unreal assets via textconv gitconfig setting
   https://git-scm.com/docs/gitattributes#_performing_text_diffs_of_binary_files
 
