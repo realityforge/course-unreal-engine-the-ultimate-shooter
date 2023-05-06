@@ -91,10 +91,10 @@ struct FWeaponDataTable : public FTableRowBase
     bool bAutomatic = false;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    float Damage;
+    float Damage = 0.f;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    float HeadShotDamage;
+    float HeadShotDamage = 0.f;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UParticleSystem* MuzzleFlash = nullptr;
