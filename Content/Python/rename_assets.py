@@ -29,7 +29,6 @@ def rename_assets(search_pattern, replace_pattern, case_sensitive):
     for asset in selected_assets:
         # Get the name of the assets
         asset_name = system_lib.get_object_name(asset)
-        unreal.log("Selected {}".format(asset_name))
 
         # Check if the asset name contains the to-be-replaced text
         if string_lib.contains(asset_name, search_pattern, use_case=case_sensitive):
