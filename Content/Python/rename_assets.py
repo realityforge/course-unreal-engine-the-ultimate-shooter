@@ -24,7 +24,7 @@ def rename_assets(search_pattern, replace_pattern, case_sensitive):
     asset_count = len(selected_assets)
 
     renamed_asset_count: int = 0
-    unreal.log("Selected {} assets".format(renamed_asset_count))
+    unreal.log("Selected {} assets".format(asset_count))
 
     for asset in selected_assets:
         # Get the name of the assets
