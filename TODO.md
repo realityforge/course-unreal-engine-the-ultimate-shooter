@@ -2,6 +2,8 @@
 
 * Only use LFS for assets exceeding 100M. Use `find Content -size +100M` to find list after have remove unused assets
 
+* Make sure you use `idea.max.intellisense.filesize = 25000` as custom property in PyCharm so that it can gather intellisense from generated `unreal.py`
+
 * Clean unused assets:
    https://www.youtube.com/watch?v=W0uDbQZjKFU
    https://github.com/mamoniem/UnrealEditorPythonScripts/blob/master/Assets/DeleteUnusedAssets.py
