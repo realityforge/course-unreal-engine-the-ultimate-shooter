@@ -313,10 +313,9 @@ void AShooterCharacter::SendBullet()
                 }
                 if (AEnemy* Enemy = Cast<AEnemy>(HitActor))
                 {
+                    const bool bHeadShot = BeamHitResult.BoneName.ToString().Equals(Enemy->GetHeadBone());
                     // If we hit the head bone then it is a headshot!
-                    const float Damage = BeamHitResult.BoneName.ToString().Equals(Enemy->GetHeadBone())
-                        ? EquippedWeapon->GetHeadShotDamage()
-                        : EquippedWeapon->GetDamage();
+                    const float Damage = bHeadShot ? EquippedWeapon->GetHeadShotDamage() : EquippedWeapon->GetDamage();
 
                     UGameplayStatics::ApplyDamage(HitActor,
                                                   Damage,
@@ -324,7 +323,7 @@ void AShooterCharacter::SendBullet()
                                                   /* DamageCauser */
                                                   this,
                                                   UDamageType::StaticClass());
-                    Enemy->ShowHitNumber(Damage, BeamHitResult.Location);
+                    Enemy->ShowHitNumber(Damage, BeamHitResult.Location, bHeadShot);
                 }
             }
 
