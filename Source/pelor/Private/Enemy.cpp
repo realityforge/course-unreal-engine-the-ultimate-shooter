@@ -13,6 +13,10 @@ AEnemy::AEnemy()
     , MaxHealth(100.f)
     , HeadBone("")
     , HealthBarDisplayTime(4.f)
+    , HitMontage(nullptr)
+    , HitReactTimeMin(.5f)
+    , HitReactTimeMax(3.f)
+    , bCanReactToHits(true)
 {
     // Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need
     // it.
@@ -38,6 +42,27 @@ void AEnemy::Die()
     HideHealthBar();
 }
 
+void AEnemy::PlayHitMontage(FName Section, float PlayRate)
+{
+    if (bCanReactToHits && HitMontage)
+    {
+        if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance())
+        {
+            // Merge in the HipFire Animation Montage
+            AnimInstance->Montage_Play(HitMontage, PlayRate);
+            AnimInstance->Montage_JumpToSection(Section, HitMontage);
+            bCanReactToHits = false;
+            const float HitReactDuration = FMath::FRandRange(HitReactTimeMin, HitReactTimeMax);
+            GetWorldTimerManager().SetTimer(HitReactionTimer, this, &AEnemy::ResetHitReactTimer, HitReactDuration);
+        }
+    }
+}
+
+void AEnemy::ResetHitReactTimer()
+{
+    bCanReactToHits = true;
+}
+
 // Called every frame
 void AEnemy::Tick(float DeltaTime)
 {
@@ -61,6 +86,10 @@ void AEnemy::BulletHit_Implementation(FHitResult HitResult)
         UGameplayStatics::SpawnEmitterAtLocation(this, ImpactParticles, HitResult.Location, FRotator(0.f), true);
     }
     ShowHealthBar();
+
+    UE_LOG(LogTemp, Warning, TEXT("Bullet Hit - Ouch!"));
+    // UE_LOG()
+    PlayHitMontage(FName("HitReactFront"));
 }
 
 float AEnemy::TakeDamage(float Damage,

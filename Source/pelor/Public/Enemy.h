@@ -33,6 +33,10 @@ protected:
 
     void Die();
 
+    void PlayHitMontage(FName Section, float PlayRate = 1.f);
+
+    void ResetHitReactTimer();
+
 private:
     /** Particles to spawn when hit by bullets */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
@@ -59,6 +63,21 @@ private:
     float HealthBarDisplayTime;
 
     FTimerHandle HealthBarTimer;
+
+    /** Montage containing hit and death animations */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+    UAnimMontage* HitMontage;
+
+    FTimerHandle HitReactionTimer;
+
+    /** The minimum bound of time to delay between hit reactions. */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+    float HitReactTimeMin;
+    /** The maximum bound of time to delay between hit reactions. */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+    float HitReactTimeMax;
+
+    bool bCanReactToHits;
 
 public:
     FORCEINLINE FString GetHeadBone() const { return HeadBone; }
