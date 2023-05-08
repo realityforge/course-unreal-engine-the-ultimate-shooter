@@ -324,6 +324,7 @@ void AShooterCharacter::SendBullet()
                                                   /* DamageCauser */
                                                   this,
                                                   UDamageType::StaticClass());
+                    Enemy->ShowHitNumber(Damage, BeamHitResult.Location);
                 }
             }
 

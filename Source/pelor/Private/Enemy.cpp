@@ -1,8 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Enemy.h"
+#include "Blueprint/UserWidget.h"
 #include "Kismet/GameplayStatics.h"
-#include "PhysicsSettingsEnums.h"
 #include "Sound/SoundCue.h"
 
 // Sets default values
@@ -17,6 +17,7 @@ AEnemy::AEnemy()
     , HitReactTimeMin(.5f)
     , HitReactTimeMax(3.f)
     , bCanReactToHits(true)
+    , HitNumberMaxLifeDuration(1.5f)
 {
     // Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need
     // it.
@@ -63,10 +64,42 @@ void AEnemy::ResetHitReactTimer()
     bCanReactToHits = true;
 }
 
+void AEnemy::StoreHitNumber(UUserWidget* HitNumber, FVector Location)
+{
+    HitNumbers.Add(HitNumber, Location);
+    FTimerDelegate HitNumberDelegate;
+    // Create delegate that will call DestroyHitNumber and pass supplied HitNumber
+    HitNumberDelegate.BindUFunction(this, FName("DestroyHitNumber"), HitNumber);
+
+    // Schedule the removal of the HitNumber widget
+    FTimerHandle HitNumberTimer;
+    GetWorldTimerManager().SetTimer(HitNumberTimer, HitNumberDelegate, HitNumberMaxLifeDuration, false);
+}
+
+void AEnemy::DestroyHitNumber(UUserWidget* HitNumber)
+{
+    HitNumbers.Remove(HitNumber);
+    HitNumber->RemoveFromParent();
+}
+
+void AEnemy::UpdateHitNumbers()
+{
+    for (auto& HitPair : HitNumbers)
+    {
+        UUserWidget* UserWidget = { HitPair.Key };
+        const FVector Location{ HitPair.Value };
+        FVector2D ScreenPosition;
+
+        UGameplayStatics::ProjectWorldToScreen(GetWorld()->GetFirstPlayerController(), Location, ScreenPosition);
+        UserWidget->SetPositionInViewport(ScreenPosition);
+    }
+}
+
 // Called every frame
 void AEnemy::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
+    UpdateHitNumbers();
 }
 
 // Called to bind functionality to input

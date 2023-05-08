@@ -37,6 +37,14 @@ protected:
 
     void ResetHitReactTimer();
 
+    UFUNCTION(BlueprintCallable)
+    void StoreHitNumber(UUserWidget* HitNumber, FVector Location);
+
+    UFUNCTION()
+    void DestroyHitNumber(UUserWidget* HitNumber);
+
+    void UpdateHitNumbers();
+
 private:
     /** Particles to spawn when hit by bullets */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
@@ -79,8 +87,19 @@ private:
 
     bool bCanReactToHits;
 
+    /** Map to store HitNumber widget and World Location of hit */
+    UPROPERTY(VisibleAnywhere, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+    TMap<UUserWidget*, FVector> HitNumbers;
+
+    /** Maximum Duration for the HitNumber notification life */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+    float HitNumberMaxLifeDuration;
+
 public:
     FORCEINLINE FString GetHeadBone() const { return HeadBone; }
+
+    UFUNCTION(BlueprintImplementableEvent)
+    void ShowHitNumber(int32 Damage, FVector HitLocation);
 
     // Called every frame
     virtual void Tick(float DeltaTime) override;
