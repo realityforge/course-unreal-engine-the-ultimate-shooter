@@ -9,7 +9,7 @@ def rename_assets(search_pattern, replace_pattern, case_sensitive):
             Parameters:
                     :param search_pattern: the pattern to match an asset as a candidate for renaming.
                     :param replace_pattern: the text to use to replace search pattern if matched.
-                    :param case_sensitive: True if you want the matching to be case sensitive, false otherwise.
+                    :param case_sensitive: True if you want the matching to be case-sensitive, false otherwise.
 
             Returns:
                     :return renamed_asset_count: The number of assets renamed.
