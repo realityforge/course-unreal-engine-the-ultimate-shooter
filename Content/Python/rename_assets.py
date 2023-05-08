@@ -2,7 +2,7 @@ import unreal
 
 
 def rename_assets(search_pattern, replace_pattern, case_sensitive):
-    '''
+    """
     Renames selected assets if they have search_pattern in name and replaces it with replace_pattern and does it in
     a case-sensitive way based on case_sensitive parameter.
 
@@ -13,7 +13,7 @@ def rename_assets(search_pattern, replace_pattern, case_sensitive):
 
             Returns:
                     :return renamed_asset_count: The number of assets renamed.
-    '''
+    """
 
     # Get the libraries
     system_lib = unreal.SystemLibrary()
