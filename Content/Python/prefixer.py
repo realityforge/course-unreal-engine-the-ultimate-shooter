@@ -1,5 +1,6 @@
 import unreal
 
+
 def rename_assets_based_on_rules():
 
     # Get the libraries
