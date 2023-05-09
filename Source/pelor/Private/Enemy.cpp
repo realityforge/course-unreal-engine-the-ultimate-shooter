@@ -18,6 +18,7 @@ AEnemy::AEnemy()
     , HitReactTimeMax(3.f)
     , bCanReactToHits(true)
     , HitNumberMaxLifeDuration(1.5f)
+    , BehaviorTree(nullptr)
 {
     // Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need
     // it.

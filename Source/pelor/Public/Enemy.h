@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "Enemy.generated.h"
 
+class UBehaviorTree;
 class USoundCue;
 class UParticleSystem;
 
@@ -95,8 +96,13 @@ private:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
     float HitNumberMaxLifeDuration;
 
+    /** Behaviour Tree for the AI character */
+    UPROPERTY(EditAnywhere, Category = "Behaviour Tree", meta = (AllowPrivateAccess = "true"))
+    UBehaviorTree* BehaviorTree;
+
 public:
     FORCEINLINE FString GetHeadBone() const { return HeadBone; }
+    FORCEINLINE UBehaviorTree* GetBehaviorTree() const { return BehaviorTree; }
 
     UFUNCTION(BlueprintImplementableEvent)
     void ShowHitNumber(int32 Damage, FVector HitLocation, bool bHeadShot);
