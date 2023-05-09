@@ -100,6 +100,11 @@ private:
     UPROPERTY(EditAnywhere, Category = "Behaviour Tree", meta = (AllowPrivateAccess = "true"))
     UBehaviorTree* BehaviorTree;
 
+    // NOTE: MakeEditWidget creates a widget in viewport and ensures that this vector is in object space
+    /** Point for the enemy to move to */
+    UPROPERTY(EditAnywhere, Category = "Behaviour Tree", meta = (AllowPrivateAccess = "true", MakeEditWidget = "true"))
+    FVector PatrolPoint;
+
 public:
     FORCEINLINE FString GetHeadBone() const { return HeadBone; }
     FORCEINLINE UBehaviorTree* GetBehaviorTree() const { return BehaviorTree; }
