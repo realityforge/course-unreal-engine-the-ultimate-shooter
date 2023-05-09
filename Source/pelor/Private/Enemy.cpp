@@ -2,6 +2,7 @@
 
 #include "Enemy.h"
 #include "Blueprint/UserWidget.h"
+#include "EnemyController.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Sound/SoundCue.h"
@@ -20,6 +21,7 @@ AEnemy::AEnemy()
     , bCanReactToHits(true)
     , HitNumberMaxLifeDuration(1.5f)
     , BehaviorTree(nullptr)
+    , EnemyController(nullptr)
 {
     // Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need
     // it.
@@ -32,6 +34,9 @@ void AEnemy::BeginPlay()
     Super::BeginPlay();
 
     GetMesh()->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
+
+    // Cache the controller so we can talk back if need be.
+    EnemyController = Cast<AEnemyController>(GetController());
 
     // Convert PatrolPoint into WorldSpace
     const FVector WorldPatrolPoint = UKismetMathLibrary::TransformLocation(GetActorTransform(), PatrolPoint);

@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "Enemy.generated.h"
 
+class AEnemyController;
 class UBehaviorTree;
 class USoundCue;
 class UParticleSystem;
@@ -104,6 +105,8 @@ private:
     /** Point for the enemy to move to */
     UPROPERTY(EditAnywhere, Category = "Behaviour Tree", meta = (AllowPrivateAccess = "true", MakeEditWidget = "true"))
     FVector PatrolPoint;
+
+    AEnemyController* EnemyController;
 
 public:
     FORCEINLINE FString GetHeadBone() const { return HeadBone; }
