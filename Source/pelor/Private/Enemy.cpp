@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Enemy.h"
+#include "BehaviorTree/BlackboardComponent.h"
 #include "Blueprint/UserWidget.h"
 #include "EnemyController.h"
 #include "Kismet/GameplayStatics.h"
@@ -41,6 +42,14 @@ void AEnemy::BeginPlay()
     // Convert PatrolPoint into WorldSpace
     const FVector WorldPatrolPoint = UKismetMathLibrary::TransformLocation(GetActorTransform(), PatrolPoint);
 
+    if (EnemyController)
+    {
+        // Update the Blackboard with patrol point goal from editor
+        EnemyController->GetBlackboardComponent()->SetValueAsVector(TEXT("PatrolPoint"), WorldPatrolPoint);
+
+        // Actually initiate behaviour
+        EnemyController->RunBehaviorTree(BehaviorTree);
+    }
 
     DrawDebugSphere(GetWorld(), WorldPatrolPoint, 25.f, 12, FColor::Red, true);
 }
