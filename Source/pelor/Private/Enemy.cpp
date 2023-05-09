@@ -34,7 +34,8 @@ void AEnemy::BeginPlay()
     GetMesh()->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
 
     // Convert PatrolPoint into WorldSpace
-    FVector WorldPatrolPoint = UKismetMathLibrary::TransformLocation(GetActorTransform(), PatrolPoint);
+    const FVector WorldPatrolPoint = UKismetMathLibrary::TransformLocation(GetActorTransform(), PatrolPoint);
+
 
     DrawDebugSphere(GetWorld(), WorldPatrolPoint, 25.f, 12, FColor::Red, true);
 }
