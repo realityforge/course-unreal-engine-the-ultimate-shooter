@@ -32,13 +32,23 @@ def rename_assets(search_pattern, replace_pattern, case_sensitive):
 
         # Check if the asset name contains the to-be-replaced text
         if string_lib.contains(asset_name, search_pattern, use_case=case_sensitive):
-            search_case = unreal.SearchCase.CASE_SENSITIVE if case_sensitive else unreal.SearchCase.IGNORE_CASE
-            new_asset_name = string_lib.replace(asset_name, search_pattern, replace_pattern, search_case=search_case)
+            search_case = (
+                unreal.SearchCase.CASE_SENSITIVE
+                if case_sensitive
+                else unreal.SearchCase.IGNORE_CASE
+            )
+            new_asset_name = string_lib.replace(
+                asset_name, search_pattern, replace_pattern, search_case=search_case
+            )
             editor_util.rename_asset(asset, new_asset_name)
             renamed_asset_count += 1
             unreal.log("Renamed {} to {}.".format(asset_name, new_asset_name))
         else:
-            unreal.log("{} did not match the search pattern, skipping rename operation.".format(asset_name))
+            unreal.log(
+                "{} did not match the search pattern, skipping rename operation.".format(
+                    asset_name
+                )
+            )
 
     unreal.log("Rename {} of {} assets.".format(renamed_asset_count, asset_count))
 

@@ -2,7 +2,6 @@ import unreal
 
 
 def rename_assets_based_on_rules():
-
     # Get the libraries
     system_lib = unreal.SystemLibrary()
     editor_util = unreal.EditorUtilityLibrary()
@@ -27,7 +26,7 @@ def rename_assets_based_on_rules():
         "MorphTarget": "MT_",
         "SkeletalMesh": "SK_",
         "RenderTarget": "RT_",
-        "TextureRenderTarget2D": "TRT_"
+        "TextureRenderTarget2D": "TRT_",
     }
     suffixes = {
         "SoundCue": "_Cue",
@@ -44,7 +43,11 @@ def rename_assets_based_on_rules():
         suffix = suffixes.get(asset_class_name, None)
 
         if prefix is None and suffix is None:
-            unreal.log_warning("No mapping for asset {} of type {}".format(asset_name, asset_class_name))
+            unreal.log_warning(
+                "No mapping for asset {} of type {}".format(
+                    asset_name, asset_class_name
+                )
+            )
             continue
 
         new_asset_name = asset_name
