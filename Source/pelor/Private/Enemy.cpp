@@ -1,11 +1,14 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Enemy.h"
+#include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/SphereComponent.h"
 #include "EnemyController.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "ShooterCharacter.h"
 #include "Sound/SoundCue.h"
 
 // Sets default values
@@ -23,10 +26,14 @@ AEnemy::AEnemy()
     , HitNumberMaxLifeDuration(1.5f)
     , BehaviorTree(nullptr)
     , EnemyController(nullptr)
+    , AgroSphere(nullptr)
 {
     // Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need
     // it.
     PrimaryActorTick.bCanEverTick = true;
+
+    AgroSphere = CreateDefaultSubobject<USphereComponent>(TEXT("AgroSphere"));
+    AgroSphere->SetupAttachment(GetRootComponent());
 }
 
 // Called when the game starts or when spawned
@@ -42,6 +49,13 @@ void AEnemy::BeginPlay()
     // Convert PatrolPoint into WorldSpace
     const FVector WorldPatrolPoint = UKismetMathLibrary::TransformLocation(GetActorTransform(), PatrolPoint);
     const FVector WorldPatrolPoint2 = UKismetMathLibrary::TransformLocation(GetActorTransform(), PatrolPoint2);
+
+    // Setup overlap handlers for AgroSphere
+    if (AgroSphere)
+    {
+        // OnComponentBeginOverlap event called when something starts to overlaps the AreaSphere component
+        AgroSphere->OnComponentBeginOverlap.AddDynamic(this, &AEnemy::OnAgroSphereOverlap);
+    }
 
     if (EnemyController)
     {
@@ -117,6 +131,23 @@ void AEnemy::UpdateHitNumbers()
 
         UGameplayStatics::ProjectWorldToScreen(GetWorld()->GetFirstPlayerController(), Location, ScreenPosition);
         UserWidget->SetPositionInViewport(ScreenPosition);
+    }
+}
+
+void AEnemy::OnAgroSphereOverlap(UPrimitiveComponent* OverlappedComponent,
+                                 AActor* OtherActor,
+                                 UPrimitiveComponent* OtherComponent,
+                                 int32 OtherBodyIndex,
+                                 bool bFromSweep,
+                                 const FHitResult& SweepResult)
+{
+    if (OtherActor)
+    {
+        if (const auto Character = Cast<AShooterCharacter>(OtherActor))
+        {
+            // Set the target in Blackboard so the enemy can chase them doown
+            EnemyController->GetBlackboardComponent()->SetValueAsObject(TEXT("Target"), Character);
+        }
     }
 }
 

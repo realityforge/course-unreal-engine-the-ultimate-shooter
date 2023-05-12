@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "Enemy.generated.h"
 
+class USphereComponent;
 class AEnemyController;
 class UBehaviorTree;
 class USoundCue;
@@ -46,6 +47,14 @@ protected:
     void DestroyHitNumber(UUserWidget* HitNumber);
 
     void UpdateHitNumbers();
+
+    UFUNCTION()
+    void OnAgroSphereOverlap(UPrimitiveComponent* OverlappedComponent,
+                             AActor* OtherActor,
+                             UPrimitiveComponent* OtherComponent,
+                             int32 OtherBodyIndex,
+                             bool bFromSweep,
+                             const FHitResult& SweepResult);
 
 private:
     /** Particles to spawn when hit by bullets */
@@ -111,6 +120,10 @@ private:
     FVector PatrolPoint2;
 
     AEnemyController* EnemyController;
+
+    /** Enemy becomes Agro if enemy enters sphere */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Behaviour Tree", meta = (AllowPrivateAccess = "true"))
+    USphereComponent* AgroSphere;
 
 public:
     FORCEINLINE FString GetHeadBone() const { return HeadBone; }
