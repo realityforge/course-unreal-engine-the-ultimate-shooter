@@ -41,17 +41,20 @@ void AEnemy::BeginPlay()
 
     // Convert PatrolPoint into WorldSpace
     const FVector WorldPatrolPoint = UKismetMathLibrary::TransformLocation(GetActorTransform(), PatrolPoint);
+    const FVector WorldPatrolPoint2 = UKismetMathLibrary::TransformLocation(GetActorTransform(), PatrolPoint2);
 
     if (EnemyController)
     {
-        // Update the Blackboard with patrol point goal from editor
+        // Update the Blackboard with patrol points set in the editor
         EnemyController->GetBlackboardComponent()->SetValueAsVector(TEXT("PatrolPoint"), WorldPatrolPoint);
+        EnemyController->GetBlackboardComponent()->SetValueAsVector(TEXT("PatrolPoint2"), WorldPatrolPoint2);
 
         // Actually initiate behaviour
         EnemyController->RunBehaviorTree(BehaviorTree);
     }
 
     DrawDebugSphere(GetWorld(), WorldPatrolPoint, 25.f, 12, FColor::Red, true);
+    DrawDebugSphere(GetWorld(), WorldPatrolPoint2, 25.f, 12, FColor::Blue, true);
 }
 
 void AEnemy::ShowHealthBar_Implementation()

@@ -106,6 +106,10 @@ private:
     UPROPERTY(EditAnywhere, Category = "Behaviour Tree", meta = (AllowPrivateAccess = "true", MakeEditWidget = "true"))
     FVector PatrolPoint;
 
+    /** The second point for the enemy to move to */
+    UPROPERTY(EditAnywhere, Category = "Behaviour Tree", meta = (AllowPrivateAccess = "true", MakeEditWidget = "true"))
+    FVector PatrolPoint2;
+
     AEnemyController* EnemyController;
 
 public:
