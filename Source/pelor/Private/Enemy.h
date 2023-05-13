@@ -56,6 +56,9 @@ protected:
                              bool bFromSweep,
                              const FHitResult& SweepResult);
 
+    UFUNCTION(BlueprintCallable)
+    void ChangeStunnedState(const bool bStunned);
+
 private:
     /** Particles to spawn when hit by bullets */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
@@ -126,7 +129,11 @@ private:
     USphereComponent* AgroSphere;
 
     /** True when stunned (currently when playing hit animation) */
-    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+    UPROPERTY(VisibleAnywhere,
+              BlueprintReadWrite,
+              BlueprintSetter = "ChangeStunnedState",
+              Category = "Combat",
+              meta = (AllowPrivateAccess = "true"))
     bool bStunned;
 
     /** Chance of being stunned. 0-1 */

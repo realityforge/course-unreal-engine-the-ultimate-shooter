@@ -104,6 +104,8 @@ void AEnemy::ResetHitReactTimer()
 {
     // Unclear why we dont clear stun flag here ... instead we doing it in blueprint via anim notify added to montage
     // ... so you can be "stunned" with no animation occurring ... which seems wrong
+    // TODO: The disconnect betweeb this variable and bStunned creates a situation where stunned can be set to true
+    // permanently ... leaving bug until we determine whether it is a deliberate bug in course?
     bCanReactToHits = true;
 }
 
@@ -155,6 +157,15 @@ void AEnemy::OnAgroSphereOverlap(UPrimitiveComponent* OverlappedComponent,
     }
 }
 
+void AEnemy::ChangeStunnedState(const bool bNewStunned)
+{
+    bStunned = bNewStunned;
+    if (EnemyController)
+    {
+        EnemyController->GetBlackboardComponent()->SetValueAsBool(TEXT("Stunned"), bStunned);
+    }
+}
+
 // Called every frame
 void AEnemy::Tick(float DeltaTime)
 {
@@ -186,7 +197,7 @@ void AEnemy::BulletHit_Implementation(FHitResult HitResult)
     {
         // Stun chance will determine if we are stunned
         PlayHitMontage(FName("HitReactFront"));
-        bStunned = true;
+        ChangeStunnedState(true);
     }
 }
 
