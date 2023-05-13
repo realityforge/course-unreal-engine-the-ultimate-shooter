@@ -27,6 +27,8 @@ AEnemy::AEnemy()
     , BehaviorTree(nullptr)
     , EnemyController(nullptr)
     , AgroSphere(nullptr)
+    , bStunned(false)
+    , StunChance(.5f)
 {
     // Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need
     // it.
@@ -178,7 +180,13 @@ void AEnemy::BulletHit_Implementation(FHitResult HitResult)
 
     UE_LOG(LogTemp, Warning, TEXT("Bullet Hit - Ouch!"));
     // UE_LOG()
-    PlayHitMontage(FName("HitReactFront"));
+
+    if (FMath::FRandRange(0.f, 1.f) <= StunChance)
+    {
+        // Stun chance will determine if we are stunned
+        PlayHitMontage(FName("HitReactFront"));
+        bStunned = true;
+    }
 }
 
 float AEnemy::TakeDamage(float Damage,

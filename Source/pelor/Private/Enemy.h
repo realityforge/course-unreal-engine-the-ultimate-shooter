@@ -125,6 +125,17 @@ private:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Behaviour Tree", meta = (AllowPrivateAccess = "true"))
     USphereComponent* AgroSphere;
 
+    /** True when stunned (currently when playing hit animation) */
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+    bool bStunned;
+
+    /** Chance of being stunned. 0-1 */
+    UPROPERTY(EditAnywhere,
+              BlueprintReadWrite,
+              Category = "Combat",
+              meta = (AllowPrivateAccess = "true", UIMin = "0", UIMax = "1", ClampMin = "0", ClampMax = "1"))
+    float StunChance;
+
 public:
     FORCEINLINE FString GetHeadBone() const { return HeadBone; }
     FORCEINLINE UBehaviorTree* GetBehaviorTree() const { return BehaviorTree; }
