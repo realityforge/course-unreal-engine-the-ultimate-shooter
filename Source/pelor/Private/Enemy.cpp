@@ -179,7 +179,6 @@ void AEnemy::BulletHit_Implementation(FHitResult HitResult)
     ShowHealthBar();
 
     UE_LOG(LogTemp, Warning, TEXT("Bullet Hit - Ouch!"));
-    // UE_LOG()
 
     if (FMath::FRandRange(0.f, 1.f) <= StunChance)
     {
