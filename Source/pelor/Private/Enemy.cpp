@@ -102,6 +102,8 @@ void AEnemy::PlayHitMontage(FName Section, float PlayRate)
 
 void AEnemy::ResetHitReactTimer()
 {
+    // Unclear why we dont clear stun flag here ... instead we doing it in blueprint via anim notify added to montage
+    // ... so you can be "stunned" with no animation occurring ... which seems wrong
     bCanReactToHits = true;
 }
 
