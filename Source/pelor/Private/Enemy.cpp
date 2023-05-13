@@ -29,6 +29,7 @@ AEnemy::AEnemy()
     , AgroSphere(nullptr)
     , bStunned(false)
     , StunChance(.5f)
+    , CombatRangeSphere(nullptr)
 {
     // Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need
     // it.
@@ -36,6 +37,9 @@ AEnemy::AEnemy()
 
     AgroSphere = CreateDefaultSubobject<USphereComponent>(TEXT("AgroSphere"));
     AgroSphere->SetupAttachment(GetRootComponent());
+
+    CombatRangeSphere = CreateDefaultSubobject<USphereComponent>(TEXT("CombatSphere"));
+    CombatRangeSphere->SetupAttachment(GetRootComponent());
 }
 
 // Called when the game starts or when spawned
@@ -58,6 +62,8 @@ void AEnemy::BeginPlay()
         // OnComponentBeginOverlap event called when something starts to overlaps the AreaSphere component
         AgroSphere->OnComponentBeginOverlap.AddDynamic(this, &AEnemy::OnAgroSphereOverlap);
     }
+    CombatRangeSphere->OnComponentBeginOverlap.AddDynamic(this, &AEnemy::OnCombatRangeSphereOverlap);
+    CombatRangeSphere->OnComponentEndOverlap.AddDynamic(this, &AEnemy::OnCombatRangeSphereEndOverlap);
 
     if (EnemyController)
     {
@@ -154,6 +160,40 @@ void AEnemy::OnAgroSphereOverlap(UPrimitiveComponent* OverlappedComponent,
             // Set the target in Blackboard so the enemy can chase them doown
             EnemyController->GetBlackboardComponent()->SetValueAsObject(TEXT("Target"), Character);
         }
+    }
+}
+
+void AEnemy::SetInAttackRange(const bool bNewInAttackRange)
+{
+    bInAttackRange = bNewInAttackRange;
+    if (EnemyController)
+    {
+        EnemyController->GetBlackboardComponent()->SetValueAsBool(TEXT("InAttackRange"), bInAttackRange);
+    }
+}
+
+void AEnemy::OnCombatRangeSphereOverlap(UPrimitiveComponent* OverlappedComponent,
+                                        AActor* OtherActor,
+                                        UPrimitiveComponent* OtherComponent,
+                                        int32 OtherBodyIndex,
+                                        bool bFromSweep,
+                                        const FHitResult& SweepResult)
+{
+    if (OtherActor && Cast<AShooterCharacter>(OtherActor))
+    {
+        // If a ShooterCharacter is in range then target
+        SetInAttackRange(true);
+    }
+}
+
+void AEnemy::OnCombatRangeSphereEndOverlap(UPrimitiveComponent* OverlappedComponent,
+                                           AActor* OtherActor,
+                                           UPrimitiveComponent* OtherComponent,
+                                           int32 OtherBodyIndex)
+{
+    if (OtherActor && Cast<AShooterCharacter>(OtherActor))
+    {
+        SetInAttackRange(false);
     }
 }
 

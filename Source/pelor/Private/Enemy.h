@@ -55,6 +55,19 @@ protected:
                              int32 OtherBodyIndex,
                              bool bFromSweep,
                              const FHitResult& SweepResult);
+    void SetInAttackRange(bool bNewInAttackRange);
+    UFUNCTION()
+    void OnCombatRangeSphereOverlap(UPrimitiveComponent* OverlappedComponent,
+                                    AActor* OtherActor,
+                                    UPrimitiveComponent* OtherComponent,
+                                    int32 OtherBodyIndex,
+                                    bool bFromSweep,
+                                    const FHitResult& SweepResult);
+    UFUNCTION()
+    void OnCombatRangeSphereEndOverlap(UPrimitiveComponent* OverlappedComponent,
+                                       AActor* OtherActor,
+                                       UPrimitiveComponent* OtherComponent,
+                                       int32 OtherBodyIndex);
 
     UFUNCTION(BlueprintCallable)
     void ChangeStunnedState(const bool bStunned);
@@ -142,6 +155,14 @@ private:
               Category = "Combat",
               meta = (AllowPrivateAccess = "true", UIMin = "0", UIMax = "1", ClampMin = "0", ClampMax = "1"))
     float StunChance;
+
+    /** Enemy considers itself in attack range if target is within CombatSphere */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Behaviour Tree", meta = (AllowPrivateAccess = "true"))
+    USphereComponent* CombatRangeSphere;
+
+    /** True when enemy within attack range */
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+    bool bInAttackRange;
 
 public:
     FORCEINLINE FString GetHeadBone() const { return HeadBone; }
