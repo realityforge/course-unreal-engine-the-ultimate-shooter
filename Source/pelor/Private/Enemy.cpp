@@ -4,6 +4,7 @@
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/BoxComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SphereComponent.h"
 #include "EnemyController.h"
@@ -37,16 +38,23 @@ AEnemy::AEnemy()
     , AttackRightFastSectionName(TEXT("Attack_R_Fast"))
     , AttackLeftSectionName(TEXT("Attack_L"))
     , AttackRightSectionName(TEXT("Attack_R"))
+    , LeftWeaponCollision(nullptr)
+    , RightWeaponCollision(nullptr)
 {
     // Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need
     // it.
     PrimaryActorTick.bCanEverTick = true;
-
     AgroSphere = CreateDefaultSubobject<USphereComponent>(TEXT("AgroSphere"));
     AgroSphere->SetupAttachment(GetRootComponent());
 
     CombatRangeSphere = CreateDefaultSubobject<USphereComponent>(TEXT("CombatSphere"));
     CombatRangeSphere->SetupAttachment(GetRootComponent());
+
+    // create weapon collision boxes to sockets created for each weapon
+    LeftWeaponCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("LeftWeaponCollision"));
+    LeftWeaponCollision->SetupAttachment(GetMesh(), FName("WeaponLBone"));
+    RightWeaponCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("RightWeaponCollision"));
+    RightWeaponCollision->SetupAttachment(GetMesh(), FName("WeaponRBone"));
 }
 
 // Called when the game starts or when spawned
@@ -88,6 +96,21 @@ void AEnemy::BeginPlay()
 
     DrawDebugSphere(GetWorld(), WorldPatrolPoint, 25.f, 12, FColor::Red, true);
     DrawDebugSphere(GetWorld(), WorldPatrolPoint2, 25.f, 12, FColor::Blue, true);
+
+    // Make sure the weapons can collide with character
+    LeftWeaponCollision->OnComponentBeginOverlap.AddDynamic(this, &AEnemy::OnLeftWeaponCollisionOverlap);
+    RightWeaponCollision->OnComponentBeginOverlap.AddDynamic(this, &AEnemy::OnRightWeaponCollisionOverlap);
+
+    // We start off with no collision enabled so that we don't get overlaps while walking around and will set it when
+    // the enemy swings weapon
+    LeftWeaponCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    LeftWeaponCollision->SetCollisionObjectType(ECC_WorldStatic);
+    LeftWeaponCollision->SetCollisionResponseToAllChannels(ECR_Ignore);
+    LeftWeaponCollision->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
+    RightWeaponCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    RightWeaponCollision->SetCollisionObjectType(ECC_WorldStatic);
+    RightWeaponCollision->SetCollisionResponseToAllChannels(ECR_Ignore);
+    RightWeaponCollision->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 }
 
 void AEnemy::ShowHealthBar_Implementation()
@@ -246,6 +269,24 @@ FName AEnemy::GetAttackSectionName() const
         default:
             return this->AttackRightSectionName;
     }
+}
+
+void AEnemy::OnLeftWeaponCollisionOverlap(UPrimitiveComponent* OverlappedComponent,
+                                          AActor* OtherActor,
+                                          UPrimitiveComponent* OtherComponent,
+                                          int32 OtherBodyIndex,
+                                          bool bFromSweep,
+                                          const FHitResult& SweepResult)
+{
+}
+
+void AEnemy::OnRightWeaponCollisionOverlap(UPrimitiveComponent* OverlappedComponent,
+                                           AActor* OtherActor,
+                                           UPrimitiveComponent* OtherComponent,
+                                           int32 OtherBodyIndex,
+                                           bool bFromSweep,
+                                           const FHitResult& SweepResult)
+{
 }
 
 // Called every frame

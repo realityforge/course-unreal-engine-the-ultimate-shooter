@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "Enemy.generated.h"
 
+class UBoxComponent;
 class USphereComponent;
 class AEnemyController;
 class UBehaviorTree;
@@ -78,6 +79,21 @@ protected:
 
     UFUNCTION(BlueprintPure)
     FName GetAttackSectionName() const;
+
+    UFUNCTION()
+    void OnLeftWeaponCollisionOverlap(UPrimitiveComponent* OverlappedComponent,
+                                      AActor* OtherActor,
+                                      UPrimitiveComponent* OtherComponent,
+                                      int32 OtherBodyIndex,
+                                      bool bFromSweep,
+                                      const FHitResult& SweepResult);
+    UFUNCTION()
+    void OnRightWeaponCollisionOverlap(UPrimitiveComponent* OverlappedComponent,
+                                       AActor* OtherActor,
+                                       UPrimitiveComponent* OtherComponent,
+                                       int32 OtherBodyIndex,
+                                       bool bFromSweep,
+                                       const FHitResult& SweepResult);
 
 private:
     /** Particles to spawn when hit by bullets */
@@ -183,6 +199,14 @@ private:
     FName AttackLeftSectionName;
     UPROPERTY(VisibleAnywhere, Category = "Combat", meta = (AllowPrivateAccess = "true"))
     FName AttackRightSectionName;
+
+    /** Collision volume for the left weapon */
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+    UBoxComponent* LeftWeaponCollision;
+
+    /** Collision volume for the right weapon */
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+    UBoxComponent* RightWeaponCollision;
 
 public:
     FORCEINLINE FString GetHeadBone() const { return HeadBone; }
