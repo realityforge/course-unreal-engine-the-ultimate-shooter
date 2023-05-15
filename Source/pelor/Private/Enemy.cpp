@@ -4,6 +4,7 @@
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/CapsuleComponent.h"
 #include "Components/SphereComponent.h"
 #include "EnemyController.h"
 #include "Kismet/GameplayStatics.h"
@@ -54,6 +55,10 @@ void AEnemy::BeginPlay()
     Super::BeginPlay();
 
     GetMesh()->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
+
+    // Ignore the camera so our camera does not move in when enemy between our character and our camera
+    GetMesh()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
+    GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 
     // Cache the controller so we can talk back if need be.
     EnemyController = Cast<AEnemyController>(GetController());
