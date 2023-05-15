@@ -30,6 +30,12 @@ AEnemy::AEnemy()
     , bStunned(false)
     , StunChance(.5f)
     , CombatRangeSphere(nullptr)
+    , bInAttackRange(false)
+    , AttackMontage(nullptr)
+    , AttackLeftFastSectionName(TEXT("Attack_L_Fast"))
+    , AttackRightFastSectionName(TEXT("Attack_R_Fast"))
+    , AttackLeftSectionName(TEXT("Attack_L"))
+    , AttackRightSectionName(TEXT("Attack_R"))
 {
     // Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need
     // it.
@@ -157,8 +163,11 @@ void AEnemy::OnAgroSphereOverlap(UPrimitiveComponent* OverlappedComponent,
     {
         if (const auto Character = Cast<AShooterCharacter>(OtherActor))
         {
-            // Set the target in Blackboard so the enemy can chase them doown
-            EnemyController->GetBlackboardComponent()->SetValueAsObject(TEXT("Target"), Character);
+            if (UBlackboardComponent* BlackboardComponent = EnemyController->GetBlackboardComponent())
+            {
+                // Set the target in Blackboard so the enemy can chase them down
+                BlackboardComponent->SetValueAsObject(TEXT("Target"), Character);
+            }
         }
     }
 }
@@ -203,6 +212,19 @@ void AEnemy::ChangeStunnedState(const bool bNewStunned)
     if (EnemyController)
     {
         EnemyController->GetBlackboardComponent()->SetValueAsBool(TEXT("Stunned"), bStunned);
+    }
+}
+
+void AEnemy::PlayAttackMontage(FName Section, float PlayRate)
+{
+    if (AttackMontage)
+    {
+        if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance())
+        {
+            // Merge in the HipFire Animation Montage
+            AnimInstance->Montage_Play(AttackMontage, PlayRate);
+            AnimInstance->Montage_JumpToSection(Section, AttackMontage);
+        }
     }
 }
 

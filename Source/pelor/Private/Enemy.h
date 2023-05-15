@@ -72,6 +72,10 @@ protected:
     UFUNCTION(BlueprintCallable)
     void ChangeStunnedState(const bool bStunned);
 
+    // This is blueprint callable so it can be called from behaviour tree
+    UFUNCTION(BlueprintCallable)
+    void PlayAttackMontage(FName Section, float PlayRate = 1.f);
+
 private:
     /** Particles to spawn when hit by bullets */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
@@ -163,6 +167,19 @@ private:
     /** True when enemy within attack range */
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
     bool bInAttackRange;
+
+    /** Montage containing attack animations */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+    UAnimMontage* AttackMontage;
+
+    UPROPERTY(VisibleAnywhere, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+    FName AttackLeftFastSectionName;
+    UPROPERTY(VisibleAnywhere, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+    FName AttackRightFastSectionName;
+    UPROPERTY(VisibleAnywhere, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+    FName AttackLeftSectionName;
+    UPROPERTY(VisibleAnywhere, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+    FName AttackRightSectionName;
 
 public:
     FORCEINLINE FString GetHeadBone() const { return HeadBone; }
