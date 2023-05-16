@@ -171,7 +171,7 @@ void AEnemy::DestroyHitNumber(UUserWidget* HitNumber)
 
 void AEnemy::UpdateHitNumbers()
 {
-    for (auto& HitPair : HitNumbers)
+    for (const auto& HitPair : HitNumbers)
     {
         UUserWidget* UserWidget = { HitPair.Key };
         const FVector Location{ HitPair.Value };
