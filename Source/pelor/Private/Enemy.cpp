@@ -52,9 +52,9 @@ AEnemy::AEnemy()
     CombatRangeSphere->SetupAttachment(GetRootComponent());
 
     // create weapon collision boxes to sockets created for each weapon
-    LeftWeaponCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("LeftWeaponCollision"));
+    LeftWeaponCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("Left Weapon Box"));
     LeftWeaponCollision->SetupAttachment(GetMesh(), FName("WeaponLBone"));
-    RightWeaponCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("RightWeaponCollision"));
+    RightWeaponCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("Right Weapon Box"));
     RightWeaponCollision->SetupAttachment(GetMesh(), FName("WeaponRBone"));
 }
 
