@@ -188,6 +188,7 @@ void AEnemy::OnAgroSphereOverlap(UPrimitiveComponent* OverlappedComponent,
                                  bool bFromSweep,
                                  const FHitResult& SweepResult)
 {
+    // TODO: OtherActor always true?
     if (OtherActor)
     {
         if (const auto Character = Cast<AShooterCharacter>(OtherActor))
@@ -217,6 +218,7 @@ void AEnemy::OnCombatRangeSphereOverlap(UPrimitiveComponent* OverlappedComponent
                                         bool bFromSweep,
                                         const FHitResult& SweepResult)
 {
+    // TODO: OtherActor always true?
     if (OtherActor && Cast<AShooterCharacter>(OtherActor))
     {
         // If a ShooterCharacter is in range then target
