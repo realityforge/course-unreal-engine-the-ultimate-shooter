@@ -459,6 +459,10 @@ private:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
     float MaxHealth;
 
+    /** Sound made when character is hit by a melee attack. */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
+    USoundCue* MeleeImpactSound;
+
     void ResetEquipSoundTimer();
 
     void UpdateFovBasedOnAimingStatus(float DeltaTime);
@@ -529,6 +533,7 @@ private:
     void SetupPresentationLocations();
 
 public:
+    FORCEINLINE USoundCue* GetMeleeImpactSound() const { return MeleeImpactSound; }
     FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
     FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; }
     FORCEINLINE const AItem* GetItemShowingInfoBox() const { return ItemShowingInfoBox; }

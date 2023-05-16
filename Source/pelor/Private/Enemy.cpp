@@ -282,6 +282,10 @@ void AEnemy::DoDamage(AActor* OtherActor)
     {
         UE_LOG(LogTemp, Warning, TEXT("ApplyDamage(%f)"), BaseDamage);
         UGameplayStatics::ApplyDamage(ShooterCharacter, BaseDamage, EnemyController, this, UDamageType::StaticClass());
+        if (const auto MeleeImpactSound = ShooterCharacter->GetMeleeImpactSound())
+        {
+            UGameplayStatics::PlaySoundAtLocation(this, MeleeImpactSound, ShooterCharacter->GetActorLocation());
+        }
     }
 }
 
