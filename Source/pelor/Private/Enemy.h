@@ -95,6 +95,21 @@ protected:
                                        bool bFromSweep,
                                        const FHitResult& SweepResult);
 
+    // The following methods activate/deactivate the collision boxes for the weapons and are triggered by anim notifies
+    // (This is so that just walking into them does not cause damage etc)
+
+    UFUNCTION(BlueprintCallable)
+    void ActivateLeftWeapon();
+
+    UFUNCTION(BlueprintCallable)
+    void DeactivateLeftWeapon();
+
+    UFUNCTION(BlueprintCallable)
+    void ActivateRightWeapon();
+
+    UFUNCTION(BlueprintCallable)
+    void DeactivateRightWeapon();
+
 private:
     /** Particles to spawn when hit by bullets */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))

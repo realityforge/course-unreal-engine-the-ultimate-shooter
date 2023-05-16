@@ -289,6 +289,38 @@ void AEnemy::OnRightWeaponCollisionOverlap(UPrimitiveComponent* OverlappedCompon
 {
 }
 
+void AEnemy::ActivateLeftWeapon()
+{
+    if (ensure(LeftWeaponCollision))
+    {
+        LeftWeaponCollision->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+    }
+}
+
+void AEnemy::DeactivateLeftWeapon()
+{
+    if (ensure(LeftWeaponCollision))
+    {
+        LeftWeaponCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    }
+}
+
+void AEnemy::ActivateRightWeapon()
+{
+    if (ensure(RightWeaponCollision))
+    {
+        RightWeaponCollision->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+    }
+}
+
+void AEnemy::DeactivateRightWeapon()
+{
+    if (ensure(RightWeaponCollision))
+    {
+        RightWeaponCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    }
+}
+
 // Called every frame
 void AEnemy::Tick(float DeltaTime)
 {
