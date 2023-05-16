@@ -277,14 +277,10 @@ FName AEnemy::GetAttackSectionName() const
 
 void AEnemy::DoDamage(AActor* OtherActor)
 {
-        if (const auto ShooterCharacter = Cast<AShooterCharacter>(OtherActor))
-        {
-            UGameplayStatics::ApplyDamage(ShooterCharacter,
-                                          BaseDamage,
-                                          EnemyController,
-                                          this,
-                                          UDamageType::StaticClass());
-        }
+    if (const auto ShooterCharacter = Cast<AShooterCharacter>(OtherActor))
+    {
+        UGameplayStatics::ApplyDamage(ShooterCharacter, BaseDamage, EnemyController, this, UDamageType::StaticClass());
+    }
 }
 
 void AEnemy::OnLeftWeaponCollisionOverlap(UPrimitiveComponent* OverlappedComponent,
