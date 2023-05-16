@@ -100,6 +100,9 @@ AShooterCharacter::AShooterCharacter()
     // Inventory Icon animation properties
     , HighlightedInventoryIndex(-1)
 
+    , Health(100.f)
+    , MaxHealth(100.f)
+
 {
     // Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need
     // it.
@@ -179,6 +182,15 @@ AShooterCharacter::AShooterCharacter()
     PresentationComponent4->SetupAttachment(FollowCamera);
     PresentationComponent5->SetupAttachment(FollowCamera);
     PresentationComponent6->SetupAttachment(FollowCamera);
+}
+
+float AShooterCharacter::TakeDamage(float Damage,
+                                    FDamageEvent const& DamageEvent,
+                                    AController* EventInstigator,
+                                    AActor* DamageCauser)
+{
+    Health = FMath::Max(Health - Damage, 0.f);
+    return Damage;
 }
 
 // Called when the game starts or when spawned

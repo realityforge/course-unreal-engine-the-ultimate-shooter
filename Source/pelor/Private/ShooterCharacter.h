@@ -56,6 +56,11 @@ public:
     // Sets default values for this character's properties
     AShooterCharacter();
 
+    virtual float TakeDamage(float Damage,
+                             FDamageEvent const& DamageEvent,
+                             AController* EventInstigator,
+                             AActor* DamageCauser) override;
+
 protected:
     // Called when the game starts or when spawned
     virtual void BeginPlay() override;
@@ -445,6 +450,14 @@ private:
     /** Current inventory slot that is highlighted. -1 indicates no highlight */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Inventory, meta = (AllowPrivateAccess = "true"))
     int32 HighlightedInventoryIndex;
+
+    /** Character Health */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
+    float Health;
+
+    /** Character Health */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
+    float MaxHealth;
 
     void ResetEquipSoundTimer();
 
