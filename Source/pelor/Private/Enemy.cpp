@@ -105,11 +105,11 @@ void AEnemy::BeginPlay()
     // We start off with no collision enabled so that we don't get overlaps while walking around and will set it when
     // the enemy swings weapon
     LeftWeaponCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-    LeftWeaponCollision->SetCollisionObjectType(ECC_WorldStatic);
+    LeftWeaponCollision->SetCollisionObjectType(ECC_WorldDynamic);
     LeftWeaponCollision->SetCollisionResponseToAllChannels(ECR_Ignore);
     LeftWeaponCollision->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
     RightWeaponCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-    RightWeaponCollision->SetCollisionObjectType(ECC_WorldStatic);
+    RightWeaponCollision->SetCollisionObjectType(ECC_WorldDynamic);
     RightWeaponCollision->SetCollisionResponseToAllChannels(ECR_Ignore);
     RightWeaponCollision->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 }
