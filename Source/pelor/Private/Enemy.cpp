@@ -45,17 +45,18 @@ AEnemy::AEnemy()
     // Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need
     // it.
     PrimaryActorTick.bCanEverTick = true;
-    AgroSphere = CreateDefaultSubobject<USphereComponent>(TEXT("AgroSphere"));
-    AgroSphere->SetupAttachment(GetRootComponent());
-
-    CombatRangeSphere = CreateDefaultSubobject<USphereComponent>(TEXT("CombatSphere"));
-    CombatRangeSphere->SetupAttachment(GetRootComponent());
 
     // create weapon collision boxes to sockets created for each weapon
     LeftWeaponCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("Left Weapon Box"));
     LeftWeaponCollision->SetupAttachment(GetMesh(), FName("WeaponLBone"));
     RightWeaponCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("Right Weapon Box"));
     RightWeaponCollision->SetupAttachment(GetMesh(), FName("WeaponRBone"));
+
+    AgroSphere = CreateDefaultSubobject<USphereComponent>(TEXT("AgroSphere"));
+    AgroSphere->SetupAttachment(GetRootComponent());
+
+    CombatRangeSphere = CreateDefaultSubobject<USphereComponent>(TEXT("CombatSphere"));
+    CombatRangeSphere->SetupAttachment(GetRootComponent());
 }
 
 // Called when the game starts or when spawned
