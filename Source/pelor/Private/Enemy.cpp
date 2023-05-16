@@ -277,8 +277,10 @@ FName AEnemy::GetAttackSectionName() const
 
 void AEnemy::DoDamage(AActor* OtherActor)
 {
+    UE_LOG(LogTemp, Warning, TEXT("AEnemy::DoDamage()??? %d"), nullptr == Cast<AShooterCharacter>(OtherActor) ? 0 : 1);
     if (const auto ShooterCharacter = Cast<AShooterCharacter>(OtherActor))
     {
+        UE_LOG(LogTemp, Warning, TEXT("ApplyDamage(%f)"), BaseDamage);
         UGameplayStatics::ApplyDamage(ShooterCharacter, BaseDamage, EnemyController, this, UDamageType::StaticClass());
     }
 }
