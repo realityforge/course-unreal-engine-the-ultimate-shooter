@@ -307,37 +307,25 @@ void AEnemy::OnRightWeaponCollisionOverlap(UPrimitiveComponent* OverlappedCompon
 void AEnemy::ActivateLeftWeapon()
 {
     UE_LOG(LogTemp, Warning, TEXT("AEnemy::ActivateLeftWeapon()"));
-    if (ensure(LeftWeaponCollision))
-    {
-        LeftWeaponCollision->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-    }
+    LeftWeaponCollision->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 }
 
 void AEnemy::DeactivateLeftWeapon()
 {
     UE_LOG(LogTemp, Warning, TEXT("AEnemy::DeactivateLeftWeapon()"));
-    if (ensure(LeftWeaponCollision))
-    {
-        LeftWeaponCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-    }
+    LeftWeaponCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 void AEnemy::ActivateRightWeapon()
 {
     UE_LOG(LogTemp, Warning, TEXT("AEnemy::ActivateRightWeapon()"));
-    if (ensure(RightWeaponCollision))
-    {
-        RightWeaponCollision->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-    }
+    RightWeaponCollision->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 }
 
 void AEnemy::DeactivateRightWeapon()
 {
     UE_LOG(LogTemp, Warning, TEXT("AEnemy::DeactivateRightWeapon()"));
-    if (ensure(RightWeaponCollision))
-    {
-        RightWeaponCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-    }
+    RightWeaponCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 // Called every frame
