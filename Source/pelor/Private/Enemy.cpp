@@ -294,6 +294,7 @@ void AEnemy::OnLeftWeaponCollisionOverlap(UPrimitiveComponent* OverlappedCompone
                                           bool bFromSweep,
                                           const FHitResult& SweepResult)
 {
+    DoDamage(OtherActor);
 }
 
 void AEnemy::OnRightWeaponCollisionOverlap(UPrimitiveComponent* OverlappedComponent,
@@ -303,6 +304,7 @@ void AEnemy::OnRightWeaponCollisionOverlap(UPrimitiveComponent* OverlappedCompon
                                            bool bFromSweep,
                                            const FHitResult& SweepResult)
 {
+    DoDamage(OtherActor);
 }
 
 void AEnemy::ActivateLeftWeapon()
