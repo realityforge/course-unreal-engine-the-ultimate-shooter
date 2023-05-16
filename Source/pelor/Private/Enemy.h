@@ -217,11 +217,11 @@ private:
 
     /** Collision volume for the left weapon */
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
-    UBoxComponent* LeftWeaponCollision;
+    UBoxComponent* LeftWeaponCollision2;
 
     /** Collision volume for the right weapon */
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
-    UBoxComponent* RightWeaponCollision;
+    UBoxComponent* RightWeaponCollision2;
 
     /** Base (melee) damage fir enemy */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))

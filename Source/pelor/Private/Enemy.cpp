@@ -38,8 +38,8 @@ AEnemy::AEnemy()
     , AttackRightFastSectionName(TEXT("Attack_R_Fast"))
     , AttackLeftSectionName(TEXT("Attack_L"))
     , AttackRightSectionName(TEXT("Attack_R"))
-    , LeftWeaponCollision(nullptr)
-    , RightWeaponCollision(nullptr)
+    , LeftWeaponCollision2(nullptr)
+    , RightWeaponCollision2(nullptr)
     , BaseDamage(20.f)
 {
     // Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need
@@ -47,10 +47,10 @@ AEnemy::AEnemy()
     PrimaryActorTick.bCanEverTick = true;
 
     // create weapon collision boxes to sockets created for each weapon
-    LeftWeaponCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("Left Weapon Box"));
-    LeftWeaponCollision->SetupAttachment(GetMesh(), FName("WeaponLBone"));
-    RightWeaponCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("Right Weapon Box"));
-    RightWeaponCollision->SetupAttachment(GetMesh(), FName("WeaponRBone"));
+    LeftWeaponCollision2 = CreateDefaultSubobject<UBoxComponent>(TEXT("LeftWeaponCollision2"));
+    LeftWeaponCollision2->SetupAttachment(GetMesh(), FName("WeaponLBone"));
+    RightWeaponCollision2 = CreateDefaultSubobject<UBoxComponent>(TEXT("RightWeaponCollision2"));
+    RightWeaponCollision2->SetupAttachment(GetMesh(), FName("WeaponRBone"));
 
     AgroSphere = CreateDefaultSubobject<USphereComponent>(TEXT("AgroSphere"));
     AgroSphere->SetupAttachment(GetRootComponent());
@@ -100,19 +100,19 @@ void AEnemy::BeginPlay()
     DrawDebugSphere(GetWorld(), WorldPatrolPoint2, 25.f, 12, FColor::Blue, true);
 
     // Make sure the weapons can collide with character
-    LeftWeaponCollision->OnComponentBeginOverlap.AddDynamic(this, &AEnemy::OnLeftWeaponCollisionOverlap);
-    RightWeaponCollision->OnComponentBeginOverlap.AddDynamic(this, &AEnemy::OnRightWeaponCollisionOverlap);
+    LeftWeaponCollision2->OnComponentBeginOverlap.AddDynamic(this, &AEnemy::OnLeftWeaponCollisionOverlap);
+    RightWeaponCollision2->OnComponentBeginOverlap.AddDynamic(this, &AEnemy::OnRightWeaponCollisionOverlap);
 
     // We start off with no collision enabled so that we don't get overlaps while walking around and will set it when
     // the enemy swings weapon
-    LeftWeaponCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-    LeftWeaponCollision->SetCollisionObjectType(ECC_WorldDynamic);
-    LeftWeaponCollision->SetCollisionResponseToAllChannels(ECR_Ignore);
-    LeftWeaponCollision->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
-    RightWeaponCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-    RightWeaponCollision->SetCollisionObjectType(ECC_WorldDynamic);
-    RightWeaponCollision->SetCollisionResponseToAllChannels(ECR_Ignore);
-    RightWeaponCollision->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
+    LeftWeaponCollision2->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    LeftWeaponCollision2->SetCollisionObjectType(ECC_WorldDynamic);
+    LeftWeaponCollision2->SetCollisionResponseToAllChannels(ECR_Ignore);
+    LeftWeaponCollision2->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
+    RightWeaponCollision2->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    RightWeaponCollision2->SetCollisionObjectType(ECC_WorldDynamic);
+    RightWeaponCollision2->SetCollisionResponseToAllChannels(ECR_Ignore);
+    RightWeaponCollision2->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 }
 
 void AEnemy::ShowHealthBar_Implementation()
@@ -308,25 +308,25 @@ void AEnemy::OnRightWeaponCollisionOverlap(UPrimitiveComponent* OverlappedCompon
 void AEnemy::ActivateLeftWeapon()
 {
     UE_LOG(LogTemp, Warning, TEXT("AEnemy::ActivateLeftWeapon()"));
-    LeftWeaponCollision->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+    LeftWeaponCollision2->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 }
 
 void AEnemy::DeactivateLeftWeapon()
 {
     UE_LOG(LogTemp, Warning, TEXT("AEnemy::DeactivateLeftWeapon()"));
-    LeftWeaponCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    LeftWeaponCollision2->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 void AEnemy::ActivateRightWeapon()
 {
     UE_LOG(LogTemp, Warning, TEXT("AEnemy::ActivateRightWeapon()"));
-    RightWeaponCollision->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+    RightWeaponCollision2->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 }
 
 void AEnemy::DeactivateRightWeapon()
 {
     UE_LOG(LogTemp, Warning, TEXT("AEnemy::DeactivateRightWeapon()"));
-    RightWeaponCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    RightWeaponCollision2->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 // Called every frame
