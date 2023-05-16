@@ -40,6 +40,7 @@ AEnemy::AEnemy()
     , AttackRightSectionName(TEXT("Attack_R"))
     , LeftWeaponCollision(nullptr)
     , RightWeaponCollision(nullptr)
+    , BaseDamage(20.f)
 {
     // Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need
     // it.
@@ -269,6 +270,18 @@ FName AEnemy::GetAttackSectionName() const
         default:
             return this->AttackRightSectionName;
     }
+}
+
+void AEnemy::DoDamage(AActor* OtherActor)
+{
+        if (const auto ShooterCharacter = Cast<AShooterCharacter>(OtherActor))
+        {
+            UGameplayStatics::ApplyDamage(ShooterCharacter,
+                                          BaseDamage,
+                                          EnemyController,
+                                          this,
+                                          UDamageType::StaticClass());
+        }
 }
 
 void AEnemy::OnLeftWeaponCollisionOverlap(UPrimitiveComponent* OverlappedComponent,

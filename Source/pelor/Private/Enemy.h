@@ -223,6 +223,12 @@ private:
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
     UBoxComponent* RightWeaponCollision;
 
+    /** Base (melee) damage fir enemy */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+    float BaseDamage;
+
+    void DoDamage(AActor* OtherActor);
+
 public:
     FORCEINLINE FString GetHeadBone() const { return HeadBone; }
     FORCEINLINE UBehaviorTree* GetBehaviorTree() const { return BehaviorTree; }
