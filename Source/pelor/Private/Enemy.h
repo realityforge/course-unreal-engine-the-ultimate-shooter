@@ -72,7 +72,7 @@ protected:
                                        int32 OtherBodyIndex);
 
     UFUNCTION(BlueprintCallable)
-    void ChangeStunnedState(const bool bStunned);
+    void ChangeStunnedState(const bool bNewStunned);
 
     // This is blueprint callable so it can be called from behaviour tree
     UFUNCTION(BlueprintCallable)
