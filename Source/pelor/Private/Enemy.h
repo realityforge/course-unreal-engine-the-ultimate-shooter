@@ -83,7 +83,6 @@ protected:
     void SpawnBlood(const AShooterCharacter* ShooterCharacter, const FTransform& SpawnTransform) const;
     void PlayImpactSound(const AShooterCharacter* ShooterCharacter, const FVector& Location) const;
     void TryStunCharacter(AShooterCharacter* ShooterCharacter) const;
-    void TryStunCharacter(const AShooterCharacter* ShooterCharacter) const;
 
     UFUNCTION()
     void OnLeftWeaponCollisionOverlap(UPrimitiveComponent* OverlappedComponent,
