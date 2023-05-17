@@ -142,6 +142,7 @@ void AEnemy::PlayHitMontage(FName Section, float PlayRate)
             bCanReactToHits = false;
             const float HitReactDuration = FMath::FRandRange(HitReactTimeMin, HitReactTimeMax);
             GetWorldTimerManager().SetTimer(HitReactionTimer, this, &AEnemy::ResetHitReactTimer, HitReactDuration);
+            ChangeStunnedState(true);
         }
     }
 }
@@ -404,7 +405,6 @@ void AEnemy::BulletHit_Implementation(FHitResult HitResult)
     {
         // Stun chance will determine if we are stunned
         PlayHitMontage(FName("HitReactFront"));
-        ChangeStunnedState(true);
     }
 }
 
