@@ -446,5 +446,16 @@ float AEnemy::TakeDamage(const float Damage,
     {
         Die();
     }
+    else
+    {
+        // Aggro the enemy when we shoot at it
+        if (EnemyController)
+        {
+            if (AShooterCharacter* ShooterCharacter = Cast<AShooterCharacter>(DamageCauser))
+            {
+                EnemyController->GetBlackboardComponent()->SetValueAsObject(FName("Target"), ShooterCharacter);
+            }
+        }
+    }
     return Damage;
 }
