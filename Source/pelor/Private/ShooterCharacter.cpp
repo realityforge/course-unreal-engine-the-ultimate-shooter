@@ -377,7 +377,7 @@ void AShooterCharacter::FireWeapon()
 {
     if (EquippedWeapon && ECombatState::ECS_Idle == CombatState && WeaponHasAmmo())
     {
-        UE_LOG(LogTemp, Warning, TEXT("Fire Weapon! Pew Pew!"));
+        // UE_LOG(LogTemp, Warning, TEXT("Fire Weapon! Pew Pew!"));
         PlayFireSound();
         SendBullet();
         PlayGunFireMontage();
@@ -524,7 +524,8 @@ void AShooterCharacter::Aim()
 void AShooterCharacter::AimingButtonPressed()
 {
     bAimingButtonPressed = true;
-    if (ECombatState::ECS_Reloading != CombatState && ECombatState::ECS_Equipping != CombatState)
+    if (ECombatState::ECS_Reloading != CombatState && ECombatState::ECS_Equipping != CombatState
+        && ECombatState::ECS_Stunned != CombatState)
     {
         // We only aim when we are not reloading or equipping
         // Partially this is to ensure that the reload/equipping animation plays in full when aiming
@@ -589,22 +590,23 @@ void AShooterCharacter::ReloadWeapon()
 
 void AShooterCharacter::FinishReload()
 {
-    if (EquippedWeapon)
+    // Reloads not viable when stunned
+    if (ECombatState::ECS_Stunned != CombatState)
     {
-        if (int32* AmmoCount = AmmoMap.Find(EquippedWeapon->GetAmmoType()); AmmoCount && *AmmoCount > 0)
+        if (EquippedWeapon)
         {
-            // Space left in magazine
-            const int32 EmptySpace = EquippedWeapon->GetAmmoCapacity() - EquippedWeapon->GetAmmo();
-            const int32 AmmoCountToReload = FMath::Min(*AmmoCount, EmptySpace);
-            EquippedWeapon->ReloadAmmo(AmmoCountToReload);
-            *AmmoCount -= AmmoCountToReload;
+            if (int32* AmmoCount = AmmoMap.Find(EquippedWeapon->GetAmmoType()); AmmoCount && *AmmoCount > 0)
+            {
+                // Space left in magazine
+                const int32 EmptySpace = EquippedWeapon->GetAmmoCapacity() - EquippedWeapon->GetAmmo();
+                const int32 AmmoCountToReload = FMath::Min(*AmmoCount, EmptySpace);
+                EquippedWeapon->ReloadAmmo(AmmoCountToReload);
+                *AmmoCount -= AmmoCountToReload;
+            }
         }
-    }
-    // Ready to fire or reload again
-    CombatState = ECombatState::ECS_Idle;
-    if (bAimingButtonPressed)
-    {
-        Aim();
+        // Ready to fire or reload again
+        CombatState = ECombatState::ECS_Idle;
+        TryRecoverAim();
     }
 }
 
@@ -636,10 +638,11 @@ void AShooterCharacter::ReleaseClip()
 
 void AShooterCharacter::FinishEquip()
 {
-    CombatState = ECombatState::ECS_Idle;
-    if (bAimingButtonPressed)
+    // Equipping interrupted when character stunned
+    if (ECombatState::ECS_Stunned != CombatState)
     {
-        Aim();
+        CombatState = ECombatState::ECS_Idle;
+        TryRecoverAim();
     }
 }
 
@@ -955,6 +958,20 @@ EPhysicalSurface AShooterCharacter::GetSurfaceTypeUnderFoot()
     return UPhysicalMaterial::DetermineSurfaceType(HitResult.PhysMaterial.Get());
 }
 
+void AShooterCharacter::TryRecoverAim()
+{
+    if (bAimingButtonPressed)
+    {
+        Aim();
+    }
+}
+
+void AShooterCharacter::EndStunCombatState()
+{
+    CombatState = ECombatState::ECS_Idle;
+    TryRecoverAim();
+}
+
 void AShooterCharacter::MaybeUnHighlightInventoryIndex()
 {
     if (-1 != HighlightedInventoryIndex)
@@ -979,18 +996,22 @@ void AShooterCharacter::StartAutoFireTimer()
 
 void AShooterCharacter::AutoFireReset()
 {
-    CombatState = ECombatState::ECS_Idle;
-    if (WeaponHasAmmo())
+    // Can not start reset auto-fire if we are stunned
+    if (ECombatState::ECS_Stunned != CombatState)
     {
-        if (bFireButtonPressed && EquippedWeapon && EquippedWeapon->GetAutomatic())
+        CombatState = ECombatState::ECS_Idle;
+        if (WeaponHasAmmo())
         {
-            // If we are still holding button then fire again
-            FireWeapon();
+            if (bFireButtonPressed && EquippedWeapon && EquippedWeapon->GetAutomatic())
+            {
+                // If we are still holding button then fire again
+                FireWeapon();
+            }
         }
-    }
-    else
-    {
-        ReloadWeapon();
+        else
+        {
+            ReloadWeapon();
+        }
     }
 }
 

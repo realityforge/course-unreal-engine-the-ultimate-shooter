@@ -26,6 +26,8 @@ enum class ECombatState : uint8
     ECS_Reloading UMETA(DisplayName = "Reloading"),
     // Character is equipping an item
     ECS_Equipping UMETA(DisplayName = "Equipping"),
+    // Character is equipping an item
+    ECS_Stunned UMETA(DisplayName = "Stunned"),
 
     ECS_Max UMETA(Hidden)
 };
@@ -496,6 +498,10 @@ private:
 
     UFUNCTION(BlueprintCallable)
     EPhysicalSurface GetSurfaceTypeUnderFoot();
+    void TryRecoverAim();
+
+    UFUNCTION(BlueprintCallable)
+    void EndStunCombatState();
 
     void StartAutoFireTimer();
 
