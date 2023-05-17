@@ -118,6 +118,10 @@ protected:
 
     void ResetCanAttack();
 
+    /** Called after the death animation completes */
+    UFUNCTION(BlueprintCallable)
+    void OnDeathComplete();
+
 private:
     /** Particles to spawn when hit by bullets */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
@@ -251,6 +255,12 @@ private:
 
     UPROPERTY(EditAnywhere, Category = "Combat", meta = (AllowPrivateAccess = "true"))
     float AttackCooldownTime;
+
+    /** Montage containing death animations */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+    UAnimMontage* DeathMontage;
+
+    bool bDying;
 
     void DamageTarget(AActor* OtherActor, FName ImpactSocketName);
 

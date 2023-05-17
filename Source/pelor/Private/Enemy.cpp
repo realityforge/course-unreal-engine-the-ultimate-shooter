@@ -48,6 +48,9 @@ AEnemy::AEnemy()
 
     , bCanAttack(true)
     , AttackCooldownTime(1.f)
+
+    , DeathMontage(nullptr)
+    , bDying(false)
 {
     // Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need
     // it.
@@ -131,7 +134,26 @@ void AEnemy::ShowHealthBar_Implementation()
 
 void AEnemy::Die()
 {
-    HideHealthBar();
+    if (!bDying)
+    {
+        bDying = true;
+        HideHealthBar();
+        if (DeathMontage)
+        {
+            if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance())
+            {
+                AnimInstance->Montage_Play(DeathMontage);
+            }
+        }
+        if (EnemyController)
+        {
+            // This stores in our blackboard the fact that we are dead so we can stop trying to think
+            EnemyController->GetBlackboardComponent()->SetValueAsBool(FName("Dead"), true);
+
+            // This stops the AI controller moving the enemy
+            EnemyController->StopMovement();
+        }
+    }
 }
 
 void AEnemy::PlayHitMontage(FName Section, float PlayRate)
@@ -398,6 +420,11 @@ void AEnemy::ResetCanAttack()
 {
     bCanAttack = true;
     SetCanAttackBlackboardValue(bCanAttack);
+}
+
+void AEnemy::OnDeathComplete()
+{
+    Destroy();
 }
 
 // Called every frame
