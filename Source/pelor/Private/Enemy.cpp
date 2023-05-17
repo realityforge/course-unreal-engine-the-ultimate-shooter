@@ -45,6 +45,9 @@ AEnemy::AEnemy()
 
     , LeftMeleeWeaponImpactSocketName(TEXT("FX_Trail_L_01"))
     , RightMeleeWeaponImpactSocketName(TEXT("FX_Trail_R_01"))
+
+    , bCanAttack(true)
+    , AttackCooldownTime(1.f)
 {
     // Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need
     // it.
@@ -95,6 +98,7 @@ void AEnemy::BeginPlay()
         // Update the Blackboard with patrol points set in the editor
         EnemyController->GetBlackboardComponent()->SetValueAsVector(TEXT("PatrolPoint"), WorldPatrolPoint);
         EnemyController->GetBlackboardComponent()->SetValueAsVector(TEXT("PatrolPoint2"), WorldPatrolPoint2);
+        SetCanAttackBlackboardValue(bCanAttack);
 
         // Actually initiate behaviour
         EnemyController->RunBehaviorTree(BehaviorTree);
@@ -243,12 +247,25 @@ void AEnemy::OnCombatRangeSphereEndOverlap(UPrimitiveComponent* OverlappedCompon
     }
 }
 
-void AEnemy::ChangeStunnedState(const bool bNewStunned)
+void AEnemy::SetStunnedBlackboardValue() const
 {
-    bStunned = bNewStunned;
     if (EnemyController)
     {
         EnemyController->GetBlackboardComponent()->SetValueAsBool(TEXT("Stunned"), bStunned);
+    }
+}
+
+void AEnemy::ChangeStunnedState(const bool bNewStunned)
+{
+    bStunned = bNewStunned;
+    SetStunnedBlackboardValue();
+}
+
+void AEnemy::SetCanAttackBlackboardValue(const bool bValue) const
+{
+    if (EnemyController)
+    {
+        EnemyController->GetBlackboardComponent()->SetValueAsBool(FName("CanAttack"), bValue);
     }
 }
 
@@ -263,6 +280,9 @@ void AEnemy::PlayAttackMontage(const FName Section, const float PlayRate)
             AnimInstance->Montage_JumpToSection(Section, AttackMontage);
         }
     }
+    bCanAttack = false;
+    GetWorldTimerManager().SetTimer(AttackWaitTimer, this, &AEnemy::ResetCanAttack, AttackCooldownTime);
+    SetCanAttackBlackboardValue(bCanAttack);
 }
 
 FName AEnemy::GetAttackSectionName() const
@@ -372,6 +392,12 @@ void AEnemy::DeactivateRightWeapon()
 {
     UE_LOG(LogTemp, Warning, TEXT("AEnemy::DeactivateRightWeapon()"));
     RightWeaponCollision2->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+}
+
+void AEnemy::ResetCanAttack()
+{
+    bCanAttack = true;
+    SetCanAttackBlackboardValue(bCanAttack);
 }
 
 // Called every frame

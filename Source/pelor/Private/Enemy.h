@@ -70,9 +70,11 @@ protected:
                                        AActor* OtherActor,
                                        UPrimitiveComponent* OtherComponent,
                                        int32 OtherBodyIndex);
+    void SetStunnedBlackboardValue() const;
 
     UFUNCTION(BlueprintCallable)
     void ChangeStunnedState(const bool bNewStunned);
+    void SetCanAttackBlackboardValue(bool bValue) const;
 
     // This is blueprint callable so it can be called from behaviour tree
     UFUNCTION(BlueprintCallable)
@@ -113,6 +115,8 @@ protected:
 
     UFUNCTION(BlueprintCallable)
     void DeactivateRightWeapon();
+
+    void ResetCanAttack();
 
 private:
     /** Particles to spawn when hit by bullets */
@@ -238,6 +242,15 @@ private:
     /** Socket name where right melee weapon impacts target. (Used for spawning impact particles) */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
     FName RightMeleeWeaponImpactSocketName;
+
+    /** True when enemy can attack. Used to create a cooldown timer for attacks. */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+    bool bCanAttack;
+
+    FTimerHandle AttackWaitTimer;
+
+    UPROPERTY(EditAnywhere, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+    float AttackCooldownTime;
 
     void DamageTarget(AActor* OtherActor, FName ImpactSocketName);
 
