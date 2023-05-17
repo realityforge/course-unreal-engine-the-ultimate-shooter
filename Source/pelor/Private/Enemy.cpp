@@ -252,7 +252,7 @@ void AEnemy::ChangeStunnedState(const bool bNewStunned)
     }
 }
 
-void AEnemy::PlayAttackMontage(FName Section, float PlayRate)
+void AEnemy::PlayAttackMontage(const FName Section, const float PlayRate)
 {
     if (AttackMontage)
     {

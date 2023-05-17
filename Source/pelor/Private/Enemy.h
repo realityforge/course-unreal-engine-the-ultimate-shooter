@@ -76,7 +76,7 @@ protected:
 
     // This is blueprint callable so it can be called from behaviour tree
     UFUNCTION(BlueprintCallable)
-    void PlayAttackMontage(FName Section, float PlayRate = 1.f);
+    void PlayAttackMontage(const FName Section, const float PlayRate = 1.f);
 
     UFUNCTION(BlueprintPure)
     FName GetAttackSectionName() const;
