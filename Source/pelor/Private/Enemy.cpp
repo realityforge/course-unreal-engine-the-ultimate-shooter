@@ -434,7 +434,7 @@ void AEnemy::BulletHit_Implementation(FHitResult HitResult)
     }
 }
 
-float AEnemy::TakeDamage(float Damage,
+float AEnemy::TakeDamage(const float Damage,
                          FDamageEvent const& DamageEvent,
                          AController* EventInstigator,
                          AActor* DamageCauser)
