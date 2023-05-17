@@ -463,6 +463,10 @@ private:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
     USoundCue* MeleeImpactSound;
 
+    /** Blood splatter when character hit. */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
+    UParticleSystem* BloodParticles;
+
     void ResetEquipSoundTimer();
 
     void UpdateFovBasedOnAimingStatus(float DeltaTime);
@@ -533,6 +537,7 @@ private:
     void SetupPresentationLocations();
 
 public:
+    FORCEINLINE UParticleSystem* GetBloodParticles() const { return BloodParticles; }
     FORCEINLINE USoundCue* GetMeleeImpactSound() const { return MeleeImpactSound; }
     FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
     FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; }

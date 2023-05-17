@@ -5,6 +5,7 @@
 #include "BulletHitInterface.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "ShooterCharacter.h"
 #include "Enemy.generated.h"
 
 class UBoxComponent;
@@ -79,6 +80,8 @@ protected:
 
     UFUNCTION(BlueprintPure)
     FName GetAttackSectionName() const;
+    void SpawnBlood(const AShooterCharacter* ShooterCharacter, const FTransform& SpawnTransform) const;
+    void PlayImpactSound(const AShooterCharacter* ShooterCharacter, const FVector& Location) const;
 
     UFUNCTION()
     void OnLeftWeaponCollisionOverlap(UPrimitiveComponent* OverlappedComponent,
@@ -227,7 +230,15 @@ private:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
     float BaseDamage;
 
-    void DoDamage(AActor* OtherActor);
+    /** Socket name where left melee weapon impacts target. (Used for spawning impact particles) */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+    FName LeftMeleeWeaponImpactSocketName;
+
+    /** Socket name where right melee weapon impacts target. (Used for spawning impact particles) */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+    FName RightMeleeWeaponImpactSocketName;
+
+    void DamageTarget(AActor* OtherActor, FName ImpactSocketName);
 
 public:
     FORCEINLINE FString GetHeadBone() const { return HeadBone; }

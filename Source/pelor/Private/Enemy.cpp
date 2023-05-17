@@ -8,6 +8,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/SphereComponent.h"
 #include "EnemyController.h"
+#include "Engine/SkeletalMeshSocket.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "ShooterCharacter.h"
@@ -41,6 +42,9 @@ AEnemy::AEnemy()
     , LeftWeaponCollision2(nullptr)
     , RightWeaponCollision2(nullptr)
     , BaseDamage(20.f)
+
+    , LeftMeleeWeaponImpactSocketName(TEXT("FX_Trail_L_01"))
+    , RightMeleeWeaponImpactSocketName(TEXT("FX_Trail_R_01"))
 {
     // Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need
     // it.
@@ -275,16 +279,43 @@ FName AEnemy::GetAttackSectionName() const
     }
 }
 
-void AEnemy::DoDamage(AActor* OtherActor)
+void AEnemy::SpawnBlood(const AShooterCharacter* const ShooterCharacter, const FTransform& SpawnTransform) const
 {
-    UE_LOG(LogTemp, Warning, TEXT("AEnemy::DoDamage()??? %d"), nullptr == Cast<AShooterCharacter>(OtherActor) ? 0 : 1);
+    if (const auto BloodParticles = ShooterCharacter->GetBloodParticles())
+    {
+        UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), BloodParticles, SpawnTransform);
+    }
+}
+
+void AEnemy::PlayImpactSound(const AShooterCharacter* const ShooterCharacter, const FVector& Location) const
+{
+    if (const auto MeleeImpactSound = ShooterCharacter->GetMeleeImpactSound())
+    {
+        UGameplayStatics::PlaySoundAtLocation(this, MeleeImpactSound, Location);
+    }
+}
+
+void AEnemy::DamageTarget(AActor* OtherActor, const FName ImpactSocketName)
+{
     if (const auto ShooterCharacter = Cast<AShooterCharacter>(OtherActor))
     {
-        UE_LOG(LogTemp, Warning, TEXT("ApplyDamage(%f)"), BaseDamage);
+        UE_LOG(LogTemp, Warning, TEXT("ApplyDamage(%f) to %s"), BaseDamage, *ShooterCharacter->GetName());
         UGameplayStatics::ApplyDamage(ShooterCharacter, BaseDamage, EnemyController, this, UDamageType::StaticClass());
-        if (const auto MeleeImpactSound = ShooterCharacter->GetMeleeImpactSound())
+
+        if (const USkeletalMeshSocket* Socket = GetMesh()->GetSocketByName(ImpactSocketName))
         {
-            UGameplayStatics::PlaySoundAtLocation(this, MeleeImpactSound, ShooterCharacter->GetActorLocation());
+            // Socket on the "enemy" where impact occurs (Really should be on weapon carried by enemy but meh!)
+
+            const FTransform ImpactTransform = Socket ? Socket->GetSocketTransform(GetMesh()) : FTransform::Identity;
+            SpawnBlood(ShooterCharacter, ImpactTransform);
+            PlayImpactSound(ShooterCharacter, ImpactTransform.GetLocation());
+        }
+        else
+        {
+            // No socket configured. We should log a warning...
+
+            // Guess impact sound location at the target actor
+            PlayImpactSound(ShooterCharacter, ShooterCharacter->GetActorLocation());
         }
     }
 }
@@ -296,7 +327,7 @@ void AEnemy::OnLeftWeaponCollisionOverlap(UPrimitiveComponent* OverlappedCompone
                                           bool bFromSweep,
                                           const FHitResult& SweepResult)
 {
-    DoDamage(OtherActor);
+    DamageTarget(OtherActor, LeftMeleeWeaponImpactSocketName);
 }
 
 void AEnemy::OnRightWeaponCollisionOverlap(UPrimitiveComponent* OverlappedComponent,
@@ -306,7 +337,7 @@ void AEnemy::OnRightWeaponCollisionOverlap(UPrimitiveComponent* OverlappedCompon
                                            bool bFromSweep,
                                            const FHitResult& SweepResult)
 {
-    DoDamage(OtherActor);
+    DamageTarget(OtherActor, RightMeleeWeaponImpactSocketName);
 }
 
 void AEnemy::ActivateLeftWeapon()
