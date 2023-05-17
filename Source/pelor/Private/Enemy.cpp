@@ -295,12 +295,21 @@ void AEnemy::PlayImpactSound(const AShooterCharacter* const ShooterCharacter, co
     }
 }
 
+void AEnemy::TryStunCharacter(AShooterCharacter* ShooterCharacter) const
+{
+    if (FMath::FRandRange(0.f, 1.f) < ShooterCharacter->GetStunChance())
+    {
+        ShooterCharacter->Stun();
+    }
+}
+
 void AEnemy::DamageTarget(AActor* OtherActor, const FName ImpactSocketName)
 {
     if (const auto ShooterCharacter = Cast<AShooterCharacter>(OtherActor))
     {
         UE_LOG(LogTemp, Warning, TEXT("ApplyDamage(%f) to %s"), BaseDamage, *ShooterCharacter->GetName());
         UGameplayStatics::ApplyDamage(ShooterCharacter, BaseDamage, EnemyController, this, UDamageType::StaticClass());
+        TryStunCharacter(ShooterCharacter);
 
         if (const USkeletalMeshSocket* Socket = GetMesh()->GetSocketByName(ImpactSocketName))
         {

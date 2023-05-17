@@ -469,6 +469,17 @@ private:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
     UParticleSystem* BloodParticles;
 
+    /** HitReact anim montage when character is stunned. */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
+    UAnimMontage* HitReactMontage;
+
+    /** Chance of being stunned when hit by an enemy. */
+    UPROPERTY(EditAnywhere,
+              BlueprintReadWrite,
+              Category = Combat,
+              meta = (AllowPrivateAccess = "true", UIMin = "0.0", UIMax = "1.0", ClampMin = "0.0", ClampMax = "1.0"))
+    float StunChance;
+
     void ResetEquipSoundTimer();
 
     void UpdateFovBasedOnAimingStatus(float DeltaTime);
@@ -543,6 +554,7 @@ private:
     void SetupPresentationLocations();
 
 public:
+    FORCEINLINE float GetStunChance() const { return StunChance; }
     FORCEINLINE UParticleSystem* GetBloodParticles() const { return BloodParticles; }
     FORCEINLINE USoundCue* GetMeleeImpactSound() const { return MeleeImpactSound; }
     FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
@@ -580,4 +592,7 @@ public:
 
     // Called from Item ... so terribly bad idea
     void MaybeUnHighlightInventoryIndex();
+
+    // Called from enemy on hit
+    void Stun();
 };

@@ -104,6 +104,9 @@ AShooterCharacter::AShooterCharacter()
     , MaxHealth(100.f)
 
     , MeleeImpactSound(nullptr)
+    , BloodParticles(nullptr)
+    , HitReactMontage(nullptr)
+    , StunChance(.25f)
 {
     // Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need
     // it.
@@ -982,6 +985,18 @@ void AShooterCharacter::MaybeUnHighlightInventoryIndex()
         //        HighlightedInventoryIndex);
         HighlightIconDelegate.Broadcast(HighlightedInventoryIndex, false);
         HighlightedInventoryIndex = -1;
+    }
+}
+
+void AShooterCharacter::Stun()
+{
+    CombatState = ECombatState::ECS_Stunned;
+    if (HitReactMontage)
+    {
+        if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance())
+        {
+            AnimInstance->Montage_Play(HitReactMontage);
+        }
     }
 }
 
