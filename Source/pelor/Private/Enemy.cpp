@@ -108,9 +108,6 @@ void AEnemy::BeginPlay()
         EnemyController->RunBehaviorTree(BehaviorTree);
     }
 
-    DrawDebugSphere(GetWorld(), WorldPatrolPoint, 25.f, 12, FColor::Red, true);
-    DrawDebugSphere(GetWorld(), WorldPatrolPoint2, 25.f, 12, FColor::Blue, true);
-
     // Make sure the weapons can collide with character
     LeftWeaponCollision2->OnComponentBeginOverlap.AddDynamic(this, &AEnemy::OnLeftWeaponCollisionOverlap);
     RightWeaponCollision2->OnComponentBeginOverlap.AddDynamic(this, &AEnemy::OnRightWeaponCollisionOverlap);
