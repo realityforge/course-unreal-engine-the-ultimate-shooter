@@ -450,14 +450,18 @@ void AEnemy::BulletHit_Implementation(FHitResult HitResult)
     {
         UGameplayStatics::SpawnEmitterAtLocation(this, ImpactParticles, HitResult.Location, FRotator(0.f), true);
     }
-    ShowHealthBar();
-
-    UE_LOG(LogTemp, Warning, TEXT("Bullet Hit - Ouch!"));
-
-    if (FMath::FRandRange(0.f, 1.f) <= StunChance)
+    // (If the enemy is dying then there is no need for further animations or showing health bar
+    if (!bDying)
     {
-        // Stun chance will determine if we are stunned
-        PlayHitMontage(FName("HitReactFront"));
+        ShowHealthBar();
+
+        UE_LOG(LogTemp, Warning, TEXT("Bullet Hit - Ouch!"));
+
+        if (FMath::FRandRange(0.f, 1.f) <= StunChance)
+        {
+            // Stun chance will determine if we are stunned
+            PlayHitMontage(FName("HitReactFront"));
+        }
     }
 }
 
