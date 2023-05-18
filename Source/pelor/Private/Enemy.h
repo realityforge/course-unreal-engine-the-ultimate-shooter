@@ -122,6 +122,9 @@ protected:
     UFUNCTION(BlueprintCallable)
     void OnDeathComplete();
 
+    UFUNCTION()
+    void DestroyEnemy();
+
 private:
     /** Particles to spawn when hit by bullets */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
@@ -261,6 +264,13 @@ private:
     UAnimMontage* DeathMontage;
 
     bool bDying;
+
+    /** How long does the corpse persist after death */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+    float PersistAfterDeathDuration;
+
+    // Timer used to manage how long after death until the actor is rmeoved
+    FTimerHandle RemoveAfterDeathTimer;
 
     void DamageTarget(AActor* OtherActor, FName ImpactSocketName);
 

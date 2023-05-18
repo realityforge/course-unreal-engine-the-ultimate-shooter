@@ -51,6 +51,7 @@ AEnemy::AEnemy()
 
     , DeathMontage(nullptr)
     , bDying(false)
+    , PersistAfterDeathDuration(4.f)
 {
     // Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need
     // it.
@@ -423,6 +424,14 @@ void AEnemy::ResetCanAttack()
 }
 
 void AEnemy::OnDeathComplete()
+{
+    // Make sure the mesh does not continue animating
+    GetMesh()->bPauseAnims = true;
+
+    GetWorldTimerManager().SetTimer(RemoveAfterDeathTimer, this, &AEnemy::DestroyEnemy, PersistAfterDeathDuration);
+}
+
+void AEnemy::DestroyEnemy()
 {
     Destroy();
 }
