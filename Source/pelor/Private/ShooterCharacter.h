@@ -480,6 +480,10 @@ private:
               meta = (AllowPrivateAccess = "true", UIMin = "0.0", UIMax = "1.0", ClampMin = "0.0", ClampMax = "1.0"))
     float StunChance;
 
+    /** Anim montage when character is killed. */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
+    UAnimMontage* DeathMontage;
+
     void ResetEquipSoundTimer();
 
     void UpdateFovBasedOnAimingStatus(float DeltaTime);
@@ -513,6 +517,11 @@ private:
 
     UFUNCTION(BlueprintCallable)
     void EndStunCombatState();
+
+    void Die();
+
+    UFUNCTION(BlueprintCallable)
+    void FinishDeath();
 
     void StartAutoFireTimer();
 

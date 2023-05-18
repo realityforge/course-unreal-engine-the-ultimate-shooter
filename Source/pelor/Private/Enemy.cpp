@@ -229,6 +229,7 @@ void AEnemy::OnAgroSphereOverlap(UPrimitiveComponent* OverlappedComponent,
             if (UBlackboardComponent* BlackboardComponent = EnemyController->GetBlackboardComponent())
             {
                 // Set the target in Blackboard so the enemy can chase them down
+                EnemyController->GetBlackboardComponent()->SetValueAsBool(TEXT("IsTargetDead"), false);
                 BlackboardComponent->SetValueAsObject(TEXT("Target"), Character);
             }
         }
@@ -493,6 +494,7 @@ float AEnemy::TakeDamage(const float Damage,
         {
             if (AShooterCharacter* ShooterCharacter = Cast<AShooterCharacter>(DamageCauser))
             {
+                EnemyController->GetBlackboardComponent()->SetValueAsBool(TEXT("IsTargetDead"), false);
                 EnemyController->GetBlackboardComponent()->SetValueAsObject(FName("Target"), ShooterCharacter);
             }
         }

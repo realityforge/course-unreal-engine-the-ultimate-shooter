@@ -2,11 +2,13 @@
 
 #include "ShooterCharacter.h"
 #include "Ammo.h"
+#include "BehaviorTree/BlackboardComponent.h"
 #include "BulletHitInterface.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Enemy.h"
+#include "EnemyController.h"
 #include "Engine/SkeletalMeshSocket.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -107,6 +109,7 @@ AShooterCharacter::AShooterCharacter()
     , BloodParticles(nullptr)
     , HitReactMontage(nullptr)
     , StunChance(.25f)
+    , DeathMontage(nullptr)
 {
     // Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need
     // it.
@@ -194,6 +197,14 @@ float AShooterCharacter::TakeDamage(float Damage,
                                     AActor* DamageCauser)
 {
     Health = FMath::Max(Health - Damage, 0.f);
+    if (0.f >= Health)
+    {
+        if (AEnemyController* EnemyController = Cast<AEnemyController>(EventInstigator))
+        {
+            EnemyController->GetBlackboardComponent()->SetValueAsBool(TEXT("IsTargetDead"), true);
+        }
+        Die();
+    }
     return Damage;
 }
 
@@ -975,6 +986,29 @@ void AShooterCharacter::EndStunCombatState()
     TryRecoverAim();
 }
 
+void AShooterCharacter::Die()
+{
+    if (DeathMontage)
+    {
+        if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance())
+        {
+            AnimInstance->Montage_Play(DeathMontage);
+        }
+    }
+}
+
+void AShooterCharacter::FinishDeath()
+{
+    // The character should no longer animate as they are dead!
+    GetMesh()->bPauseAnims = true;
+
+    // Stop the player providing more input
+    if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, 0))
+    {
+        DisableInput(PlayerController);
+    }
+}
+
 void AShooterCharacter::MaybeUnHighlightInventoryIndex()
 {
     if (-1 != HighlightedInventoryIndex)
@@ -990,12 +1024,17 @@ void AShooterCharacter::MaybeUnHighlightInventoryIndex()
 
 void AShooterCharacter::Stun()
 {
-    CombatState = ECombatState::ECS_Stunned;
-    if (HitReactMontage)
+    // This is called from enemy and we may have already killed character, in which case
+    // we don't need to try and play a stun reaction if we have
+    if (0.f < Health)
     {
-        if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance())
+        CombatState = ECombatState::ECS_Stunned;
+        if (HitReactMontage)
         {
-            AnimInstance->Montage_Play(HitReactMontage);
+            if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance())
+            {
+                AnimInstance->Montage_Play(HitReactMontage);
+            }
         }
     }
 }
