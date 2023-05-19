@@ -219,15 +219,19 @@ void AEnemy::OnAgroSphereOverlap(UPrimitiveComponent* OverlappedComponent,
                                  const FHitResult& SweepResult)
 {
     // TODO: OtherActor always true?
-    if (OtherActor)
+    if (OtherActor && EnemyController)
     {
         if (const auto Character = Cast<AShooterCharacter>(OtherActor))
         {
             if (UBlackboardComponent* BlackboardComponent = EnemyController->GetBlackboardComponent())
             {
                 // Set the target in Blackboard so the enemy can chase them down
-                EnemyController->GetBlackboardComponent()->SetValueAsBool(TEXT("IsTargetDead"), false);
-                BlackboardComponent->SetValueAsObject(TEXT("Target"), Character);
+                if (BlackboardComponent)
+                {
+                    // BlackboardComponent always non-null?
+                    BlackboardComponent->SetValueAsBool(TEXT("IsTargetDead"), false);
+                    BlackboardComponent->SetValueAsObject(TEXT("Target"), Character);
+                }
             }
         }
     }
