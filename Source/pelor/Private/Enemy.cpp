@@ -354,7 +354,7 @@ void AEnemy::DamageTarget(AActor* OtherActor, const FName ImpactSocketName)
     if (const auto ShooterCharacter = Cast<AShooterCharacter>(OtherActor))
     {
         UE_LOG(LogTemp, Warning, TEXT("ApplyDamage(%f) to %s"), BaseDamage, *ShooterCharacter->GetName());
-        UGameplayStatics::ApplyDamage(ShooterCharacter, BaseDamage, EnemyController, this, UDamageType::StaticClass());
+        UGameplayStatics::ApplyDamage(ShooterCharacter, BaseDamage, EnemyController, this, nullptr);
         TryStunCharacter(ShooterCharacter);
 
         if (const USkeletalMeshSocket* Socket = GetMesh()->GetSocketByName(ImpactSocketName))
