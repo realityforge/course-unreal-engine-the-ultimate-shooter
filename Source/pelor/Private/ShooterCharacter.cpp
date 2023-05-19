@@ -204,7 +204,7 @@ float AShooterCharacter::TakeDamage(float Damage,
     Health = FMath::Max(Health - Damage, 0.f);
     if (IsDead())
     {
-        if (AEnemyController* EnemyController = Cast<AEnemyController>(EventInstigator))
+        if (const AEnemyController* EnemyController = Cast<AEnemyController>(EventInstigator))
         {
             EnemyController->GetBlackboardComponent()->SetValueAsBool(TEXT("IsTargetDead"), true);
         }
