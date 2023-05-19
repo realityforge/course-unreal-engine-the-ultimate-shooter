@@ -329,7 +329,7 @@ void AShooterCharacter::SendBullet()
         if (GetBeamEndLocation(MuzzleEndLocation, BeamHitResult))
         {
             bool bUseDefaultParticles = true;
-            // Does the actor we hit implement the  BulletHitInterface?
+            // Does the actor we hit implement the BulletHitInterface?
             if (AActor* HitActor = BeamHitResult.GetActor())
             {
                 // The cast will only be successful if the actor implements interface
