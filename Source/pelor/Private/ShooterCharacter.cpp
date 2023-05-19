@@ -191,13 +191,18 @@ AShooterCharacter::AShooterCharacter()
     PresentationComponent6->SetupAttachment(FollowCamera);
 }
 
+bool AShooterCharacter::IsDead() const
+{
+    return 0.f == Health;
+}
+
 float AShooterCharacter::TakeDamage(float Damage,
                                     FDamageEvent const& DamageEvent,
                                     AController* EventInstigator,
                                     AActor* DamageCauser)
 {
     Health = FMath::Max(Health - Damage, 0.f);
-    if (0.f >= Health)
+    if (IsDead())
     {
         if (AEnemyController* EnemyController = Cast<AEnemyController>(EventInstigator))
         {
@@ -368,7 +373,7 @@ void AShooterCharacter::SendBullet()
 
 void AShooterCharacter::PlayGunFireMontage() const
 {
-    if (HipFireMontage)
+    if (HipFireMontage && !IsDead())
     {
         // Get our current animation manager
         if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance(); AnimInstance)
@@ -576,7 +581,7 @@ bool AShooterCharacter::CarryingAmmo()
 
 void AShooterCharacter::ReloadWeapon()
 {
-    if (ECombatState::ECS_Idle == CombatState && EquippedWeapon)
+    if (ECombatState::ECS_Idle == CombatState && EquippedWeapon && !IsDead())
     {
         // Do we have ammo of the correct type?
         if (CarryingAmmo() && !EquippedWeapon->AmmoIsFull())
@@ -888,7 +893,7 @@ void AShooterCharacter::StartWeaponEquip(AWeapon* const Weapon)
 {
     checkf(nullptr != Weapon, TEXT("Invalid weapon passed to StartWeaponEquip"));
     // If it is not the first equip and we have an EquipMontage configured then start the animation montage
-    if (EquippedWeapon && EquipMontage)
+    if (EquippedWeapon && EquipMontage && !IsDead())
     {
         // If we are already in animation for equipping another weapon then do not restart animation but
         // change the weapon that will be equipped

@@ -57,6 +57,7 @@ class PELOR_API AShooterCharacter : public ACharacter
 public:
     // Sets default values for this character's properties
     AShooterCharacter();
+    bool IsDead() const;
 
     virtual float TakeDamage(float Damage,
                              FDamageEvent const& DamageEvent,
