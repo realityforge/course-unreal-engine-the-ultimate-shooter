@@ -991,6 +991,7 @@ void AShooterCharacter::Die()
         if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance())
         {
             AnimInstance->Montage_Play(DeathMontage);
+            AnimInstance->Montage_JumpToSection("Default");
         }
     }
 }
