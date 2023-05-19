@@ -1,6 +1,7 @@
 import unreal
 import math
 
+
 def verify_power_of_two():
     # Get the libraries
     editor_util = unreal.EditorUtilityLibrary()
@@ -33,5 +34,6 @@ def verify_power_of_two():
         unreal.log("{} textures identified that are not a power of two.".format(invalid_asset_count))
 
     return invalid_asset_count
+
 
 verify_power_of_two()
