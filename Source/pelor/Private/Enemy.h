@@ -287,7 +287,8 @@ public:
     // Called to bind functionality to input
     virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
-    virtual void BulletHit_Implementation(FHitResult HitResult) override;
+    virtual void
+    BulletHit_Implementation(FHitResult HitResult, AActor* DamageCauser, AController* EventInstigator) override;
 
     virtual float TakeDamage(float Damage,
                              FDamageEvent const& DamageEvent,

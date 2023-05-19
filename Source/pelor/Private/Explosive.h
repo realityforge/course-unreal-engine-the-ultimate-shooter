@@ -7,6 +7,7 @@
 #include "GameFramework/Actor.h"
 #include "Explosive.generated.h"
 
+class USphereComponent;
 class USoundCue;
 class UParticleSystem;
 
@@ -28,6 +29,18 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
     USoundCue* ImpactSound;
 
+    /** Mesh representing explosion */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+    UStaticMeshComponent* ExplosiveMesh;
+
+    /** Used to determine what Actors overlap during explosion */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+    USphereComponent* OverlapSphere;
+
+    /** The amount of damage caused by explosive */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+    float Damage;
+
     // Called when the game starts or when spawned
     virtual void BeginPlay() override;
 
@@ -35,5 +48,6 @@ public:
     // Called every frame
     virtual void Tick(float DeltaTime) override;
 
-    virtual void BulletHit_Implementation(FHitResult HitResult) override;
+    virtual void
+    BulletHit_Implementation(FHitResult HitResult, AActor* DamageCauser, AController* EventInstigator) override;
 };

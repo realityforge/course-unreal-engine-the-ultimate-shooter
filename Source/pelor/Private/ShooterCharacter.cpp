@@ -340,7 +340,7 @@ void AShooterCharacter::SendBullet()
                 // The cast will only be successful if the actor implements interface
                 if (IBulletHitInterface* BulletHitInterface = Cast<IBulletHitInterface>(HitActor))
                 {
-                    BulletHitInterface->BulletHit_Implementation(BeamHitResult);
+                    BulletHitInterface->BulletHit_Implementation(BeamHitResult, this, GetController());
                     bUseDefaultParticles = false;
                 }
                 if (AEnemy* Enemy = Cast<AEnemy>(HitActor))

@@ -24,5 +24,5 @@ class PELOR_API IBulletHitInterface
 
 public:
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-    void BulletHit(FHitResult HitResult);
+    void BulletHit(FHitResult HitResult, AActor* DamageCauser, AController* EventInstigator);
 };
