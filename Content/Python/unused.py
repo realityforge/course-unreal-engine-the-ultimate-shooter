@@ -45,7 +45,7 @@ def remove_unused(instant_delete=True, trash_folder="/Game/Trash"):
                 removed += 1
         else:
             # move the assets to the trash folder
-            new_path = f"{trash_folder}/{str(asset_name)}"#os.path.join(trash_folder, str(asset_name))
+            new_path = f"{trash_folder}/{str(asset_name)}"
             unreal.log(f"Move {str(asset)} to {new_path}")
             editor_asset.make_directory(os.path.dirname(new_path))
             if not editor_asset.rename_loaded_asset(asset, new_path):
