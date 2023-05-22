@@ -1,5 +1,30 @@
 # TODO
 
+
+Currently in the UE4 editor there is no way to compile all blueprints in your project. You can compile blueprints individually but there is no in editor button to compile all blueprints. Unreal Engine does offer way to do this via command line however by way of Commandlets.
+
+Commandlets
+Commandlets are command line programs that run inside of the Unreal Engine environment. They are most often used to make bulk changes to content, iterate over content to get information about it, or as a unit testing mechanism.
+
+One of those commandlets is CompileAllBlueprints which not surprisingly will compile all blueprints in a project.
+
+CompileAllBlueprints
+UE4Editor-Cmd.exe MyGame\MyProject.uproject -run=CompileAllBlueprints
+
+Running this will run through all blueprints in your project and let you know if there are any compilation issues that show up. Very handy!
+
+Having the ability to compile all blueprints acts as a great sanity check on your project and can act as a great pre-commit check on assets before committing to source control.
+
+An excellent extension I am considering to this would be to make a utility widget accessible in editor to trigger the compilation and have the results viewable in an output window.
+
+
+"C:\Program Files\Epic Games\UE_5.1\Engine\Binaries\Win64\UnrealEditor-Cmd.exe" C:\Projects\Shooter\pelor.uproject -run=CompileAllBlueprints
+"C:\Program Files\Epic Games\UE_5.1\Engine\Binaries\Win64\UnrealEditor-Cmd.exe" C:\Projects\Shooter\pelor.uproject -run=CompileAllBlueprints -Run=ResavePackages
+
+
+
+
+
 * Only use LFS for assets exceeding 100M. Use `find Content -size +100M` to find list after have remove unused assets
 
 * Make sure you use `idea.max.intellisense.filesize = 25000` as custom property in PyCharm so that it can gather intellisense from generated `unreal.py`
