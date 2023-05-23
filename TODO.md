@@ -21,9 +21,17 @@ An excellent extension I am considering to this would be to make a utility widge
 "C:\Program Files\Epic Games\UE_5.1\Engine\Binaries\Win64\UnrealEditor-Cmd.exe" C:\Projects\Shooter\pelor.uproject -run=CompileAllBlueprints
 "C:\Program Files\Epic Games\UE_5.1\Engine\Binaries\Win64\UnrealEditor-Cmd.exe" C:\Projects\Shooter\pelor.uproject -run=CompileAllBlueprints -Run=ResavePackages
 
+----------------------------------------------------------------------------------------------------
 
+So, just going to post my little discovery here... there's a commandlet for diffing arbitrary uassets as text files. No fancy UI like blueprint diffs, but this actually works on any arbitrary uasset (and potentially umaps too).
+I have no clue when it was added, but at least as of UE5 you can do this (example uses p4merge to do the actual diff, the commandlet just outputs two text files and then calls into a third party diff tool)
+```
+UnrealEditor-Cmd.exe C:\Path\To\Your\Project.uproject -NoShaderCompile -run="DiffAssets" %1 %2 DiffCmd="C:\Program Files\Perforce\p4merge.exe {1} {2}"
+```
+Gives a result like this (this was a diff between two versions of a sequencer asset).
+--
 
-
+----------------------------------------------------------------------------------------------------
 
 * Only use LFS for assets exceeding 100M. Use `find Content -size +100M` to find list after have remove unused assets
 
