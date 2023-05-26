@@ -161,7 +161,7 @@ def find_unreferenced_assets(report_path: str, base_path: str, entry_points: set
 
 
 if __name__ == "__main__":
-    find_unreferenced_assets(r"C:\Projects\Shooter\UnusedAssets.txt",
+    find_unreferenced_assets(r"C:\Projects\Shooter\tmp\UnusedAssets.txt",
                              "/Game/_Game/",
                              {'/Game/_Game/Maps/BasicMap',
                               '^/Game/_Game/Character/Rigs/.*$',
