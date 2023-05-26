@@ -167,6 +167,6 @@ if __name__ == "__main__":
                              {'/Game/_Game/Maps/BasicMap',
                               '^/Game/_Game/Character/Rigs/.*$',
                               '^/Game/_Game/Character/Animations/Crouching/MixamoCharacter/.*$',
-                              '/Game/_Game/Automation/EUBP_Automation',
+                              '^/Game/_Game/Automation/.*$',
                               '/Game/_Game/Character/TwinBlastCharacterBP',
                               '/Game/_Game/GameMode/PelorGameModeBaseBP'})
