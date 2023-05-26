@@ -29,6 +29,13 @@ def find_unreferenced_assets(report_path: str, base_path: str, entry_points: set
     editor_actor_lib = unreal.EditorActorSubsystem()
     asset_registry = unreal.AssetRegistryHelpers().get_asset_registry()
 
+    options = unreal.AssetRegistryDependencyOptions()
+    options.include_searchable_names = True
+    options.include_hard_management_references = True
+    options.include_hard_package_references = True
+    options.include_soft_management_references = True
+    options.include_soft_package_references = True
+
     asset_names = editor_asset.list_assets(base_path)
 
     asset_to_referencers: dict[str, set[str]] = {}
@@ -59,12 +66,6 @@ def find_unreferenced_assets(report_path: str, base_path: str, entry_points: set
                 asset_to_dependencies[asset_reference].add(asset_path)
 
             asset = editor_asset.load_asset(asset_path)
-            options = unreal.AssetRegistryDependencyOptions()
-            options.include_searchable_names = True
-            options.include_hard_management_references = True
-            options.include_hard_package_references = True
-            options.include_soft_management_references = True
-            options.include_soft_package_references = True
 
             if asset_path not in asset_to_dependencies:
                 asset_to_dependencies[asset_path] = set()
