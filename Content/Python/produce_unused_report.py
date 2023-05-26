@@ -78,6 +78,13 @@ def find_unreferenced_assets(report_path: str, base_path: str, entry_points: set
                     asset_to_referencers[asset_reference] = set()
                 asset_to_referencers[asset_reference].add(asset_path)
 
+            referencers = asset_registry.get_referencers(unreal.Name(asset.get_package().get_path_name()), options)
+            for asset_reference in referencers:
+                asset_reference = str(asset_reference)
+                if asset_reference not in asset_to_referencers:
+                    asset_to_referencers[asset_reference] = set()
+                asset_to_referencers[asset_reference].add(asset_path)
+
             slow_task.enter_progress_frame(1, f"🔨 : {asset_path}")
 
     unreferenced_asset_paths = set()
