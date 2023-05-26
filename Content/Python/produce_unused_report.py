@@ -69,7 +69,7 @@ def find_unreferenced_assets(report_path: str, base_path: str, entry_points: set
             if asset_path not in asset_to_dependencies:
                 asset_to_dependencies[asset_path] = set()
 
-            dependencies = asset_registry.get_dependencies(asset.get_package().get_path_name(), options)
+            dependencies = asset_registry.get_dependencies(unreal.Name(asset.get_package().get_path_name()), options)
             for dependency in dependencies:
                 asset_reference = str(dependency)
                 asset_to_dependencies[asset_path].add(asset_reference)
