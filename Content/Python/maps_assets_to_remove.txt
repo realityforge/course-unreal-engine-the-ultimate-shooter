@@ -36,3 +36,4 @@ Content/SampleMap/ParagonSample.umap
 Content/SampleMap/ParagonSample_Daylight.umap
 Content/StorageHouse/Maps/Demonstration.umap
 Content/StorageHouse/Maps/Overview.umap
+Content/ParagonProps/Placeholder.txt
