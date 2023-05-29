@@ -11,9 +11,9 @@
 # limitations under the License.
 
 import unreal
-import os
 import re
-
+import json
+import pathlib
 
 # TODO: Also add a variant that scans all assets and loads all of them amd finds an unused list.
 #       As part of processing we should have a graph of all the assets and dependencies. Start at
@@ -23,8 +23,7 @@ import re
 # TODO: Also should we have script that adds metadata (i.e. Channel 1 is ambient occlusion, Channel 3 is Metallic, Channel 2 is Roughness for textures)
 #       and then drives asset names and other tools from metadata
 
-def find_unreferenced_assets(report_path: str, base_path: str, entry_points: set[str],
-                             emit_full_report: bool = False) -> [str]:
+def find_unreferenced_assets(report_path: str, base_path: str, entry_points: set[str], **kwargs: dict) -> [str]:
     editor_asset = unreal.EditorAssetLibrary()
     editor_actor_lib = unreal.EditorActorSubsystem()
     asset_registry = unreal.AssetRegistryHelpers().get_asset_registry()
@@ -35,6 +34,11 @@ def find_unreferenced_assets(report_path: str, base_path: str, entry_points: set
     options.include_hard_package_references = True
     options.include_soft_management_references = True
     options.include_soft_package_references = True
+
+    referencer_cache_file: str = kwargs["referencer_cache_file"] if "referencer_cache_file" in kwargs else None
+    dependencies_cache_file: str = kwargs["dependencies_cache_file"] if "dependencies_cache_file" in kwargs else None
+    actors_cache_file: str = kwargs["actors_cache_file"] if "actors_cache_file" in kwargs else None
+    extra_unused: [str] = kwargs["extra_unused"] if "extra_unused" in kwargs else []
 
     asset_names = editor_asset.list_assets(base_path)
 
@@ -53,56 +57,118 @@ def find_unreferenced_assets(report_path: str, base_path: str, entry_points: set
 
             asset_path = asset_name[:asset_name.rindex('.')]
 
-            # Find any "referencers" of the asset. The referencer and asset will be loaded to verify this
-            asset_references = editor_asset.find_package_referencers_for_asset(asset_path, True)
-
-            if asset_path not in asset_to_referencers:
-                asset_to_referencers[asset_path] = set()
-
-            for asset_reference in asset_references:
-                asset_to_referencers[asset_path].add(asset_reference)
-                if asset_reference not in asset_to_dependencies:
-                    asset_to_dependencies[asset_reference] = set()
-                asset_to_dependencies[asset_reference].add(asset_path)
-
             asset = editor_asset.load_asset(asset_path)
+            if not asset:
+                unreal.log_warning(f"\n\n\n\nUUR: Unable to load asset: {asset_path}\n\n\n\n")
+                continue
+            else:
+                dependencies = asset_registry.get_dependencies(unreal.Name(asset.get_package().get_path_name()),
+                                                               options)
+                if asset_path not in asset_to_dependencies:
+                    asset_to_dependencies[asset_path] = set()
+                for dependency in dependencies:
+                    asset_reference = str(dependency)
+                    asset_to_dependencies[asset_path].add(asset_reference)
 
-            if asset_path not in asset_to_dependencies:
-                asset_to_dependencies[asset_path] = set()
-
-            dependencies = asset_registry.get_dependencies(unreal.Name(asset.get_package().get_path_name()), options)
-            for dependency in dependencies:
-                asset_reference = str(dependency)
-                asset_to_dependencies[asset_path].add(asset_reference)
-                if asset_reference not in asset_to_referencers:
-                    asset_to_referencers[asset_reference] = set()
-                asset_to_referencers[asset_reference].add(asset_path)
-
-            referencers = asset_registry.get_referencers(unreal.Name(asset.get_package().get_path_name()), options)
-            for asset_reference in referencers:
-                asset_reference = str(asset_reference)
-                if asset_reference not in asset_to_referencers:
-                    asset_to_referencers[asset_reference] = set()
-                asset_to_referencers[asset_reference].add(asset_path)
+                referencers = asset_registry.get_referencers(unreal.Name(asset.get_package().get_path_name()), options)
+                if asset_path not in asset_to_referencers:
+                    asset_to_referencers[asset_path] = set()
+                for asset_reference in referencers:
+                    asset_reference = str(asset_reference)
+                    asset_to_referencers[asset_path].add(asset_reference)
 
             slow_task.enter_progress_frame(1, f"🔨 : {asset_path}")
 
-    unreferenced_asset_paths = set()
+    actor_classnames = set()
+
+    # Assume all actors in the current level are entry points we care about
+    actors = editor_actor_lib.get_all_level_actors()
+    for actor in actors:
+        actor_class_name = actor.get_class().get_path_name()
+        actor_classnames.add(actor_class_name[:actor_class_name.rindex('.')])
+
+    if referencer_cache_file:
+        with open(referencer_cache_file, 'w') as f:
+            output = {}
+            for asset_name, referencers in asset_to_referencers.items():
+                output[asset_name] = list(referencers)
+            f.write(json.dumps(output, indent=2))
+    if dependencies_cache_file:
+        with open(dependencies_cache_file, 'w') as f:
+            output = {}
+            for asset_name, dependencies in asset_to_dependencies.items():
+                output[asset_name] = list(dependencies)
+            f.write(json.dumps(output, indent=2))
+    if actors_cache_file:
+        with open(actors_cache_file, 'w') as f:
+            f.write(json.dumps(list(actor_classnames), indent=2))
+
+    return generate_report(referencer_cache_file,
+                           dependencies_cache_file,
+                           actors_cache_file,
+                           extra_unused,
+                           report_path,
+                           base_path,
+                           entry_points)
+
+
+def generate_report(referencer_cache_file: str,
+                    dependencies_cache_file: str,
+                    actors_cache_file: str,
+                    extra_unused: [str],
+                    report_path: str,
+                    base_path: str,
+                    entry_points: set[str]) -> [str]:
+    asset_to_referencers = {}
+    asset_to_dependencies = {}
+    actor_classnames = None
+    with open(referencer_cache_file, 'r') as f:
+        contents = "".join(f.readlines())
+        input: dict[str, [str]] = json.loads(contents)
+        for asset_name, referencers in input.items():
+            asset_to_referencers[asset_name] = set(referencers)
+    with open(dependencies_cache_file, 'r') as f:
+        contents = "".join(f.readlines())
+        input: dict[str, [str]] = json.loads(contents)
+        for asset_name, dependencies in input.items():
+            asset_to_dependencies[asset_name] = set(dependencies)
+    with open(actors_cache_file, 'r') as f:
+        contents = "".join(f.readlines())
+        actor_classnames = set(json.loads(contents))
+
+    unreferenced = calculate_unused_asset_paths(actor_classnames,
+                                                asset_to_dependencies.keys(),
+                                                asset_to_referencers,
+                                                extra_unused,
+                                                entry_points)
+
+    with open(report_path, 'w') as f:
+        for asset_name in sorted(unreferenced):
+            if asset_name.startswith(base_path):
+                f.write(f'{asset_name}\n')
+
+    return unreferenced
+
+
+def calculate_unused_asset_paths(actor_classnames: [str],
+                                 asset_names: [str],
+                                 asset_to_referencers: dict[str, [str]],
+                                 extra_unused: [str],
+                                 entry_points: set[str]) -> [str]:
+    unreferenced_asset_paths = set(extra_unused)
     used_asset_paths = set()
 
     local_entry_points = set()
     pattern_entry_points = set()
+
     for entry_point in entry_points:
         if '*' in entry_point:
             pattern_entry_points.add(entry_point)
         else:
             local_entry_points.add(entry_point)
 
-    # Assume all actors in the current level are entry points we care about
-    actors = editor_actor_lib.get_all_level_actors()
-    for actor in actors:
-        actor_class_name = actor.get_class().get_path_name()
-        local_entry_points.add(actor_class_name[:actor_class_name.rindex('.')])
+    for actor_classname in actor_classnames:
+        local_entry_points.add(actor_classname)
 
     with unreal.ScopedSlowTask(len(asset_names), 'Tracing dependencies') as slow_task:
         # Make the dialog visible
@@ -111,6 +177,7 @@ def find_unreferenced_assets(report_path: str, base_path: str, entry_points: set
         change_made = True
 
         while change_made:
+            unreal.log("Tracing dependencies iteration...")
             change_made = False
 
             for asset_path in sorted(asset_to_referencers.keys()):
@@ -123,57 +190,117 @@ def find_unreferenced_assets(report_path: str, base_path: str, entry_points: set
                     # If asset is a known entrypoint then skip it
                     used_asset_paths.add(asset_path)
                     change_made = True
+                    print(f"Found Local Entry Point: {asset_path} ")
                 else:
+                    pattern_matched = False
                     for pattern in pattern_entry_points:
-                        if re.search(pattern, asset_path):
+                        if not pattern_matched and re.search(pattern, asset_path):
                             # If asset is a known entrypoint then skip it
                             used_asset_paths.add(asset_path)
                             change_made = True
+                            pattern_matched = True
+                            print(f"Found Entry Point via pattern {pattern}: {asset_path} ")
 
                     # if we did not match a pattern, and we have no references then mark as unreferenced
-                    if not change_made and 0 == len(asset_referencers):
+                    if not pattern_matched and 0 == len(asset_referencers):
                         unreferenced_asset_paths.add(asset_path)
+                        print(f"No referencers: {asset_path} ")
                         change_made = True
                     else:
                         for asset_referencer in asset_referencers:
                             if asset_referencer in used_asset_paths:
                                 # This asset is referenced by an asset that is used then mark it as used
-                                used_asset_paths.add(asset_path)
-                                change_made = True
-
+                                if not asset_path in used_asset_paths:
+                                    used_asset_paths.add(asset_path)
+                                    print(f"Referencer {asset_referencer} used so marking as used: {asset_path} ")
+                                    change_made = True
+                                    continue
     # For any asset that was not marked as used or unused then they have no explicit dependencies
     # from anything marked as explicitly used so mark them as unused
     for asset_path in sorted(asset_to_referencers.keys()):
         if asset_path not in unreferenced_asset_paths and asset_path not in used_asset_paths:
             unreferenced_asset_paths.add(asset_path)
-
-    with open(report_path, 'w') as f:
-        if emit_full_report:
-            f.write('# Entrypoint\n')
-            for entry_point in sorted(local_entry_points):
-                f.write(f'{entry_point} FromCurrentMap={entry_point not in entry_points}\n')
-            f.write('\n\n\n# Asset -> Dependencies\n')
-            for asset_name in sorted(asset_to_dependencies.keys()):
-                if asset_name.startswith(base_path):
-                    f.write(f'{asset_name}={asset_to_dependencies[asset_name]}\n')
-            f.write('\n\n\n# Asset -> Referencers\n')
-            for asset_name in sorted(asset_to_referencers.keys()):
-                if asset_name.startswith(base_path):
-                    f.write(f'{asset_name}={asset_to_referencers[asset_name]}\n')
-            f.write('\n\n\n# Unreferenced Assets\n')
-        for asset_name in sorted(unreferenced_asset_paths):
-            if asset_name.startswith(base_path):
-                f.write(f'{asset_name}\n')
-
+            print(f"Reference neither used nor unused. Marking as unused: {asset_path} ")
     return unreferenced_asset_paths
 
 
+def chunker(seq, size):
+    return (seq[pos:pos + size] for pos in range(0, len(seq), size))
+
+
+def generate_clean_script(unused_assets_file: str,
+                          extra_unused_assets_file: str,
+                          filter_repo_script: str,
+                          clean_script: str,
+                          keep_prefix: str):
+    output = ''
+
+    files = []
+    with open(unused_assets_file, 'r') as f:
+        files.extend(f.readlines())
+
+    with open(extra_unused_assets_file, 'r') as f:
+        files.extend(f.readlines())
+
+    for group in chunker(files, 30):
+        args = ['python', filter_repo_script]
+        for f in group:
+            if f.startswith(keep_prefix):
+                continue
+            f = f.rstrip()
+            relative_filename = f.replace('/Game', 'Content')
+            if '' == pathlib.Path(relative_filename).suffix:
+                relative_filename += '.uasset'
+            args.append('--path')
+            args.append(relative_filename)
+
+        args.append('--invert-paths')
+        args.append('--force')
+        output += ' '.join(args) + '\n'
+        output += 'if %errorlevel% neq 0 exit /b %errorlevel%\n'
+
+    with open(clean_script, 'w') as f:
+        f.write(output)
+
+
 if __name__ == "__main__":
-    find_unreferenced_assets(r"C:\Projects\Shooter\tmp\UnusedAssets.txt",
-                             "/Game/_Game/",
-                             {'/Game/_Game/Maps/BasicMap',
-                              '^/Game/_Game/Character/Rigs/.*$',
-                              '^/Game/_Game/Character/Animations/Crouching/MixamoCharacter/.*$',
-                              '^/Game/_Game/Automation/.*$',
-                              '/Game/_Game/Character/TwinBlastCharacterBP',
-                              '/Game/_Game/GameMode/PelorGameModeBaseBP'})
+    report_path = r'C:\Projects\Shooter\tmp\UnusedAssets.txt'
+    clean_script = r'C:\Projects\ShooterClean\clean.bat'
+    extra_unused_assets_file = r'C:\Projects\Shooter\Content\Python\maps_assets_to_remove.txt'
+    filter_repo_script = r'C:\Projects\Shooter\Content\Python\git-filter-repo.py'
+    base_path = "/Game/"
+    keep_prefix = '/Game/_Game'
+    entry_points = {'/Game/_Game/Maps/BasicMap',
+                    '^/Game/_Game/Character/Rigs/.*$',
+                    '^/Game/_Game/Character/Animations/Crouching/MixamoCharacter/.*$',
+                    '^/Game/_Game/Automation/.*$',
+                    '/Game/_Game/Character/TwinBlastCharacterBP',
+                    '/Game/_Game/GameMode/PelorGameModeBaseBP'}
+    actors_cache_file = r"C:\Projects\Shooter\tmp\actor_classnames.json"
+    referencer_cache_file = r"C:\Projects\Shooter\tmp\actor_referencers.json"
+    dependencies_cache_file = r"C:\Projects\Shooter\tmp\actor_dependencies.json"
+    extra_unused = ['Content/A_Surface_Footstep/Environment_Assets/SM_Scapes1.fbx',
+                    'Content/A_Surface_Footstep/Niagara_FX/Textures/ParticleFlamesSheet.tga',
+                    'Content/A_Surface_Footstep/Niagara_FX/Textures/T_FireSheet.tga',
+                    'Content/A_Surface_Footstep/Niagara_FX/Textures/T_FireSheet2.tga',
+                    'Content/A_Surface_Footstep/Niagara_FX/Textures/T_FireSheet3.tga',
+                    'Content/A_Surface_Footstep/Niagara_FX/Textures/T_FireSheet4.tga',
+                    'Content/A_Surface_Footstep/Surface_FootstepFX_DemoMap.umap',
+                    'Content/ParagonGrux/Placeholder.txt']
+
+    # find_unreferenced_assets(report_path,
+    #                          base_path,
+    #                          entry_points,
+    #                          extra_unused=extra_unused,
+    #                          referencer_cache_file=referencer_cache_file,
+    #                          dependencies_cache_file=dependencies_cache_file,
+    #                          actors_cache_file=actors_cache_file)
+
+    # generate_report(referencer_cache_file,
+    #                 dependencies_cache_file,
+    #                 actors_cache_file,
+    #                 extra_unused,
+    #                 report_path,
+    #                 base_path,
+    #                 entry_points)
+    generate_clean_script(report_path, extra_unused_assets_file, filter_repo_script, clean_script, keep_prefix)
