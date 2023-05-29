@@ -33,8 +33,6 @@ Gives a result like this (this was a diff between two versions of a sequencer as
 
 ----------------------------------------------------------------------------------------------------
 
-* Only use LFS for assets exceeding 100M. Use `find Content -size +100M` to find list after have remove unused assets
-
 * Make sure you use `idea.max.intellisense.filesize = 25000` as custom property in PyCharm so that it can gather intellisense from generated `unreal.py`
 
 * Clean unused assets:
