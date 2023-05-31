@@ -15,9 +15,6 @@ import re
 import json
 import pathlib
 
-# TODO: Also should we have script that adds metadata (i.e. Channel 1 is ambient occlusion, Channel 3 is Metallic, Channel 2 is Roughness for textures)
-#       and then drives asset names and other tools from metadata
-
 def find_unreferenced_assets(report_path: str, base_path: str, entry_points: set[str], **kwargs: dict) -> [str]:
     editor_asset = unreal.EditorAssetLibrary()
     editor_actor_lib = unreal.EditorActorSubsystem()

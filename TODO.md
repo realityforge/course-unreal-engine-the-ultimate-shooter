@@ -33,6 +33,10 @@ Gives a result like this (this was a diff between two versions of a sequencer as
 
 ----------------------------------------------------------------------------------------------------
 
+# TODO: Add python script that adds metadata (i.e. Channel 1 is ambient occlusion, Channel 3 is Metallic, Channel 2 is Roughness for textures)
+#       and then drives asset names and other tools from metadata
+
+
 * Make sure you use `idea.max.intellisense.filesize = 25000` as custom property in PyCharm so that it can gather intellisense from generated `unreal.py`
 
 * Clean unused assets:
