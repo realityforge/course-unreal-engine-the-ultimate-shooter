@@ -117,13 +117,13 @@ def generate_report(referencer_cache_file: str,
     asset_to_dependencies = {}
     with open(referencer_cache_file, 'r') as f:
         contents = "".join(f.readlines())
-        input: dict[str, [str]] = json.loads(contents)
-        for asset_name, referencers in input.items():
+        inputs: dict[str, [str]] = json.loads(contents)
+        for asset_name, referencers in inputs.items():
             asset_to_referencers[asset_name] = set(referencers)
     with open(dependencies_cache_file, 'r') as f:
         contents = "".join(f.readlines())
-        input: dict[str, [str]] = json.loads(contents)
-        for asset_name, dependencies in input.items():
+        inputs: dict[str, [str]] = json.loads(contents)
+        for asset_name, dependencies in inputs.items():
             asset_to_dependencies[asset_name] = set(dependencies)
     with open(actors_cache_file, 'r') as f:
         contents = "".join(f.readlines())
@@ -257,22 +257,22 @@ def generate_clean_script(unused_assets_file: str,
 
 
 if __name__ == "__main__":
-    report_path = r'C:\Projects\Shooter\tmp\UnusedAssets.txt'
-    clean_script = r'C:\Projects\ShooterClean\clean.bat'
-    extra_unused_assets_file = r'C:\Projects\Shooter\Content\Python\maps_assets_to_remove.txt'
-    filter_repo_script = r'C:\Projects\Shooter\Content\Python\git-filter-repo.py'
-    base_path = "/Game/"
-    keep_prefix = '/Game/_Game'
-    entry_points = {'/Game/_Game/Maps/BasicMap',
+    _report_path = r'C:\Projects\Shooter\tmp\UnusedAssets.txt'
+    _clean_script = r'C:\Projects\ShooterClean\clean.bat'
+    _extra_unused_assets_file = r'C:\Projects\Shooter\Content\Python\maps_assets_to_remove.txt'
+    _filter_repo_script = r'C:\Projects\Shooter\Content\Python\git-filter-repo.py'
+    _base_path = "/Game/"
+    _keep_prefix = '/Game/_Game'
+    _entry_points = {'/Game/_Game/Maps/BasicMap',
                     '^/Game/_Game/Character/Rigs/.*$',
                     '^/Game/_Game/Character/Animations/Crouching/MixamoCharacter/.*$',
                     '^/Game/_Game/Automation/.*$',
                     '/Game/_Game/Character/TwinBlastCharacterBP',
                     '/Game/_Game/GameMode/PelorGameModeBaseBP'}
-    actors_cache_file = r"C:\Projects\Shooter\tmp\actor_classnames.json"
-    referencer_cache_file = r"C:\Projects\Shooter\tmp\actor_referencers.json"
-    dependencies_cache_file = r"C:\Projects\Shooter\tmp\actor_dependencies.json"
-    extra_unused = ['Content/A_Surface_Footstep/Environment_Assets/SM_Scapes1.fbx',
+    _actors_cache_file = r"C:\Projects\Shooter\tmp\actor_classnames.json"
+    _referencer_cache_file = r"C:\Projects\Shooter\tmp\actor_referencers.json"
+    _dependencies_cache_file = r"C:\Projects\Shooter\tmp\actor_dependencies.json"
+    _extra_unused = ['Content/A_Surface_Footstep/Environment_Assets/SM_Scapes1.fbx',
                     'Content/A_Surface_Footstep/Niagara_FX/Textures/ParticleFlamesSheet.tga',
                     'Content/A_Surface_Footstep/Niagara_FX/Textures/T_FireSheet.tga',
                     'Content/A_Surface_Footstep/Niagara_FX/Textures/T_FireSheet2.tga',
@@ -281,19 +281,19 @@ if __name__ == "__main__":
                     'Content/A_Surface_Footstep/Surface_FootstepFX_DemoMap.umap',
                     'Content/ParagonGrux/Placeholder.txt']
 
-    # find_unreferenced_assets(report_path,
-    #                          base_path,
-    #                          entry_points,
-    #                          extra_unused=extra_unused,
-    #                          referencer_cache_file=referencer_cache_file,
-    #                          dependencies_cache_file=dependencies_cache_file,
-    #                          actors_cache_file=actors_cache_file)
+    # find_unreferenced_assets(_report_path,
+    #                          _base_path,
+    #                          _entry_points,
+    #                          extra_unused=_extra_unused,
+    #                          referencer_cache_file=_referencer_cache_file,
+    #                          dependencies_cache_file=_dependencies_cache_file,
+    #                          actors_cache_file=_actors_cache_file)
 
-    # generate_report(referencer_cache_file,
-    #                 dependencies_cache_file,
-    #                 actors_cache_file,
-    #                 extra_unused,
-    #                 report_path,
-    #                 base_path,
-    #                 entry_points)
-    generate_clean_script(report_path, extra_unused_assets_file, filter_repo_script, clean_script, keep_prefix)
+    # generate_report(_referencer_cache_file,
+    #                 _dependencies_cache_file,
+    #                 _actors_cache_file,
+    #                 _extra_unused,
+    #                 _report_path,
+    #                 _base_path,
+    #                 _entry_points)
+    generate_clean_script(_report_path, _extra_unused_assets_file, _filter_repo_script, _clean_script, _keep_prefix)
