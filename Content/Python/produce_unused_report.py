@@ -15,11 +15,6 @@ import re
 import json
 import pathlib
 
-# TODO: Also add a variant that scans all assets and loads all of them amd finds an unused list.
-#       As part of processing we should have a graph of all the assets and dependencies. Start at
-#       unused leaf and then test if any dependencies of unused were only used by unused. Repeat
-#       until no round produces any more unused and then produce a list of unused
-
 # TODO: Also should we have script that adds metadata (i.e. Channel 1 is ambient occlusion, Channel 3 is Metallic, Channel 2 is Roughness for textures)
 #       and then drives asset names and other tools from metadata
 
