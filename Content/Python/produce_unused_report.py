@@ -16,6 +16,12 @@ import json
 import pathlib
 from typing import Optional
 
+
+# Ugly script that was used to clean a repository after a few lazy marketplace asset imports added 27G of
+# content to repository which exceeded the free limit on github ... and all sense of reasonableness.
+# This script was used to clean up and rewrite the git history to remove assets that were never used.
+# DO NOT look for inspiration here. It is layers of hacks, evolving on layers of other hacks.
+
 def find_unreferenced_assets(report_path: str, base_path: str, entry_points: set[str], **kwargs: dict[str, str]) -> [
     str]:
     editor_asset = unreal.EditorAssetLibrary()
