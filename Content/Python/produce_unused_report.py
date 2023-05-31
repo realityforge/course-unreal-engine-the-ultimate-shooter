@@ -14,8 +14,10 @@ import unreal
 import re
 import json
 import pathlib
+from typing import Optional
 
-def find_unreferenced_assets(report_path: str, base_path: str, entry_points: set[str], **kwargs: dict) -> [str]:
+def find_unreferenced_assets(report_path: str, base_path: str, entry_points: set[str], **kwargs: dict[str, str]) -> [
+    str]:
     editor_asset = unreal.EditorAssetLibrary()
     editor_actor_lib = unreal.EditorActorSubsystem()
     asset_registry = unreal.AssetRegistryHelpers().get_asset_registry()
@@ -27,9 +29,9 @@ def find_unreferenced_assets(report_path: str, base_path: str, entry_points: set
     options.include_soft_management_references = True
     options.include_soft_package_references = True
 
-    referencer_cache_file: str = kwargs["referencer_cache_file"] if "referencer_cache_file" in kwargs else None
-    dependencies_cache_file: str = kwargs["dependencies_cache_file"] if "dependencies_cache_file" in kwargs else None
-    actors_cache_file: str = kwargs["actors_cache_file"] if "actors_cache_file" in kwargs else None
+    referencer_cache_file: Optional[str] = kwargs["referencer_cache_file"] if "referencer_cache_file" in kwargs else None
+    dependencies_cache_file: Optional[str] = kwargs["dependencies_cache_file"] if "dependencies_cache_file" in kwargs else None
+    actors_cache_file: Optional[str] = kwargs["actors_cache_file"] if "actors_cache_file" in kwargs else None
     extra_unused: [str] = kwargs["extra_unused"] if "extra_unused" in kwargs else []
 
     asset_names = editor_asset.list_assets(base_path)
