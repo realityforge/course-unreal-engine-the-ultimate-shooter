@@ -115,7 +115,6 @@ def generate_report(referencer_cache_file: str,
                     entry_points: set[str]) -> [str]:
     asset_to_referencers = {}
     asset_to_dependencies = {}
-    actor_classnames = None
     with open(referencer_cache_file, 'r') as f:
         contents = "".join(f.readlines())
         input: dict[str, [str]] = json.loads(contents)
