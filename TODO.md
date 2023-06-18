@@ -1,5 +1,14 @@
 # TODO
 
+Add automation that
+- Ensures name prefix correctly applied on import
+- Ensures name prefix correctly applied on button click
+- Ensures name prefix correctly as a validation
+
+Add "texture" automation that
+- Extracts contents from suffix and adds as metadata on texture object. (i.e. Channel 1 is ambient occlusion, Channel 3 is Metallic, Channel 2 is Roughness for textures when suffix is AOMTR)
+- Updates compression settings and sRGB flag based on metadata
+- Add validation that ensures metadata present for all textures
 
 Currently in the UE4 editor there is no way to compile all blueprints in your project. You can compile blueprints individually but there is no in editor button to compile all blueprints. Unreal Engine does offer way to do this via command line however by way of Commandlets.
 
@@ -32,10 +41,6 @@ Gives a result like this (this was a diff between two versions of a sequencer as
 --
 
 ----------------------------------------------------------------------------------------------------
-
-# TODO: Add python script that adds metadata (i.e. Channel 1 is ambient occlusion, Channel 3 is Metallic, Channel 2 is Roughness for textures)
-#       and then drives asset names and other tools from metadata
-
 
 * Make sure you use `idea.max.intellisense.filesize = 25000` as custom property in PyCharm so that it can gather intellisense from generated `unreal.py`
 
