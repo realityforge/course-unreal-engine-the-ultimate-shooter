@@ -55,9 +55,6 @@ Gives a result like this (this was a diff between two versions of a sequencer as
 * Add tool for performing diffs on unreal assets via textconv gitconfig setting
   https://git-scm.com/docs/gitattributes#_performing_text_diffs_of_binary_files
 
-* Consider ditching LFS and go back to inlining?
-  * https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-large-files-on-github
-
 The following are a list of ideas on techniques to learn new skills/tools/techniques in Unreal.
 
 * Import some models and animations from Mixamo and place them into the game
