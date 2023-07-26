@@ -110,6 +110,7 @@ AShooterCharacter::AShooterCharacter()
     , HitReactMontage(nullptr)
     , StunChance(.25f)
     , DeathMontage(nullptr)
+    , bDead(false)
 {
     // Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need
     // it.
@@ -994,6 +995,7 @@ void AShooterCharacter::Die()
             AnimInstance->Montage_JumpToSection("Default");
         }
     }
+    bDead = true;
 }
 
 void AShooterCharacter::FinishDeath()
