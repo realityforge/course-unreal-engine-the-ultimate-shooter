@@ -338,10 +338,19 @@ void AShooterCharacter::SendBullet()
             // Does the actor we hit implement the BulletHitInterface?
             if (AActor* HitActor = BeamHitResult.GetActor())
             {
-                // The cast will only be successful if the actor implements interface
+                // Try to Execute BulletHit method on IBulletHitInterface in C++ layer
                 if (IBulletHitInterface* BulletHitInterface = Cast<IBulletHitInterface>(HitActor))
                 {
+                    // The cast will only be successful if the actor implements interface natively
                     BulletHitInterface->BulletHit_Implementation(BeamHitResult, this, GetController());
+                    bUseDefaultParticles = false;
+                }
+                // Try to Execute BulletHit method on IBulletHitInterface in Blueprints layer
+                else if (HitActor->GetClass()->ImplementsInterface(UBulletHitInterface::StaticClass()))
+                {
+                    // The ImplementsInterface method will be true if the actor implements the interface
+                    // natively or as a blueprint
+                    IBulletHitInterface::Execute_BulletHit(HitActor, BeamHitResult, this, GetController());
                     bUseDefaultParticles = false;
                 }
                 if (AEnemy* Enemy = Cast<AEnemy>(HitActor))
