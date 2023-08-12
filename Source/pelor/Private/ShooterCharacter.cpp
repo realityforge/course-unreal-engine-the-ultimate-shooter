@@ -342,6 +342,8 @@ void AShooterCharacter::SendBullet()
                 if (IBulletHitInterface* BulletHitInterface = Cast<IBulletHitInterface>(HitActor))
                 {
                     // The cast will only be successful if the actor implements interface natively
+                    // However we can not directly invoke BulletHit() as it was declared an event via the
+                    // "BlueprintNativeEvent" function specifier on BulletHit declaration
                     BulletHitInterface->BulletHit_Implementation(BeamHitResult, this, GetController());
                     bUseDefaultParticles = false;
                 }
