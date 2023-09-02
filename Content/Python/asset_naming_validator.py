@@ -128,7 +128,9 @@ class NamingEditorValidator(unreal.EditorValidatorBase):
             if non_conformance_message is None:
                 return unreal.DataValidationResult.VALID, validation_errors
             else:
-                validation_errors = self.asset_fails(asset, unreal.Text.cast(non_conformance_message), validation_errors)
+                validation_errors = self.asset_fails(asset,
+                                                     unreal.Text.cast(non_conformance_message),
+                                                     validation_errors)
                 return unreal.DataValidationResult.INVALID, validation_errors
         else:
             self.asset_warning(asset,
