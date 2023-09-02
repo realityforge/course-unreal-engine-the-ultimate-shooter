@@ -148,7 +148,7 @@ class NamingEditorValidator(unreal.EditorValidatorBase):
 def register_validator():
     def r(rules: list[NamingRule],
           asset_type: str,
-          base_path: str = "",
+          base_path: str = "/Game/",
           enum_name: str = "",
           enum_value: str = "",
           prefix: str = "",
