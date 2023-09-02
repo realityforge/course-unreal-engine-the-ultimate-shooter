@@ -1,7 +1,7 @@
 [
   {
     "base_path": "/Game/_Game",
-    "asset_type": "AimOffset",
+    "asset_type": "AimOffsetBlendSpace",
     "prefix": "AO_"
   },
   {
@@ -11,7 +11,7 @@
   },
   {
     "base_path": "/Game/_Game",
-    "asset_type": "AnimationBlueprint",
+    "asset_type": "AnimBlueprint",
     "prefix": "ABP_"
   },
   {
@@ -21,7 +21,7 @@
   },
   {
     "base_path": "/Game/_Game",
-    "asset_type": "AnimationMontage",
+    "asset_type": "AnimMontage",
     "prefix": "AM_"
   },
   {
@@ -31,7 +31,7 @@
   },
   {
     "base_path": "/Game/_Game",
-    "asset_type": "AnimationSequence",
+    "asset_type": "AnimSequence",
     "prefix": "AS_"
   },
   {
@@ -76,7 +76,7 @@
   },
   {
     "base_path": "/Game/_Game",
-    "asset_type": "AIController",
+    "asset_type": "AIFController",
     "prefix": "AIC_"
   },
   {
@@ -86,7 +86,7 @@
   },
   {
     "base_path": "/Game/_Game",
-    "asset_type": "Blackboard",
+    "asset_type": "BlackboardData",
     "prefix": "BB_"
   },
   {
@@ -102,7 +102,9 @@
   {
     "base_path": "/Game/_Game",
     "asset_type": "Task",
-    "prefix": "BTT_"
+    "prefix": "BTT_",
+    "enum_name": "ParentClass",
+    "enum_value": "DeferredDecal"
   },
   {
     "base_path": "/Game/_Game",
@@ -204,7 +206,7 @@
   },
   {
     "base_path": "/Game/_Game",
-    "asset_type": "Enumerator",
+    "asset_type": "UserDefinedEnum",
     "prefix": "E"
   },
   {
@@ -375,7 +377,7 @@
   },
   {
     "base_path": "/Game/_Game",
-    "asset_type": "Texture",
+    "asset_type": "Texture2D",
     "prefix": "T_"
   },
   {
@@ -390,7 +392,7 @@
   },
   {
     "base_path": "/Game/_Game",
-    "asset_type": "RenderTarget",
+    "asset_type": "TextureRenderTarget2D",
     "prefix": "RT_"
   },
   {
@@ -495,8 +497,18 @@
   },
   {
     "base_path": "/Game/_Game",
+    "asset_type": "EditorUtilityBlueprint",
+    "prefix": "EUBP_"
+  },
+  {
+    "base_path": "/Game/_Game",
     "asset_type": "Font",
     "prefix": "Font_"
+  },
+  {
+    "base_path": "/Game/_Game",
+    "asset_type": "FontFace",
+    "prefix": "FontFace_"
   },
   {
     "base_path": "/Game/_Game",
@@ -532,26 +544,26 @@
   {
     "base_path": "/Game/_Game",
     "asset_type": "CurveAtlas",
-    "prefix": "Curve",
-    "suffix": "Atlas"
+    "prefix": "Curve_",
+    "suffix": "_Atlas"
   },
   {
     "base_path": "/Game/_Game",
     "asset_type": "CurveTable",
-    "prefix": "Curve",
-    "suffix": "Table"
+    "prefix": "Curve_",
+    "suffix": "_Table"
   },
   {
     "base_path": "/Game/_Game",
-    "asset_type": "FloatCurve",
-    "prefix": "Curve",
-    "suffix": "Float"
+    "asset_type": "CurveFloat",
+    "prefix": "Curve_",
+    "suffix": "_Float"
   },
   {
     "base_path": "/Game/_Game",
-    "asset_type": "VectorCurve",
-    "prefix": "Curve",
-    "suffix": "Vector"
+    "asset_type": "CurveVector",
+    "prefix": "Curve_",
+    "suffix": "_Vector"
   },
   {
     "base_path": "/Game/_Game",
@@ -590,8 +602,14 @@
   },
   {
     "base_path": "/Game/_Game",
-    "asset_type": "Level",
+    "asset_type": "World",
     "prefix": "L_"
+  },
+  {
+    "base_path": "/Game/_Game",
+    "asset_type": "MapBuildDataRegistry",
+    "prefix": "L_",
+    "suffix": "_BuiltData"
   },
   {
     "base_path": "/Game/_Game",
@@ -641,9 +659,30 @@
   },
   {
     "base_path": "/Game/_Game",
+    "asset_type": "ParticleSystem",
+    "prefix": "PS_",
+    "notes": "Old Cascade Particle System"
+  },
+  {
+    "base_path": "/Game/_Game",
     "asset_type": "SubstanceInstanceFactor",
     "prefix": "SIF_",
     "notes": "Substance Plugin"
+  },
+  {
+    "base_path": "/Game/_Game",
+    "asset_type": "IKRigDefinition",
+    "prefix": "IK_"
+  },
+  {
+    "base_path": "/Game/_Game",
+    "asset_type": "IKRetargeter",
+    "prefix": "RTG_"
+  },
+  {
+    "base_path": "/Game/_Game",
+    "asset_type": "PoseAsset",
+    "prefix": "PA_"
   },
   {
     "base_path": "/Game/_Game",
