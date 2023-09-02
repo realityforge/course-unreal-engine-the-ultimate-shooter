@@ -66,7 +66,7 @@ class NamingRule(unreal.StructBase):
                 try:
                     current_asset = current_asset.get_editor_property("Parent")
                 except:
-                    current_asset = False
+                    current_asset = None
 
             return False
 
