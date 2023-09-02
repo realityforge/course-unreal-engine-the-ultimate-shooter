@@ -19,7 +19,7 @@
     <content url="file://$MODULE_DIR$/../../vendor/becoming-an-unreal-automation-expert/Python">
       <sourceFolder url="file://$MODULE_DIR$/../../vendor/becoming-an-unreal-automation-expert/Python" isTestSource="false" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="Python 3.10 (venv)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
