@@ -143,7 +143,7 @@ class NamingEditorValidator(unreal.EditorValidatorBase):
 
 # Unlike EditorValidatorBase subclasses in C++, which are registered automatically,
 # EditorValidatorBase subclasses in Python must be registered manually:
-if __name__ == "__main__":
+def register_validator():
     def r(rules: list[NamingRule],
           asset_type: str,
           base_path: str = "",
@@ -180,3 +180,8 @@ if __name__ == "__main__":
 
     # Register the validator
     unreal.get_editor_subsystem(unreal.EditorValidatorSubsystem).add_validator(NamingEditorValidator(_rules))
+
+
+if __name__ == "__main__":
+    print("Registering Python NamingEditorValidator")
+    register_validator()
