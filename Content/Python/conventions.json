@@ -1,0 +1,533 @@
+[
+  {
+    "asset_type": "AimOffset",
+    "prefix": "AO_"
+  },
+  {
+    "asset_type": "AimOffset1D",
+    "prefix": "AO_"
+  },
+  {
+    "asset_type": "AnimationBlueprint",
+    "prefix": "ABP_"
+  },
+  {
+    "asset_type": "AnimationComposite",
+    "prefix": "AC_"
+  },
+  {
+    "asset_type": "AnimationMontage",
+    "prefix": "AM_"
+  },
+  {
+    "asset_type": "AnimationNotify",
+    "prefix": "AN_"
+  },
+  {
+    "asset_type": "AnimationSequence",
+    "prefix": "AS_"
+  },
+  {
+    "asset_type": "BlendSpace",
+    "prefix": "BS_"
+  },
+  {
+    "asset_type": "BlendSpace1D",
+    "prefix": "BS_"
+  },
+  {
+    "asset_type": "LevelSequence",
+    "prefix": "LS_"
+  },
+  {
+    "asset_type": "MorphTarget",
+    "prefix": "MT_"
+  },
+  {
+    "asset_type": "PaperFlipbook",
+    "prefix": "PFB_"
+  },
+  {
+    "asset_type": "Rig",
+    "prefix": "Rig_"
+  },
+  {
+    "asset_type": "SkeletalMesh",
+    "prefix": "SK_"
+  },
+  {
+    "asset_type": "Skeleton",
+    "prefix": "SKEL_"
+  },
+  {
+    "asset_type": "AIController",
+    "prefix": "AIC_"
+  },
+  {
+    "asset_type": "BehaviorTree",
+    "prefix": "BT_"
+  },
+  {
+    "asset_type": "Blackboard",
+    "prefix": "BB_"
+  },
+  {
+    "asset_type": "Decorator",
+    "prefix": "BTD_"
+  },
+  {
+    "asset_type": "Service",
+    "prefix": "BTS_"
+  },
+  {
+    "asset_type": "Task",
+    "prefix": "BTT_"
+  },
+  {
+    "asset_type": "EnvironmentQuery",
+    "prefix": "EQS_"
+  },
+  {
+    "asset_type": "EnvironmentQueryContext",
+    "prefix": "EQS_",
+    "suffix": "Context"
+  },
+  {
+    "asset_type": "DialogueVoice",
+    "prefix": "DV_"
+  },
+  {
+    "asset_type": "DialogueWave",
+    "prefix": "DW_"
+  },
+  {
+    "asset_type": "MediaSoundWave",
+    "prefix": "MSW_"
+  },
+  {
+    "asset_type": "ReverbEffect",
+    "prefix": "Reverb_"
+  },
+  {
+    "asset_type": "SoundAttenuation",
+    "prefix": "ATT_"
+  },
+  {
+    "asset_type": "SoundClass",
+    "notes": "No prefix - suffix. Should be placed in a folder called SoundClasses."
+  },
+  {
+    "asset_type": "SoundConcurrency",
+    "suffix": "SC",
+    "notes": "Should be named aftera SoundClass"
+  },
+  {
+    "asset_type": "SoundCue",
+    "prefix": "A",
+    "suffix": "_Cue"
+  },
+  {
+    "asset_type": "SoundMix",
+    "prefix": "Mix_"
+  },
+  {
+    "asset_type": "SoundWave",
+    "prefix": "A_"
+  },
+  {
+    "asset_type": "Attenuation",
+    "suffix": "_ATT"
+  },
+  {
+    "asset_type": "SoundscapePalette",
+    "prefix": "SP_"
+  },
+  {
+    "asset_type": "SoundscapeColor",
+    "prefix": "SC_"
+  },
+  {
+    "asset_type": "Blueprint",
+    "prefix": "BP"
+  },
+  {
+    "asset_type": "BlueprintFunctionLibrary",
+    "prefix": "BPFL_"
+  },
+  {
+    "asset_type": "BlueprintMacroLibrary",
+    "prefix": "BPML_"
+  },
+  {
+    "asset_type": "BlueprintInterface",
+    "prefix": "BPI_"
+  },
+  {
+    "asset_type": "Enumerator",
+    "prefix": "E"
+  },
+  {
+    "asset_type": "Structure",
+    "prefix": "S"
+  },
+  {
+    "asset_type": "TutorialBlueprint",
+    "prefix": "TBP_"
+  },
+  {
+    "asset_type": "InputAction",
+    "prefix": "IA_"
+  },
+  {
+    "asset_type": "InputMappingContext",
+    "prefix": "IMC_"
+  },
+  {
+    "asset_type": "GameplayAbilities",
+    "prefix": "GA_"
+  },
+  {
+    "asset_type": "GameplayEffects",
+    "prefix": "GE_"
+  },
+  {
+    "asset_type": "GameplayCueNotifies",
+    "prefix": "GCN_",
+    "notes": "Lyra"
+  },
+  {
+    "asset_type": "LatentGameplayCueNotifies",
+    "prefix": "GCNL_"
+  },
+  {
+    "asset_type": "GamePhaseAbilities",
+    "prefix": "Phase_"
+  },
+  {
+    "asset_type": "AbilitySet",
+    "prefix": "AS_"
+  },
+  {
+    "asset_type": "Material",
+    "prefix": "M_"
+  },
+  {
+    "asset_type": "MaterialInstanceConstant",
+    "prefix": "MI_"
+  },
+  {
+    "asset_type": "Material",
+    "prefix": "M_",
+    "suffix": "_Decal",
+    "enum_name": "MaterialDomain",
+    "enum_value": "DeferredDecal",
+    "priority": 10
+  },
+  {
+    "asset_type": "MaterialInstanceConstant",
+    "prefix": "MI_",
+    "suffix": "_Decal",
+    "enum_name": "MaterialDomain",
+    "enum_value": "DeferredDecal",
+    "priority": 10
+  },
+  {
+    "asset_type": "Material",
+    "prefix": "M_",
+    "suffix": "_LF",
+    "enum_name": "MaterialDomain",
+    "enum_value": "LightFunction",
+    "priority": 10
+  },
+  {
+    "asset_type": "MaterialInstanceConstant",
+    "prefix": "MI_",
+    "suffix": "_LF",
+    "enum_name": "MaterialDomain",
+    "enum_value": "LightFunction",
+    "priority": 10
+  },
+  {
+    "asset_type": "Material",
+    "prefix": "M_",
+    "suffix": "_PP",
+    "enum_name": "MaterialDomain",
+    "enum_value": "PostProcess",
+    "priority": 10
+  },
+  {
+    "asset_type": "MaterialInstanceConstant",
+    "prefix": "MI_",
+    "suffix": "_PP",
+    "enum_name": "MaterialDomain",
+    "enum_value": "PostProcess",
+    "priority": 10
+  },
+  {
+    "asset_type": "Material",
+    "prefix": "M_",
+    "suffix": "_UI",
+    "enum_name": "MaterialDomain",
+    "enum_value": "UserInterface",
+    "priority": 10
+  },
+  {
+    "asset_type": "MaterialInstanceConstant",
+    "prefix": "MI_",
+    "suffix": "_UI",
+    "enum_name": "MaterialDomain",
+    "enum_value": "UserInterface",
+    "priority": 10
+  },
+  {
+    "asset_type": "Material",
+    "prefix": "M_",
+    "suffix": "_Vol",
+    "enum_name": "MaterialDomain",
+    "enum_value": "Volume",
+    "priority": 10
+  },
+  {
+    "asset_type": "MaterialInstanceConstant",
+    "prefix": "MI_",
+    "suffix": "_Vol",
+    "enum_name": "MaterialDomain",
+    "enum_value": "Volume",
+    "priority": 10
+  },
+  {
+    "asset_type": "MaterialFunction",
+    "prefix": "MF_"
+  },
+  {
+    "asset_type": "MaterialParameterCollection",
+    "prefix": "MPC_"
+  },
+  {
+    "asset_type": "SubsurfaceProfile",
+    "prefix": "SP_"
+  },
+  {
+    "asset_type": "Texture",
+    "prefix": "T_"
+  },
+  {
+    "asset_type": "TextureCube",
+    "prefix": "TC_"
+  },
+  {
+    "asset_type": "MediaTexture",
+    "prefix": "MT_"
+  },
+  {
+    "asset_type": "RenderTarget",
+    "prefix": "RT_"
+  },
+  {
+    "asset_type": "CubeRenderTarget",
+    "prefix": "RTC_"
+  },
+  {
+    "asset_type": "TextureLightProfile",
+    "prefix": "TLP_"
+  },
+  {
+    "asset_type": "NiagaraEmitter",
+    "prefix": "NE_"
+  },
+  {
+    "asset_type": "NiagaraSystem",
+    "prefix": "NS_"
+  },
+  {
+    "asset_type": "NiagaraDynamicInputScript",
+    "prefix": "NDIS_"
+  },
+  {
+    "asset_type": "NiagaraEffectType",
+    "prefix": "NET_"
+  },
+  {
+    "asset_type": "NiagaraFunctionScript",
+    "prefix": "NFS_"
+  },
+  {
+    "asset_type": "NiagaraModuleScript",
+    "prefix": "NMS_"
+  },
+  {
+    "asset_type": "NiagaraParameterCollection",
+    "prefix": "NPC_"
+  },
+  {
+    "asset_type": "NiagaraParameterCollectionInstance",
+    "prefix": "NPCI_"
+  },
+  {
+    "asset_type": "PaperFlipbook",
+    "prefix": "PFB_"
+  },
+  {
+    "asset_type": "Sprite",
+    "prefix": "SPR_"
+  },
+  {
+    "asset_type": "SpriteAtlasGroup",
+    "prefix": "SPRG_"
+  },
+  {
+    "asset_type": "TileMap",
+    "prefix": "TM_"
+  },
+  {
+    "asset_type": "TileSet",
+    "prefix": "TS_"
+  },
+  {
+    "asset_type": "PhysicalMaterial",
+    "prefix": "PM_"
+  },
+  {
+    "asset_type": "PhysicsAsset",
+    "prefix": "PHYS_"
+  },
+  {
+    "asset_type": "DestructableMesh",
+    "prefix": "DM_"
+  },
+  {
+    "asset_type": "WidgetBlueprint",
+    "prefix": "WBP_"
+  },
+  {
+    "asset_type": "EditorUtilityWidgetBlueprint",
+    "prefix": "EUW_"
+  },
+  {
+    "asset_type": "Font",
+    "prefix": "Font_"
+  },
+  {
+    "asset_type": "SlateBrush",
+    "prefix": "SB_"
+  },
+  {
+    "asset_type": "SlateWidgetStyle",
+    "prefix": "SWS_"
+  },
+  {
+    "asset_type": "AnimatedVectorField",
+    "prefix": "VFA_"
+  },
+  {
+    "asset_type": "CameraAnim",
+    "prefix": "CA_"
+  },
+  {
+    "asset_type": "BlinkMediaPlayer",
+    "prefix": "BMP_"
+  },
+  {
+    "asset_type": "ColorCurve",
+    "prefix": "Curve_",
+    "suffix": "Color"
+  },
+  {
+    "asset_type": "CurveAtlas",
+    "prefix": "Curve",
+    "suffix": "Atlas"
+  },
+  {
+    "asset_type": "CurveTable",
+    "prefix": "Curve",
+    "suffix": "Table"
+  },
+  {
+    "asset_type": "FloatCurve",
+    "prefix": "Curve",
+    "suffix": "Float"
+  },
+  {
+    "asset_type": "VectorCurve",
+    "prefix": "Curve",
+    "suffix": "Vector"
+  },
+  {
+    "asset_type": "DataTable",
+    "prefix": "DT_"
+  },
+  {
+    "asset_type": "DataRegistry",
+    "prefix": "DR_"
+  },
+  {
+    "asset_type": "FileMediaSource",
+    "prefix": "FMS_"
+  },
+  {
+    "asset_type": "FoliageType",
+    "prefix": "FT_"
+  },
+  {
+    "asset_type": "ForceFeedbackEffect",
+    "prefix": "FFE_"
+  },
+  {
+    "asset_type": "LandscapeGrassType",
+    "prefix": "LG_"
+  },
+  {
+    "asset_type": "LandscapeLayer",
+    "prefix": "LL_"
+  },
+  {
+    "asset_type": "Level",
+    "prefix": "L_"
+  },
+  {
+    "asset_type": "LevelInstance",
+    "prefix": "LI_"
+  },
+  {
+    "asset_type": "MediaPlayer",
+    "prefix": "MP_"
+  },
+  {
+    "asset_type": "ObjectLibrary",
+    "prefix": "OL_"
+  },
+  {
+    "asset_type": "Redirector"
+  },
+  {
+    "asset_type": "StaticVectorField",
+    "prefix": "VF_"
+  },
+  {
+    "asset_type": "TouchInterfaceSetup",
+    "prefix": "TI_"
+  },
+  {
+    "asset_type": "StaticMesh",
+    "prefix": "SM_"
+  },
+  {
+    "asset_type": "AssetPlacementPalette",
+    "prefix": "APP_",
+    "notes": "Asset Placement Editor Mode Plugin"
+  },
+  {
+    "asset_type": "SubstanceGraphInstance",
+    "prefix": "SGI_",
+    "notes": "Substance Plugin"
+  },
+  {
+    "asset_type": "SubstanceInstanceFactor",
+    "prefix": "SIF_",
+    "notes": "Substance Plugin"
+  },
+  {
+    "asset_type": "ProceduralContentGeneration",
+    "prefix": "PCG_"
+  }
+]
