@@ -16,6 +16,7 @@ import unreal
 import json
 import os
 
+
 # Note: This approach was originally inspired by https://unrealcommunity.wiki/revisions/6100e8169c9d1a89e0c3456a
 #       while the conventions were mostly derived from https://www.unrealdirective.com/resource/asset-naming-conventions
 
@@ -102,7 +103,6 @@ class NamingRuleIndex:
 # The validator itself
 @unreal.uclass()
 class NamingEditorValidator(unreal.EditorValidatorBase):
-
     # The uproperty field used to store the set of rules that we apply
     rules = unreal.uproperty(unreal.Array(NamingRule))
 
@@ -166,7 +166,6 @@ if __name__ == "__main__":
         # noinspection PyStatementEffect
         notes
         rules.append(rule)
-
 
     _rules = list()
 
