@@ -187,7 +187,7 @@
   {
     "base_path": "/Game/_Game",
     "asset_type": "Blueprint",
-    "prefix": "BP"
+    "prefix": "BP_"
   },
   {
     "base_path": "/Game/_Game",
