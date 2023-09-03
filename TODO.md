@@ -73,3 +73,7 @@ Change all properties controlled by datatables to visible and blueprint read-onl
 Why are FABRIK NODES not moved Inline? (Then based on slot can decide whether they are active)
 
 Also why separate shooting/reloading slots?
+
+# Clang Tidy
+
+Add check that methods in subclasses of "UBlueprintFunctionLibrary" are static
