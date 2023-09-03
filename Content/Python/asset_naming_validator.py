@@ -208,3 +208,6 @@ if __name__ == "__main__":
 # TODO: Make a rule for handling texture extensions
 # TODO: Make the rule auto applying ... via blueprint hook?
 # TODO: Make the rules be able to be stored into a DataTable?
+# TODO: Add configuration of allow list and deny list for naming convention application
+# TODO: Add configuration for assets that will be ignored when analyzing
+
