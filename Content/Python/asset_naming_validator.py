@@ -86,11 +86,16 @@ class NamingRuleIndex:
     def find_matching_rule(self, asset: unreal.Object) -> Optional[NamingRule]:
         rules = []
         # Collect all the rules for the class type
-        class_name: str = asset.get_class().get_name()
-        if class_name in self.rules:
-            for rule in self.rules[class_name]:
-                if rule.does_rule_match_asset(asset):
-                    rules.append(rule)
+        clazz = asset.get_class()
+        self.add_rules_for_class_hierarchy(asset, clazz, rules)
+
+        try:
+            blueprint = unreal.Blueprint.cast(asset)
+            blueprint_parent_class = unreal.MetaDataAccessLibrary.get_blueprint_parent_class(blueprint)
+            self.add_rules_for_class_hierarchy(asset, blueprint_parent_class, rules)
+        except:
+            # Class is not a blueprint and cast failed ... probably
+            pass
 
         rules.sort(key=lambda x: x.priority)
         # print(f"Candidate rules: {rules}")
@@ -98,6 +103,17 @@ class NamingRuleIndex:
             return None
         else:
             return rules[0]
+
+    def add_rules_for_class_hierarchy(self, asset, clazz, rules):
+        while clazz:
+            self.add_rules_for_class(asset, clazz.get_name(), rules)
+            clazz = unreal.MetaDataAccessLibrary.get_parent_class(clazz)
+
+    def add_rules_for_class(self, asset, class_name, rules):
+        if class_name in self.rules:
+            for rule in self.rules[class_name]:
+                if rule.does_rule_match_asset(asset):
+                    rules.append(rule)
 
 
 # The validator itself
