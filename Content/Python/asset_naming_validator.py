@@ -203,3 +203,8 @@ def register_validator():
 if __name__ == "__main__":
     print("Registering Python NamingEditorValidator")
     register_validator()
+
+# TODO: Make a rule that alerts on Inst suffix?
+# TODO: Make a rule for handling texture extensions
+# TODO: Make the rule auto applying ... via blueprint hook?
+# TODO: Make the rules be able to be stored into a DataTable?
