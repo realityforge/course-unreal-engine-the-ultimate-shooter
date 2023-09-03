@@ -191,6 +191,12 @@
   },
   {
     "base_path": "/Game/_Game",
+    "asset_type": "BTTask_BlueprintBase",
+    "prefix": "BTT_",
+    "priority": 10
+  },
+  {
+    "base_path": "/Game/_Game",
     "asset_type": "BlueprintFunctionLibrary",
     "prefix": "BPFL_"
   },
