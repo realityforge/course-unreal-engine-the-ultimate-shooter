@@ -46,7 +46,7 @@ class NamingRule(unreal.StructBase):
             return None
 
     def does_rule_match_asset(self, asset: unreal.Object):
-        if "" != self.base_path and not asset.get_path_name().startswith(self.base_path):
+        if "" != self.base_path and not asset.get_path_name().startswith(f"/Game/{self.base_path}"):
             return False
         elif "" == self.enum_name:
             return True
