@@ -77,3 +77,5 @@ Also why separate shooting/reloading slots?
 # Clang Tidy
 
 Add check that methods in subclasses of "UBlueprintFunctionLibrary" are static
+* Make sure that we do not directly call interface implementations (or _Implementation() default event logic) from within C++ code and instead go through UKismetSystemLibrary 
+* Make sure we only allow Cast<>(...) on allow listed classes. Otherwise require that we go through `-bImpl = UKismetSystemLibrary::DoesImplementInterface(Actor, UDoSomeThings::StaticClass())`
