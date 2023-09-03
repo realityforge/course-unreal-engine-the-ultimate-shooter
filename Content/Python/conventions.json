@@ -213,12 +213,12 @@
   {
     "base_path": "/Game/_Game",
     "asset_type": "UserDefinedEnum",
-    "prefix": "E"
+    "prefix": "E_"
   },
   {
     "base_path": "/Game/_Game",
-    "asset_type": "Structure",
-    "prefix": "S"
+    "asset_type": "UserDefinedStruct",
+    "prefix": "S_"
   },
   {
     "base_path": "/Game/_Game",
