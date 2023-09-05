@@ -89,13 +89,10 @@ class NamingRuleIndex:
         clazz = asset.get_class()
         self.add_rules_for_class_hierarchy(asset, clazz, rules)
 
-        try:
+        if isinstance(asset, unreal.Blueprint):
             blueprint = unreal.Blueprint.cast(asset)
             blueprint_parent_class = unreal.MetaDataAccessLibrary.get_blueprint_parent_class(blueprint)
             self.add_rules_for_class_hierarchy(asset, blueprint_parent_class, rules)
-        except:
-            # Class is not a blueprint and cast failed ... probably
-            pass
 
         rules.sort(key=lambda x: x.priority)
         # print(f"Candidate rules: {rules}")
