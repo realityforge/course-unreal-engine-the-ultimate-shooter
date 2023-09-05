@@ -200,11 +200,11 @@ def register_validator():
     _rules = load_rules()
 
     # Register the validator
+    print("Registering NamingEditorValidator")
     unreal.get_editor_subsystem(unreal.EditorValidatorSubsystem).add_validator(NamingEditorValidator(_rules))
 
 
 if __name__ == "__main__":
-    print("Registering Python NamingEditorValidator")
     register_validator()
 
 # TODO: Make a rule that alerts on Inst suffix?
