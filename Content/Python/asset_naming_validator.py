@@ -74,8 +74,10 @@ class NamingRule(unreal.StructBase):
 
 # A simple class to make lookup slightly faster rather than a linear array scan
 class NamingRuleIndex:
-    def __init__(self):
+    def __init__(self, rules: list[NamingRule]):
         self.rules: dict[str, list[NamingRule]] = {}
+        for rule in rules:
+            self.add(rule)
 
     def add(self, rule: NamingRule) -> None:
         if rule.asset_type in self.rules:
@@ -111,6 +113,42 @@ class NamingRuleIndex:
             for rule in self.rules[class_name]:
                 if rule.does_rule_match_asset(asset):
                     rules.append(rule)
+
+
+def load_rules():
+    def r(rules: list[NamingRule],
+          asset_type: str,
+          base_path: str = "/Game/",
+          enum_name: str = "",
+          enum_value: str = "",
+          prefix: str = "",
+          suffix: str = "",
+          notes: str = "",
+          priority: int = 100):
+        rule = NamingRule()
+        rule.base_path = base_path
+        rule.asset_type = asset_type
+        rule.enum_name = enum_name
+        rule.enum_value = enum_value
+        rule.prefix = prefix
+        rule.suffix = suffix
+        rule.priority = priority
+
+        # Notes are unused and simply have them here so we can keep notes in source document
+        # noinspection PyStatementEffect
+        notes
+        rules.append(rule)
+
+    _rules = list()
+    # Load the rules from a json file beside this script
+    f = open(os.path.join(os.path.dirname(__file__), 'conventions.json'))
+    try:
+        data = json.load(f)
+        for entry in data:
+            r(_rules, **entry)
+    finally:
+        f.close()
+    return _rules
 
 
 # The validator itself
@@ -159,39 +197,7 @@ class NamingEditorValidator(unreal.EditorValidatorBase):
 # Unlike EditorValidatorBase subclasses in C++, which are registered automatically,
 # EditorValidatorBase subclasses in Python must be registered manually:
 def register_validator():
-    def r(rules: list[NamingRule],
-          asset_type: str,
-          base_path: str = "/Game/",
-          enum_name: str = "",
-          enum_value: str = "",
-          prefix: str = "",
-          suffix: str = "",
-          notes: str = "",
-          priority: int = 100):
-        rule = NamingRule()
-        rule.base_path = base_path
-        rule.asset_type = asset_type
-        rule.enum_name = enum_name
-        rule.enum_value = enum_value
-        rule.prefix = prefix
-        rule.suffix = suffix
-        rule.priority = priority
-
-        # Notes are unused and simply have them here so we can keep notes in source document
-        # noinspection PyStatementEffect
-        notes
-        rules.append(rule)
-
-    _rules = list()
-
-    # Load the rules from a json file beside this script
-    f = open(os.path.join(os.path.dirname(__file__), 'conventions.json'))
-    try:
-        data = json.load(f)
-        for entry in data:
-            r(_rules, **entry)
-    finally:
-        f.close()
+    _rules = load_rules()
 
     # Register the validator
     unreal.get_editor_subsystem(unreal.EditorValidatorSubsystem).add_validator(NamingEditorValidator(_rules))
