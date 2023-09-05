@@ -188,8 +188,12 @@ class NamingEditorValidator(unreal.EditorValidatorBase):
             return unreal.DataValidationResult.NOT_VALIDATED, validation_errors
 
     @unreal.ufunction(override=True)
-    def can_validate_asset(self, asset):
-        return True
+    def can_validate_asset(self, asset: unreal.Object) -> bool:
+        rule = self.find_rule(asset)
+        if rule:
+            return True
+        else:
+            return False
 
 
 # Unlike EditorValidatorBase subclasses in C++, which are registered automatically,
