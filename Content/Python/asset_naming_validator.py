@@ -164,16 +164,12 @@ class NamingEditorValidator(unreal.EditorValidatorBase):
 
     @unreal.ufunction(override=True)
     def validate_loaded_asset(self, asset: unreal.Object, validation_errors):
-        # print("NamingEditorValidator.validate_loaded_asset....")
-
         if not hasattr(self, "index"):
             self.index = NamingRuleIndex()
             for rule in self.rules:
                 self.index.add(rule)
 
         rule = self.index.find_matching_rule(asset)
-        # print(f"Rule detected for asset of type {asset.get_class().get_fname()}: {rule}")
-
         if rule:
             non_conformance_message = rule.describe_asset_non_conformance(asset)
             if non_conformance_message is None:
