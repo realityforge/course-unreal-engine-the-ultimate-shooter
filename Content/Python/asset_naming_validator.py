@@ -177,6 +177,7 @@ class NamingEditorValidator(unreal.EditorValidatorBase):
         if rule:
             non_conformance_message = rule.describe_asset_non_conformance(asset)
             if non_conformance_message is None:
+                self.asset_passes(asset)
                 return unreal.DataValidationResult.VALID, validation_errors
             else:
                 validation_errors = self.asset_fails(asset,
@@ -187,6 +188,7 @@ class NamingEditorValidator(unreal.EditorValidatorBase):
             self.asset_warning(asset,
                                unreal.Text.cast(f"Asset validator missing rules for the "
                                                 f"asset type: {asset.get_class().get_fname()}"))
+            self.asset_passes(asset)
             return unreal.DataValidationResult.NOT_VALIDATED, validation_errors
 
     @unreal.ufunction(override=True)
