@@ -4,17 +4,6 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$" isTestSource="false" />
     </content>
-    <content url="file://$MODULE_DIR$/../../tmp">
-      <excludeFolder url="file://$MODULE_DIR$/../../tmp/BloodSpurt" />
-      <excludeFolder url="file://$MODULE_DIR$/../../tmp/FPS_Weapon_Bundle" />
-      <excludeFolder url="file://$MODULE_DIR$/../../tmp/Footsteps" />
-      <excludeFolder url="file://$MODULE_DIR$/../../tmp/Impacts" />
-      <excludeFolder url="file://$MODULE_DIR$/../../tmp/PickupSounds" />
-      <excludeFolder url="file://$MODULE_DIR$/../../tmp/Pistol" />
-      <excludeFolder url="file://$MODULE_DIR$/../../tmp/Rifle" />
-      <excludeFolder url="file://$MODULE_DIR$/../../tmp/Textures" />
-      <excludeFolder url="file://$MODULE_DIR$/../../tmp/UnrealTournament" />
-    </content>
     <content url="file://$MODULE_DIR$/../../vendor/becoming-an-unreal-automation-expert/Python">
       <sourceFolder url="file://$MODULE_DIR$/../../vendor/becoming-an-unreal-automation-expert/Python" isTestSource="false" />
     </content>
