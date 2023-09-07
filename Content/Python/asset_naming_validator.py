@@ -196,6 +196,32 @@ class NamingEditorValidator(unreal.EditorValidatorBase):
             return False
 
 
+class NamingImportHook:
+    pass
+
+
+def on_asset_import(factory, created_object: unreal.Object) -> None:
+    asset_name = created_object.get_name()
+    print(f"on_asset_import invoked for {asset_name}")
+    if not hasattr(NamingImportHook, "index"):
+        NamingImportHook.rules = load_rules()
+        NamingImportHook.index = NamingRuleIndex(NamingImportHook.rules)
+    print(NamingImportHook.rules)
+    rule = NamingImportHook.index.find_matching_rule(created_object)
+    new_asset_name = asset_name
+    if rule and ('' != rule.prefix or '' != rule.suffix):
+        if '' != rule.prefix and not asset_name.startswith(rule.prefix):
+            new_asset_name = f"{rule.prefix}{new_asset_name}"
+        if '' != rule.suffix and not asset_name.endswith(rule.suffix):
+            new_asset_name = f"{new_asset_name}{rule.suffix}"
+        if new_asset_name != asset_name:
+            asset_path = created_object.get_package().get_path_name()
+            new_asset_path = asset_path.replace(f"{asset_name}",
+                                                f"{new_asset_name}")
+            print(f"Renaming {asset_path} to {new_asset_path}")
+            unreal.EditorAssetLibrary.rename_asset(asset_path, new_asset_path)
+
+
 # Unlike EditorValidatorBase subclasses in C++, which are registered automatically,
 # EditorValidatorBase subclasses in Python must be registered manually:
 def register_validator():
@@ -205,14 +231,17 @@ def register_validator():
     print("Registering NamingEditorValidator")
     unreal.get_editor_subsystem(unreal.EditorValidatorSubsystem).add_validator(NamingEditorValidator(_rules))
 
+    # Register the post-import hook
+    print("Registering NamingImportHook")
+    # TODO: Seems garbage collection is what makes this not work the second time????
+    # Need https://docs.unrealengine.com/4.26/en-US/API/Runtime/CoreUObject/UObject/UObjectBaseUtility/AddToRoot/
+    #unreal.get_editor_subsystem(unreal.ImportSubsystem).on_asset_post_import.add_callable_unique(on_asset_import)
+
 
 if __name__ == "__main__":
     register_validator()
 
 # TODO: Make a rule that alerts on Inst suffix?
 # TODO: Make a rule for handling texture extensions
-# TODO: Make the rule auto applying ... via blueprint hook?
-# TODO: Make the rules be able to be stored into a DataTable?
 # TODO: Add configuration of allow list and deny list for naming convention application
 # TODO: Add configuration for assets that will be ignored when analyzing
-
