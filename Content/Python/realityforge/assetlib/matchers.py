@@ -51,3 +51,30 @@ def editor_property(property_name: str, property_value: str) -> MatcherBase:
     :return: the new matcher
     """
     return EditorPropertyMatcher(property_name, property_value)
+
+
+def match_all(expressions: list[MatcherBase]) -> MatcherBase:
+    """Create a matcher to match all conditions.
+
+    :param expressions: the expressions to match.
+    :return: the new matcher
+    """
+    return AllMatcher(expressions)
+
+
+def match_any(expressions: list[MatcherBase]) -> MatcherBase:
+    """Create a matcher to match any conditions.
+
+    :param expressions: the expressions to match.
+    :return: the new matcher
+    """
+    return AnyMatcher(expressions)
+
+
+def not_match(expression: MatcherBase) -> MatcherBase:
+    """Create a matcher to match where expression does not match.
+
+    :param expression: the expression to invert.
+    :return: the new matcher
+    """
+    return NotMatcher(expression)

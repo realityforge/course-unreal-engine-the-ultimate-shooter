@@ -93,3 +93,39 @@ class EditorPropertyMatcher(MatcherBase):
                 current_asset = None
 
         return False
+
+
+class AllMatcher(MatcherBase):
+    """And rule for matching."""
+
+    def __init__(self, expressions: list[MatcherBase]) -> None:
+        self.expressions = expressions
+
+    def test(self, asset: unreal.Object) -> bool:
+        for expression in self.expressions:
+            if not expression.test(asset):
+                return False
+        return True
+
+
+class AnyMatcher(MatcherBase):
+    """Or rule for matching."""
+
+    def __init__(self, expressions: list[MatcherBase]) -> None:
+        self.expressions = expressions
+
+    def test(self, asset: unreal.Object) -> bool:
+        for expression in self.expressions:
+            if expression.test(asset):
+                return True
+        return False
+
+
+class NotMatcher(MatcherBase):
+    """Not rule for matching."""
+
+    def __init__(self, expression: MatcherBase) -> None:
+        self.expression = expression
+
+    def test(self, asset: unreal.Object) -> bool:
+        return not self.expression.test(asset)
