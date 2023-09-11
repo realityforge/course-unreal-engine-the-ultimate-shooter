@@ -59,3 +59,16 @@ class NameSuffixValidator(ValidatorBase):
                     f"Asset name '{asset_name}' expected to end with the suffix '{self.prefix}' (case insensitive comparison)")]
             else:
                 return []
+
+
+class AllValidator(ValidatorBase):
+    """Validate that asset conforms to multiple rules."""
+
+    def __init__(self, validators: list[ValidatorBase]) -> None:
+        self.validators = validators
+
+    def validate(self, asset: unreal.Object) -> list[ValidationMessage]:
+        messages: list[ValidationMessage] = []
+        for validator in self.validators:
+            messages.extend(validator.validate(asset))
+        return messages

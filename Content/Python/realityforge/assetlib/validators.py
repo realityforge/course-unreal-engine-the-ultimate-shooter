@@ -31,3 +31,12 @@ def name_suffix(suffix: str, case_sensitive: bool = True) -> ValidatorBase:
     :return: the new validator
     """
     return NameSuffixValidator(suffix, case_sensitive)
+
+
+def validate_all(validators: list[ValidatorBase]) -> ValidatorBase:
+    """Create a validator that validates that asset conforms to multiple rules.
+
+    :param validators: The validators to validate against.
+    :return: the new validator
+    """
+    return AllValidator(validators)
