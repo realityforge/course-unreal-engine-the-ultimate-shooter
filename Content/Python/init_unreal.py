@@ -1,4 +1,3 @@
-import asset_naming_validator
+import realityforge.assetlib.validator as validator
 
-# Register the NamingEditorValidator
-asset_naming_validator.register_validator()
+validator.setup()
