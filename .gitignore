@@ -76,6 +76,9 @@ Plugins/**/Intermediate/*
 # Cache files for the editor to use
 DerivedDataCache/*
 
+# The location of packaged builds
+Builds/
+
 Gemfile.lock
 .vscode
 /bazel-*
