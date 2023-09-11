@@ -30,16 +30,6 @@ class NamePrefixMatcher(MatcherBase):
             return asset_name.lower().startswith(self.prefix.lower())
 
 
-def name_prefix(prefix: str, case_sensitive: bool = True) -> MatcherBase:
-    """Create a matcher for name prefix.
-
-    :param prefix: the prefix to match.
-    :param case_sensitive:  True to make matching case-sensitive, False otherwise. Defaults to True.
-    :return: the new matcher
-    """
-    return NamePrefixMatcher(prefix, case_sensitive)
-
-
 class NameSuffixMatcher(MatcherBase):
     """Match assets that are named with a specified suffix."""
 
@@ -53,16 +43,6 @@ class NameSuffixMatcher(MatcherBase):
             return asset_name.endswith(self.suffix)
         else:
             return asset_name.lower().endswith(self.suffix.lower())
-
-
-def name_suffix(suffix: str, case_sensitive: bool = True) -> MatcherBase:
-    """Create a matcher for name suffix.
-
-    :param suffix: the suffix to match.
-    :param case_sensitive:  True to make matching case-sensitive, False otherwise. Defaults to True.
-    :return: the new matcher
-    """
-    return NameSuffixMatcher(suffix, case_sensitive)
 
 
 class PathPrefixMatcher(MatcherBase):
@@ -84,16 +64,6 @@ class PathPrefixMatcher(MatcherBase):
             return path_name.startswith(actual_prefix)
         else:
             return path_name.lower().startswith(actual_prefix.lower())
-
-
-def name_prefix(prefix: str, case_sensitive: bool = True) -> MatcherBase:
-    """Create a matcher for path prefix.
-
-    :param prefix: the prefix to match.
-    :param case_sensitive:  True to make matching case-sensitive, False otherwise. Defaults to True.
-    :return: the new matcher
-    """
-    return PathPrefixMatcher(prefix, case_sensitive)
 
 
 class EditorPropertyMatcher(MatcherBase):
@@ -123,13 +93,3 @@ class EditorPropertyMatcher(MatcherBase):
                 current_asset = None
 
         return False
-
-
-def editor_property(property_name: str, property_value: str) -> MatcherBase:
-    """Create a matcher to match assets that have an editor property with the specified value.
-
-    :param property_name: the name of the editor property.
-    :param property_value: the value of the editor property to match.
-    :return: the new matcher
-    """
-    return EditorPropertyMatcher(property_name, property_value)
