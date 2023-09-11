@@ -9,3 +9,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+# Note: This approach was originally inspired by https://unrealcommunity.wiki/revisions/6100e8169c9d1a89e0c3456a
+#       while the conventions were mostly derived from https://www.unrealdirective.com/resource/asset-naming-conventions
