@@ -48,13 +48,13 @@ class NameSuffixValidator(ValidatorBase):
     def validate(self, asset: unreal.Object) -> list[ValidationMessage]:
         asset_name = asset.get_name()
         if self.case_sensitive:
-            if not asset_name.startswith(self.prefix):
+            if not asset_name.endswith(self.suffix):
                 return [
                     ValidationMessage(f"Asset name '{asset_name}' expected to end with the suffix '{self.prefix}'")]
             else:
                 return []
         else:
-            if not asset_name.lower().startswith(self.prefix.lower()):
+            if not asset_name.lower().endswith(self.suffix.lower()):
                 return [ValidationMessage(f"Asset name '{asset_name}' expected to end with the "
                                           f"suffix '{self.prefix}' (case insensitive comparison)")]
             else:
