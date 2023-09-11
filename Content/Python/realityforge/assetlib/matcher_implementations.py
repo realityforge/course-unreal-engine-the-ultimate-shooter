@@ -56,9 +56,9 @@ class PathPrefixMatcher(MatcherBase):
     def test(self, asset: unreal.Object) -> bool:
         path_name = asset.get_path_name()
         if self.absolute_prefix:
-            actual_prefix = f"/Game/{self.prefix}"
-        else:
             actual_prefix = self.prefix
+        else:
+            actual_prefix = f"/Game/{self.prefix}"
 
         if self.case_sensitive:
             return path_name.startswith(actual_prefix)
