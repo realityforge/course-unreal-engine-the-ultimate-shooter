@@ -32,8 +32,8 @@ class NamePrefixValidator(ValidatorBase):
                 return []
         else:
             if not asset_name.lower().startswith(self.prefix.lower()):
-                return [ValidationMessage(
-                    f"Asset name '{asset_name}' expected to start with the prefix '{self.prefix}' (case insensitive comparison)")]
+                return [ValidationMessage(f"Asset name '{asset_name}' expected to start with the "
+                                          f"prefix '{self.prefix}' (case insensitive comparison)")]
             else:
                 return []
 
@@ -55,8 +55,8 @@ class NameSuffixValidator(ValidatorBase):
                 return []
         else:
             if not asset_name.lower().startswith(self.prefix.lower()):
-                return [ValidationMessage(
-                    f"Asset name '{asset_name}' expected to end with the suffix '{self.prefix}' (case insensitive comparison)")]
+                return [ValidationMessage(f"Asset name '{asset_name}' expected to end with the "
+                                          f"suffix '{self.prefix}' (case insensitive comparison)")]
             else:
                 return []
 
