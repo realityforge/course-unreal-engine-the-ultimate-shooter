@@ -79,3 +79,9 @@ def load_rules():
 
 if __name__ == "__main__":
     load_rules()
+
+
+# TODO: Make a rule that alerts on Inst suffix?
+# TODO: Make a rule for handling texture extensions
+# TODO: Add configuration of allow list and deny list for naming convention application
+# TODO: Add configuration for assets that will be ignored when analyzing
