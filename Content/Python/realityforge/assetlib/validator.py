@@ -122,6 +122,8 @@ def setup():
     print("Registering NamingEditorValidator")
     subsystem = unreal.get_editor_subsystem(unreal.EditorValidatorSubsystem)
     if subsystem:
+        # Unlike EditorValidatorBase subclasses in C++, which are registered automatically,
+        # EditorValidatorBase subclasses in Python must be registered manually:
         subsystem.add_validator(NamingEditorValidator())
     else:
         print("Failed to register NamingEditorValidator as EditorValidatorSubsystem not present")
