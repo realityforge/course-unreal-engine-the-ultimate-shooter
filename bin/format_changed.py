@@ -15,6 +15,8 @@
 import subprocess
 import sys
 
+plugins_to_process = ["RuleRanger"]
+
 # If files are passed in then restrict formatting to those
 direct_matches = []
 if 1 != len(sys.argv):
@@ -27,8 +29,13 @@ try:
 
     files_to_format = []
     for file in changed_files:
-        if file.startswith("Source/") and (file.lower().endswith(".h") or file.lower().endswith(".cpp")):
-            files_to_format.append(file)
+        if file.lower().endswith(".h") or file.lower().endswith(".cpp"):
+            if file.startswith("Source/"):
+                files_to_format.append(file)
+            elif file.startswith(f"Plugins/"):
+                for plugin in plugins_to_process:
+                    if file.startswith(f"Plugins/{plugin}/Source/"):
+                        files_to_format.append(file)
 
     if 0 != len(files_to_format):
         subprocess.run(["clang-format", "-i", *files_to_format])

@@ -23,6 +23,13 @@
 			]
 		},
 		{
+			"Name": "RuleRanger",
+			"Enabled": true,
+			"TargetAllowList": [
+				"Editor"
+			]
+		},
+		{
 			"Name": "ImporterRules",
 			"Enabled": true,
 			"TargetAllowList": [
