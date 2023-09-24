@@ -80,7 +80,6 @@ def load_rules():
 if __name__ == "__main__":
     load_rules()
 
-
 # TODO: Make a rule that alerts on Inst suffix? Actually lets just use patterns to identify "old" naming
 #  conventions (i.e. SK_Mannequin_PhysicsAsset -> PHYS_Mannequin, SK_Mannequin_Skeleton -> SKEL_Mannequin)
 #  and then we can transform them (even if it is renaming as earlier step)
@@ -90,3 +89,91 @@ if __name__ == "__main__":
 # TODO: Material functions that are Material Layers are prefixed with ML not MF!
 # TODO: Retargeters should be named as RTG_[Source]_To_[Target]
 # TODO: PoseAsset => PA_ ???
+
+# TODO: Rules to incoporate somehow
+rules = """
+[
+{
+    "type": "Level (World Partition)",
+    "prefix": "L_",
+    "suffix": "_WP"
+  },
+    {
+    "type": "Data Asset",
+    "prefix": "DA*_",
+    "notes": "Prefix should be based on sub-class type"
+  },
+  {
+    "type": "Texture (Base Color)",
+    "prefix": "T_",
+    "suffix": "_BC",
+    "notes": "Base Color, Albedo, Diffuse"
+  },
+  {
+    "type": "Texture (Ambient Occlusion)",
+    "prefix": "T_",
+    "suffix": "_AO"
+  },
+  {
+    "type": "Texture (Roughness)",
+    "prefix": "T_",
+    "suffix": "_R"
+  },
+  {
+    "type": "Texture (Specular)",
+    "prefix": "T_",
+    "suffix": "_S"
+  },
+  {
+    "type": "Texture (Metallic)",
+    "prefix": "T_",
+    "suffix": "_M"
+  },
+  {
+    "type": "Texture (Normal)",
+    "prefix": "T_",
+    "suffix": "_N"
+  },
+  {
+    "type": "Texture (Emissive)",
+    "prefix": "T_",
+    "suffix": "_E"
+  },
+  {
+    "type": "Texture (Mask)",
+    "prefix": "T_",
+    "suffix": "_Mask"
+  },
+  {
+    "type": "Texture (Flow Map)",
+    "prefix": "T_",
+    "suffix": "_F"
+  },
+  {
+    "type": "Texture (Height)",
+    "prefix": "T_",
+    "suffix": "_H"
+  },
+  {
+    "type": "Texture (Displacement)",
+    "prefix": "T_",
+    "suffix": "_D"
+  },
+  {
+    "type": "Texture (Light Map)",
+    "prefix": "T_",
+    "suffix": "_L"
+  },
+  {
+    "type": "Texture (Alpha/Opacity)",
+    "prefix": "T_",
+    "suffix": "_A"
+  },
+  {
+    "type": "Texture (Packed)",
+    "prefix": "T_",
+    "suffix": "_*",
+    "notes": "Use texture type in RGBA order. e.g., ARMH (Ambient Occlusion, Roughness, Metallic, Height)"
+  }
+]
+"""
