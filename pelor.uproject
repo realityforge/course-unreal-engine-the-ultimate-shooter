@@ -32,6 +32,10 @@
 			]
 		},
 		{
+			"Name": "ImporterRulesPython",
+			"Enabled": true
+		},
+		{
 			"Name": "EditorTests",
 			"Enabled": true
 		}
