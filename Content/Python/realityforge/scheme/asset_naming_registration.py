@@ -81,7 +81,12 @@ if __name__ == "__main__":
     load_rules()
 
 
-# TODO: Make a rule that alerts on Inst suffix?
+# TODO: Make a rule that alerts on Inst suffix? Actually lets just use patterns to identify "old" naming
+#  conventions (i.e. SK_Mannequin_PhysicsAsset -> PHYS_Mannequin, SK_Mannequin_Skeleton -> SKEL_Mannequin)
+#  and then we can transform them (even if it is renaming as earlier step)
 # TODO: Make a rule for handling texture extensions
 # TODO: Add configuration of allow list and deny list for naming convention application
 # TODO: Add configuration for assets that will be ignored when analyzing
+# TODO: Material functions that are Material Layers are prefixed with ML not MF!
+# TODO: Retargeters should be named as RTG_[Source]_To_[Target]
+# TODO: PoseAsset => PA_ ???
