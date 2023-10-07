@@ -8,7 +8,7 @@
     "Plugins/RuleRanger": {
       "url": "https://github.com/realityforge/RuleRanger.git",
       "branch": "main",
-      "revision": "fec0478a9cb737052407f4f9543bf71482f32b20"
+      "revision": "1ef3cebffabdd5b11b4de2543d2c012ec205db7d"
     },
     "vendor/UE4-CPP-Shooter-Series": {
       "url": "https://github.com/DruidMech/UE4-CPP-Shooter-Series.git",
