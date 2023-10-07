@@ -33,20 +33,24 @@ def delete_files_and_directories(paths):
                     print(f"Error deleting directory {path}: {e}")
             else:
                 print(f"Invalid path: {path}")
-        else:
-            print(f"Path does not exist: {path}")
 
 
 paths_to_delete = [
+    "Plugins/RuleRanger/Binaries",
+    "Plugins/RuleRanger/Intermediate",
+    "Plugins/Linter/Binaries",
+    "Plugins/Linter/Intermediate",
+    "Plugins/ImporterRules/Binaries",
+    "Plugins/ImporterRules/Intermediate",
     "bazel-bin",
     "bazel-out",
     "bazel-testlogs",
     "bazel-org_realityforge_shooter",
     "DerivedDataCache",
+    "Binaries",
     "Intermediate",
     "Saved",
-    "cmake-build-debug",
-    "Binaries"
+    "cmake-build-debug"
 ]
 
 delete_files_and_directories(paths_to_delete)
