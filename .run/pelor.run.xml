@@ -4,8 +4,8 @@
     <configuration_2>
       <option name="CONFIGURATION" value="DebugGame Editor" />
       <option name="PLATFORM" value="Win64" />
-      <option name="EXECUTABLE_PATH" value="C:\Program Files\Epic Games\UE_5.1\Engine\Binaries\Win64\UnrealEditor-Win64-DebugGame.exe" />
-      <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.1" />
+      <option name="EXECUTABLE_PATH" value="C:\Program Files\Epic Games\UE_5.3\Engine\Binaries\Win64\UnrealEditor-Win64-DebugGame.exe" />
+      <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.3" />
       <option name="MANDATORY_PROGRAM_PARAMETERS" value=" &quot;C:\Projects\Shooter\pelor.uproject&quot;" />
       <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -15,7 +15,7 @@
       <option name="CONFIGURATION" value="DebugGame" />
       <option name="PLATFORM" value="Win64" />
       <option name="EXECUTABLE_PATH" value="C:\Projects\Shooter\Binaries\Win64\Shooter-Win64-DebugGame.exe" />
-      <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.1" />
+      <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.3" />
       <option name="MANDATORY_PROGRAM_PARAMETERS" value="" />
       <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -24,8 +24,8 @@
     <configuration_4>
       <option name="CONFIGURATION" value="Development Editor" />
       <option name="PLATFORM" value="Win64" />
-      <option name="EXECUTABLE_PATH" value="C:\Program Files\Epic Games\UE_5.1\Engine\Binaries\Win64\UnrealEditor.exe" />
-      <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.1" />
+      <option name="EXECUTABLE_PATH" value="C:\Program Files\Epic Games\UE_5.3\Engine\Binaries\Win64\UnrealEditor.exe" />
+      <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.3" />
       <option name="MANDATORY_PROGRAM_PARAMETERS" value=" &quot;C:\Projects\Shooter\pelor.uproject&quot;" />
       <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -35,7 +35,7 @@
       <option name="CONFIGURATION" value="Development" />
       <option name="PLATFORM" value="Win64" />
       <option name="EXECUTABLE_PATH" value="C:\Projects\Shooter\Binaries\Win64\Shooter.exe" />
-      <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.1" />
+      <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.3" />
       <option name="MANDATORY_PROGRAM_PARAMETERS" value="" />
       <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -45,7 +45,7 @@
       <option name="CONFIGURATION" value="Shipping" />
       <option name="PLATFORM" value="Win64" />
       <option name="EXECUTABLE_PATH" value="C:\Projects\Shooter\Binaries\Win64\Shooter-Win64-Shipping.exe" />
-      <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.1" />
+      <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.3" />
       <option name="MANDATORY_PROGRAM_PARAMETERS" value="" />
       <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
       <option name="PASS_PARENT_ENVS" value="1" />
