@@ -1,7 +1,9 @@
 #include "LintRuleSet.h"
+#include "AnyObject_LinterDummyClass.h"
 #include "LintRunner.h"
+#include "AssetRegistry/AssetRegistryModule.h"
+#include "LinterNamingConvention.h"
 
-#include "AssetRegistryModule.h"
 #include "Modules/ModuleManager.h"
 #include "HAL/RunnableThread.h"
 
