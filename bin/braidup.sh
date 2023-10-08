@@ -12,4 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-git add . && git stash && braid up "$@" && git stash pop && git reset
+git add . && git stash && braid up Plugins/RuleRanger && git stash pop && git reset
