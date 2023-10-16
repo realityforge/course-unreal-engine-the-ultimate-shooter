@@ -84,3 +84,6 @@ Gemfile.lock
 /bazel-*
 /cmake-build-debug/
 /tmp
+
+# Ignore local user settings
+*.uproject.DotSettings.user
