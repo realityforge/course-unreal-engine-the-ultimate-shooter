@@ -6,9 +6,12 @@ public class ShooterEditorTarget : TargetRules
 {
 	public ShooterEditorTarget(TargetInfo Target) : base(Target)
 	{
+		bLegacyParentIncludePaths = false;
 		Type = TargetType.Editor;
 		DefaultBuildSettings = BuildSettingsVersion.V2;
-		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_1;
+		CppStandard = CppStandardVersion.Default;
+		WindowsPlatform.bStrictConformanceMode = true;
+		IncludeOrderVersion = EngineIncludeOrderVersion.Latest;
 
 		ExtraModuleNames.AddRange( new[] { "pelor" } );
 	}
