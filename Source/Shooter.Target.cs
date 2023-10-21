@@ -8,7 +8,7 @@ public class ShooterTarget : TargetRules
 	{
 		bLegacyParentIncludePaths = false;
 		Type = TargetType.Game;
-		DefaultBuildSettings = BuildSettingsVersion.V2;
+		DefaultBuildSettings = BuildSettingsVersion.Latest;
 		CppStandard = CppStandardVersion.Default;
 		WindowsPlatform.bStrictConformanceMode = true;
 		IncludeOrderVersion = EngineIncludeOrderVersion.Latest;

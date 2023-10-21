@@ -8,7 +8,7 @@ public class ShooterEditorTarget : TargetRules
 	{
 		bLegacyParentIncludePaths = false;
 		Type = TargetType.Editor;
-		DefaultBuildSettings = BuildSettingsVersion.V2;
+		DefaultBuildSettings = BuildSettingsVersion.Latest;
 		CppStandard = CppStandardVersion.Default;
 		WindowsPlatform.bStrictConformanceMode = true;
 		IncludeOrderVersion = EngineIncludeOrderVersion.Latest;
