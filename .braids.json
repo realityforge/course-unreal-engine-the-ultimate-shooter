@@ -5,6 +5,11 @@
       "url": "https://github.com/eddiebeazer/ue5-linter.git",
       "revision": "4c6bd7c058de684f2f1a1dc2b5e6ffc034bb0355"
     },
+    "Plugins/MaterialMelody": {
+      "url": "https://github.com/realityforge/MaterialMelody.git",
+      "branch": "main",
+      "revision": "2faf5b31093dc11e1467fd8ba82b167ad73c62d2"
+    },
     "Plugins/RuleRanger": {
       "url": "https://github.com/realityforge/RuleRanger.git",
       "branch": "main",
