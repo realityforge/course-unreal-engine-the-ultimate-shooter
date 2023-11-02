@@ -245,6 +245,10 @@ private:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
     UParticleSystem* ImpactParticles;
 
+    /** Decal when bullet impact occurs on Metal */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
+    UMaterialInstance* MetalImpactMaterialInstance{ nullptr };
+
     /** Smoke trail for bullets */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
     UParticleSystem* BeamParticles;

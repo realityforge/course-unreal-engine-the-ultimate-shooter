@@ -6,6 +6,7 @@
 #include "BulletHitInterface.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/DecalComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Enemy.h"
 #include "EnemyController.h"
@@ -14,10 +15,12 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Item.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "PhysicalMaterials/PhysicalMaterial.h"
 #include "Sound/SoundCue.h"
 #include "Weapon.h"
+#include "pelor.h"
 
 // Sets default values
 AShooterCharacter::AShooterCharacter()
@@ -368,6 +371,39 @@ void AShooterCharacter::SendBullet()
 
             if (bUseDefaultParticles && ImpactParticles)
             {
+                // TODO: We should have different impacts between different weapons and different surfaces
+                //       and drive this via a table somewhere. This next if statement should have a
+                //       EPS_Metal == PhysicalMaterial->SurfaceType condition as the impact is specifically
+                //       for a metal surface. Leaving it in for all surfaces for now.
+                if (const auto PhysicalMaterial = BeamHitResult.PhysMaterial.Get())
+                {
+                    // Create a material and randomly select an image from decal set
+                    const int Frame = FMath::RandRange(0, 3);
+                    auto DecalMaterial = UMaterialInstanceDynamic::Create(MetalImpactMaterialInstance, this);
+                    DecalMaterial->SetScalarParameterValue(FName(TEXT("SubImage Frame")), Frame);
+
+                    // Rotate the decal so people can not tell it is the same one all the time
+                    const float Roll = FMath::FRandRange(-180.f, 180.f);
+                    FRotator ImpactRotator = UKismetMathLibrary::Conv_VectorToRotator(BeamHitResult.ImpactNormal * -1);
+
+                    // DecalSize should be configurable per weapon/bullet type
+                    const FVector DecalSize{ 2.f, 8.f, 8.f };
+
+                    // TODO: Make LifeSpan configurable per ammo?
+                    auto Decal =
+                        UGameplayStatics::SpawnDecalAttached(DecalMaterial,
+                                                             DecalSize,
+                                                             BeamHitResult.Component.Get(),
+                                                             NAME_None,
+                                                             BeamHitResult.Location,
+                                                             FRotator(ImpactRotator.Pitch, ImpactRotator.Yaw, Roll),
+                                                             EAttachLocation::KeepWorldPosition,
+                                                             60.f);
+                    Decal->SetFadeScreenSize(0);
+                    // TODO: Make these settings configurable per ammo?
+                    Decal->SetFadeOut(30.f, 30.f, false);
+                }
+
                 UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticles, BeamHitResult.Location);
             }
         }
@@ -464,7 +500,14 @@ bool AShooterCharacter::GetBeamEndLocation(const FVector& MuzzleEndLocation, FHi
         const FVector WeaponTraceEnd{ MuzzleEndLocation + MuzzleEndToHit * 1.25F };
 
         // Trace a line from Muzzle to target and see if we hit anything along the way
-        if (GetWorld()->LineTraceSingleByChannel(OutHitResult, MuzzleEndLocation, WeaponTraceEnd, ECC_Visibility))
+        FCollisionQueryParams QueryParams;
+        // Need to return PhysicalMaterial so we can have a per-surface type decal.
+        QueryParams.bReturnPhysicalMaterial = true;
+        if (GetWorld()->LineTraceSingleByChannel(OutHitResult,
+                                                 MuzzleEndLocation,
+                                                 WeaponTraceEnd,
+                                                 ECC_Visibility,
+                                                 QueryParams))
         {
             return true;
         }
