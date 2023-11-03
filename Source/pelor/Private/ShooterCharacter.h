@@ -39,11 +39,11 @@ struct FPresentationLocation
 
     /** Scene component to that identifies position to present item at */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-    USceneComponent* SceneComponent = nullptr;
+    USceneComponent* SceneComponent{ nullptr };
 
     /** Number of items being presented at this time. */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-    int32 ItemCount = 0;
+    int32 ItemCount{ 0 };
 };
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FEquipItemDelegate, int32, OldInventoryIndex, int32, NewInventoryIndex);
@@ -161,89 +161,89 @@ public:
 private:
     /** True when in Aim mode */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
-    bool bAiming;
+    bool bAiming{ false };
 
     // UProperty puts it in "section" camera and allows access even though it is private etc
     /** Camera Boom positioning the camera behind the character */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-    USpringArmComponent* CameraBoom;
+    USpringArmComponent* CameraBoom{ nullptr };
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-    UCameraComponent* FollowCamera;
+    UCameraComponent* FollowCamera{ nullptr };
 
     /** Base turn rate in deg/sec. Other scaling may effect final turn rate. */
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-    float BaseLookRightRate;
+    float BaseLookRightRate{ 45.f };
 
     /** Base look up/down rate in deg/sec. Other scaling may effect final turn rate. */
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-    float BaseLookUpRate;
+    float BaseLookUpRate{ 45.f };
 
     /** turn rate in deg/sec when not aiming. */
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-    float HipLookRightRate;
+    float HipLookRightRate{ 90.f };
 
     /** look up/down rate in deg/sec when not aiming. */
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-    float HipLookUpRate;
+    float HipLookUpRate{ 90.f };
 
     /** turn rate in deg/sec when not aiming. */
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-    float AimingLookRightRate;
+    float AimingLookRightRate{ 20.f };
 
     /** look up/down rate in deg/sec when not aiming. */
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-    float AimingLookUpRate;
+    float AimingLookUpRate{ 20.f };
 
     /** Base turn rate in deg/sec. Other scaling may effect final turn rate. */
     UPROPERTY(EditDefaultsOnly,
               BlueprintReadOnly,
               Category = Camera,
               meta = (AllowPrivateAccess = "true", ClampMin = "0.0", ClampMax = "1.0", UIMin = "0.0", UIMax = "1.0"))
-    float BaseMouseLookRightRate;
+    float BaseMouseLookRightRate{ 0.f };
 
     /** Base look up/down rate in deg/sec. Other scaling may effect final turn rate. */
     UPROPERTY(EditDefaultsOnly,
               BlueprintReadOnly,
               Category = Camera,
               meta = (AllowPrivateAccess = "true", ClampMin = "0.0", ClampMax = "1.0", UIMin = "0.0", UIMax = "1.0"))
-    float BaseMouseLookUpRate;
+    float BaseMouseLookUpRate{ 0.f };
 
     /** turn rate in deg/sec when not aiming. */
     UPROPERTY(EditDefaultsOnly,
               BlueprintReadOnly,
               Category = Camera,
               meta = (AllowPrivateAccess = "true", ClampMin = "0.0", ClampMax = "1.0", UIMin = "0.0", UIMax = "1.0"))
-    float HipMouseLookRightRate;
+    float HipMouseLookRightRate{ 1.f };
 
     /** look up/down rate in deg/sec when not aiming. */
     UPROPERTY(EditDefaultsOnly,
               BlueprintReadOnly,
               Category = Camera,
               meta = (AllowPrivateAccess = "true", ClampMin = "0.0", ClampMax = "1.0", UIMin = "0.0", UIMax = "1.0"))
-    float HipMouseLookUpRate;
+    float HipMouseLookUpRate{ 1.f };
 
     /** turn rate in deg/sec when not aiming. */
     UPROPERTY(EditDefaultsOnly,
               BlueprintReadOnly,
               Category = Camera,
               meta = (AllowPrivateAccess = "true", ClampMin = "0.0", ClampMax = "1.0", UIMin = "0.0", UIMax = "1.0"))
-    float AimingMouseLookRightRate;
+    float AimingMouseLookRightRate{ 0.6f };
 
     /** look up/down rate in deg/sec when not aiming. */
     UPROPERTY(EditDefaultsOnly,
               BlueprintReadOnly,
               Category = Camera,
               meta = (AllowPrivateAccess = "true", ClampMin = "0.0", ClampMax = "1.0", UIMin = "0.0", UIMax = "1.0"))
-    float AimingMouseLookUpRate;
+    float AimingMouseLookUpRate{ 0.6f };
 
     /** Animation when fire occurs */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
-    UAnimMontage* HipFireMontage;
+    UAnimMontage* HipFireMontage{ nullptr };
 
     /** Particle Effect when bullet impact occurs */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
-    UParticleSystem* ImpactParticles;
+    UParticleSystem* ImpactParticles{ nullptr };
 
     /** Decal when bullet impact occurs on Metal */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
@@ -251,54 +251,54 @@ private:
 
     /** Smoke trail for bullets */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
-    UParticleSystem* BeamParticles;
+    UParticleSystem* BeamParticles{ nullptr };
 
     /** Default FOV for camera */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
-    float DefaultCameraFOV;
+    float DefaultCameraFOV{ 0.f };
 
     /** FOV for camera when Zoomed in/Aiming */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
-    float CameraZoomedFOV;
+    float CameraZoomedFOV{ 25.f };
 
     /** FOV for camera in current frame */
-    float CameraCurrentFOV;
+    float CameraCurrentFOV{ 0.f };
 
     /** Zoom interpolation speed during aiming/un-aiming */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
-    float CameraFOVInterpolationSpeed; // Note that this defaults to 20 in code but set to 30 in Blueprint
+    float CameraFOVInterpolationSpeed{ 20.f }; // Note that this defaults to 20 in code but set to 30 in Blueprint
 
     // Determines the spread of the crosshairs
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Crosshairs, meta = (AllowPrivateAccess = "true"))
-    float CrosshairSpreadMultiplier;
+    float CrosshairSpreadMultiplier{ 0.f };
 
     // Velocity component for crosshairs spread
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Crosshairs, meta = (AllowPrivateAccess = "true"))
-    float CrosshairVelocityFactor;
+    float CrosshairVelocityFactor{ 0.f };
 
     // In Air component for crosshairs spread
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Crosshairs, meta = (AllowPrivateAccess = "true"))
-    float CrosshairInAirFactor;
+    float CrosshairInAirFactor{ 0.f };
 
     // Aim component for crosshairs spread
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Crosshairs, meta = (AllowPrivateAccess = "true"))
-    float CrosshairAimFactor;
+    float CrosshairAimFactor{ 0.f };
 
     // Shooting component for crosshairs spread
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Crosshairs, meta = (AllowPrivateAccess = "true"))
-    float CrosshairShootingFactor;
+    float CrosshairShootingFactor{ 0.f };
 
     /** The duration that the CrosshairShootingFactor is increased after firing */
-    float CrosshairShootingImpactDuration;
+    float CrosshairShootingImpactDuration{ 0.05f };
     /** Is the crosshair shooting factor still increasing */
-    bool bCrosshairShootingImpactActive;
+    bool bCrosshairShootingImpactActive{ false };
     /** The timer used to control the duration that CrosshairShootingFactor is impacted by weapon fire */
     FTimerHandle CrosshairShootingImpactTimer;
 
     /** Weapon fire button is depressed */
-    bool bFireButtonPressed;
+    bool bFireButtonPressed{ false };
     /** True when can fire, false when for weapon to get ready to fire again */
-    bool bShouldFire;
+    bool bShouldFire{ true };
     /** A timer between weapon firing */
     FTimerHandle AutomaticFireTimer;
 
@@ -306,35 +306,35 @@ private:
      * true if we should trace every frame for items.
      * This flag is managed by intersecting the "AreaSphere" of an Item
      */
-    bool bShouldTraceForItems;
+    bool bShouldTraceForItems{ false };
     /** The number of AItems that the character overlaps (the items AreaSphere) */
-    int8 OverlappedItemCount;
+    int8 OverlappedItemCount{ 0 };
 
     /**
      * A reference to the AItem that is currently showing the Info box.
      * It is triggered by looking at the item within the items AreaSphere.
      */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Items, meta = (AllowPrivateAccess = "true"))
-    AItem* ItemShowingInfoBox;
+    AItem* ItemShowingInfoBox{ nullptr };
 
     /** The currently equipped weapon */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
-    AWeapon* EquippedWeapon;
+    AWeapon* EquippedWeapon{ nullptr };
 
     /** The class of the default weapon that is set in Blueprint */
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Combat, meta = (AllowPrivateAccess = "true"))
-    TSubclassOf<AWeapon> DefaultWeaponClass;
+    TSubclassOf<AWeapon> DefaultWeaponClass{ nullptr };
 
     /** The item currently hit by our trace in TraceForItems ... may be null */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Combat, meta = (AllowPrivateAccess = "true"))
-    AItem* TraceHitItem;
+    AItem* TraceHitItem{ nullptr };
 
     /** True if we should drop weapon currently holding when we equip the next */
-    bool bPendingDrop;
+    bool bPendingDrop{ false };
 
     /** The weapon that will be equipped when our equip montage reaches correct place */
     UPROPERTY(VisibleAnywhere, Category = Combat, meta = (AllowPrivateAccess = "true"))
-    AWeapon* PendingEquippedWeapon;
+    AWeapon* PendingEquippedWeapon{ nullptr };
 
     /** Map to keep track of ammo of the different ammo types */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Items, meta = (AllowPrivateAccess = "true"))
@@ -342,23 +342,23 @@ private:
 
     /** Starting amount of 9mm Ammo */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Items, meta = (AllowPrivateAccess = "true"))
-    int32 Initial9mmAmmo;
+    int32 Initial9mmAmmo{ 85 };
 
     /** Starting amount of Assault Rifle Ammo */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Items, meta = (AllowPrivateAccess = "true"))
-    int32 InitialARAmmo;
+    int32 InitialARAmmo{ 120 };
 
     /** Idle implies the character can reload or fire, otherwise character has to wait to transition back to idle. */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Combat, meta = (AllowPrivateAccess = "true"))
-    ECombatState CombatState;
+    ECombatState CombatState{ ECombatState::ECS_Idle };
 
     /** Animation when reloading occurs */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
-    UAnimMontage* ReloadMontage;
+    UAnimMontage* ReloadMontage{ nullptr };
 
     /** Animation when equipping occurs */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
-    UAnimMontage* EquipMontage;
+    UAnimMontage* EquipMontage{ nullptr };
 
     /*
      * During reloads, we show the character grabbing the clip and replacing the clip. The way we have
@@ -376,69 +376,69 @@ private:
 
     /** Scene component to attach to the Character's hand during reloading */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Combat, meta = (AllowPrivateAccess = "true"))
-    USceneComponent* HandSceneComponent;
+    USceneComponent* HandSceneComponent{ nullptr };
 
     /** True when character is crouching */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
-    bool bCrouching;
+    bool bCrouching{ false };
 
     /** Speed when the character is not crouching */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
-    float BaseMovementSpeed;
+    float BaseMovementSpeed{ 650.f };
 
     /** Speed when the character is crouching */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
-    float CrouchMovementSpeed;
+    float CrouchMovementSpeed{ 350.f };
 
     /** Current Half-height of capsule (for collision) */
-    float CurrentCapsuleHalfHeight;
+    float CurrentCapsuleHalfHeight{ 88.f };
 
     /** Half-height of capsule when not crouching */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Movement, meta = (AllowPrivateAccess = "true"))
-    float StandingCapsuleHalfHeight;
+    float StandingCapsuleHalfHeight{ 90.f };
 
     /** Half-height of capsule when crouching */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Movement, meta = (AllowPrivateAccess = "true"))
-    float CrouchCapsuleHalfHeight;
+    float CrouchCapsuleHalfHeight{ 50.f };
 
-    bool bAimingButtonPressed;
+    bool bAimingButtonPressed{ false };
 
     // The following are the locations where the weapon pickup and other items (i.e. Ammo)
     // are presented on pickup
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-    USceneComponent* WeaponPresentationComponent;
+    USceneComponent* WeaponPresentationComponent{ nullptr };
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-    USceneComponent* PresentationComponent1;
+    USceneComponent* PresentationComponent1{ nullptr };
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-    USceneComponent* PresentationComponent2;
+    USceneComponent* PresentationComponent2{ nullptr };
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-    USceneComponent* PresentationComponent3;
+    USceneComponent* PresentationComponent3{ nullptr };
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-    USceneComponent* PresentationComponent4;
+    USceneComponent* PresentationComponent4{ nullptr };
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-    USceneComponent* PresentationComponent5;
+    USceneComponent* PresentationComponent5{ nullptr };
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-    USceneComponent* PresentationComponent6;
+    USceneComponent* PresentationComponent6{ nullptr };
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
     TArray<FPresentationLocation> PresentationLocations;
 
     FTimerHandle PickupSoundTimer;
-    bool bShouldPlayPickupSound;
+    bool bShouldPlayPickupSound{ true };
 
     /** The time to wait until another pickup sound can play */
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Items, meta = (AllowPrivateAccess = "true"))
-    float PickupSoundResetTime;
+    float PickupSoundResetTime{ 0.2f };
 
     void ResetPickupSoundTimer();
 
     FTimerHandle EquipSoundTimer;
-    bool bShouldPlayEquipSound;
+    bool bShouldPlayEquipSound{ true };
 
     /** The time to wait until another equip sound can play */
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Items, meta = (AllowPrivateAccess = "true"))
-    float EquipSoundResetTime;
+    float EquipSoundResetTime{ 0.2f };
 
     /** The items held in our inventory */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Inventory, meta = (AllowPrivateAccess = "true"))
@@ -456,42 +456,42 @@ private:
 
     /** Current inventory slot that is highlighted. -1 indicates no highlight */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Inventory, meta = (AllowPrivateAccess = "true"))
-    int32 HighlightedInventoryIndex;
+    int32 HighlightedInventoryIndex{ -1 };
 
     /** Character Health */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
-    float Health;
+    float Health{ 100.f };
 
     /** Character Health */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
-    float MaxHealth;
+    float MaxHealth{ 100.f };
 
     /** Sound made when character is hit by a melee attack. */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
-    USoundCue* MeleeImpactSound;
+    USoundCue* MeleeImpactSound{ nullptr };
 
     /** Blood splatter when character hit. */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
-    UParticleSystem* BloodParticles;
+    UParticleSystem* BloodParticles{ nullptr };
 
     /** HitReact anim montage when character is stunned. */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
-    UAnimMontage* HitReactMontage;
+    UAnimMontage* HitReactMontage{ nullptr };
 
     /** Chance of being stunned when hit by an enemy. */
     UPROPERTY(EditAnywhere,
               BlueprintReadWrite,
               Category = Combat,
               meta = (AllowPrivateAccess = "true", UIMin = "0.0", UIMax = "1.0", ClampMin = "0.0", ClampMax = "1.0"))
-    float StunChance;
+    float StunChance{ .25f };
 
     /** Anim montage when character is killed. */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
-    UAnimMontage* DeathMontage;
+    UAnimMontage* DeathMontage{ nullptr };
 
     /** True when character dies */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Combat, meta = (AllowPrivateAccess = "true"))
-    bool bDead;
+    bool bDead{ false };
 
     void ResetEquipSoundTimer();
 
