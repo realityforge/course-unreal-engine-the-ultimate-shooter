@@ -20,7 +20,6 @@
 #include "PhysicalMaterials/PhysicalMaterial.h"
 #include "Sound/SoundCue.h"
 #include "Weapon.h"
-#include "pelor.h"
 
 // Sets default values
 AShooterCharacter::AShooterCharacter()
