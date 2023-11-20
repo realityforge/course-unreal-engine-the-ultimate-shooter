@@ -22,19 +22,28 @@ TArray<ETextureSubType> FTextureSubTypeUtil::ExtractFromMetaData(const UObject* 
     if (IsValid(Object))
     {
         const UEnum* Enum = StaticEnum<ETextureSubType>();
+        const int32 NumEnums = Enum->NumEnums();
         const FString Value = Object->GetPackage()->GetMetaData()->GetValue(Object, MetaDataKey);
         TArray<FString> Out;
         Value.ParseIntoArray(Out, TEXT(","), true);
         for (auto& Part : Out)
         {
-            if (const int64 EnumValue = Enum->GetValueByNameString(Part); INDEX_NONE == EnumValue)
+            bool bFound = false;
+            for (int32 i = 0; i < NumEnums; i++)
+            {
+                if (Enum->GetDisplayNameTextByIndex(i).ToString().Equals(Part))
+                {
+                    const int64 EnumValue = Enum->GetValueByIndex(i);
+                    SubTypes.Add(static_cast<ETextureSubType>(EnumValue));
+                    bFound = true;
+                    break;
+                }
+            }
+
+            if (!bFound)
             {
                 SubTypes.Reset();
                 return SubTypes;
-            }
-            else
-            {
-                SubTypes.Add(static_cast<ETextureSubType>(EnumValue));
             }
         }
     }
@@ -79,8 +88,7 @@ bool FTextureSubTypeUtil::EncodeInMetaData(const UObject* Object, const TArray<E
             }
             else
             {
-                const FString Existing = MetaData->GetValue(Object, MetaDataKey);
-                if (!EncodedValue.Equals(Existing))
+                if (const FString Existing = MetaData->GetValue(Object, MetaDataKey); !EncodedValue.Equals(Existing))
                 {
                     MetaData->SetValue(Object, MetaDataKey, *EncodedValue);
                     ensure(Object->MarkPackageDirty());
@@ -102,13 +110,17 @@ FString FTextureSubTypeUtil::EncodeSubTypes(const TArray<ETextureSubType>& SubTy
     FString Result;
     for (auto SubType : SubTypes)
     {
-        if (const FName Name = Enum->GetNameByValue(static_cast<int64>(SubType)); NAME_None == Name)
+        if (const FText Name = Enum->GetDisplayNameTextByValue(static_cast<int64>(SubType)); Name.IsEmpty())
         {
             Result.Reset();
             return Result;
         }
         else
         {
+            if (!Result.IsEmpty())
+            {
+                Result.Append(TEXT(","));
+            }
             Result.Append(Name.ToString());
         }
     }
