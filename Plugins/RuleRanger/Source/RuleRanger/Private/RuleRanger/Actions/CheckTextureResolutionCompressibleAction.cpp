@@ -14,21 +14,15 @@
 
 #include "CheckTextureResolutionCompressibleAction.h"
 #include "Editor.h"
-#include "RuleRangerLogging.h"
 
-void UCheckTextureResolutionCompressibleAction::Apply_Implementation(
-    TScriptInterface<IRuleRangerActionContext>& ActionContext,
-    UObject* Object)
+void UCheckTextureResolutionCompressibleAction::Apply_Implementation(URuleRangerActionContext* ActionContext,
+                                                                     UObject* Object)
 {
     if (IsValid(Object))
     {
         if (const auto Texture = Cast<UTexture2D>(Object); !Texture)
         {
-            UE_LOG(RuleRanger,
-                   Error,
-                   TEXT("CheckTextureResolutionCompressibleAction: Attempt to run on Object %s "
-                        "that is not a Texture2D instance."),
-                   *Object->GetName());
+            LogError(Object, TEXT("Attempt to run on Object that is not a Texture2D instance."));
         }
         else
         {
@@ -79,12 +73,8 @@ void UCheckTextureResolutionCompressibleAction::Apply_Implementation(
             }
             else
             {
-                UE_LOG(RuleRanger,
-                       VeryVerbose,
-                       TEXT("CheckTextureResolutionCompressibleAction(%s): Texture dimensions are divisible by %d. "
-                            "No action required"),
-                       *Object->GetName(),
-                       Divisor);
+                LogInfo(Object,
+                        FString::Printf(TEXT(" Texture dimensions are divisible by %d. No Aciton required."), Divisor));
             }
         }
     }

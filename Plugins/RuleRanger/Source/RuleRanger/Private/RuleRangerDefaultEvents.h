@@ -11,17 +11,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#pragma once
 
-#include "FailAction.h"
+#include "CoreMinimal.h"
 
-void UFailAction::Apply_Implementation(URuleRangerActionContext* ActionContext, UObject* Object)
+class FRuleRangerModule;
+
+/** The class responsible for registering default events for different types. */
+class FRuleRangerDefaultEvents final
 {
-    if (bFatal)
-    {
-        ActionContext->Fatal(FText::FromString(Message));
-    }
-    else
-    {
-        ActionContext->Error(FText::FromString(Message));
-    }
-}
+public:
+    static void Initialize(FRuleRangerModule* Module);
+
+    static void Shutdown(FRuleRangerModule* Module);
+};

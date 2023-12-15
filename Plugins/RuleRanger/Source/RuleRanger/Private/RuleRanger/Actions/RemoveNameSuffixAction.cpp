@@ -15,19 +15,14 @@
 #include "RemoveNameSuffixAction.h"
 #include "Editor.h"
 #include "RuleRanger/RuleRangerUtilities.h"
-#include "RuleRangerLogging.h"
 
-void URemoveNameSuffixAction::Apply_Implementation(TScriptInterface<IRuleRangerActionContext>& ActionContext,
-                                                   UObject* Object)
+void URemoveNameSuffixAction::Apply_Implementation(URuleRangerActionContext* ActionContext, UObject* Object)
 {
     if (IsValid(Object) && !Suffix.IsEmpty())
     {
         if (Suffix.IsEmpty())
         {
-            UE_LOG(RuleRanger,
-                   Error,
-                   TEXT("RemoveNameSuffixAction: Empty Suffix specified when attempting to remove Suffix from %s"),
-                   *Object->GetName());
+            LogError(Object, TEXT("Empty Suffix specified when attempting to remove Suffix."));
         }
         else
         {

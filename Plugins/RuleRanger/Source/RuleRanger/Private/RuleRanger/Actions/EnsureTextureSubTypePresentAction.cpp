@@ -14,7 +14,6 @@
 
 #include "EnsureTextureSubTypePresentAction.h"
 #include "Editor.h"
-#include "RuleRangerLogging.h"
 
 bool FTextureSubTypeNameConvention::DoesTextMatchAtIndex(const FString& InText, const int32 Index) const
 {
@@ -35,7 +34,7 @@ bool FTextureSubTypeNameConvention::DoesTextMatchAtIndex(const FString& InText, 
     }
 }
 
-void UEnsureTextureSubTypePresentAction::ApplyRuleToTexture(TScriptInterface<IRuleRangerActionContext>& ActionContext,
+void UEnsureTextureSubTypePresentAction::ApplyRuleToTexture(URuleRangerActionContext* ActionContext,
                                                             UTexture2D* const Texture)
 {
     if (const auto SubTypes = ExtractSubTypes(Texture->GetName()); SubTypes.IsEmpty())
@@ -51,8 +50,7 @@ void UEnsureTextureSubTypePresentAction::ApplyRuleToTexture(TScriptInterface<IRu
     }
 }
 
-void UEnsureTextureSubTypePresentAction::Apply_Implementation(TScriptInterface<IRuleRangerActionContext>& ActionContext,
-                                                              UObject* Object)
+void UEnsureTextureSubTypePresentAction::Apply_Implementation(URuleRangerActionContext* ActionContext, UObject* Object)
 {
     if (IsValid(Object))
     {
@@ -64,11 +62,7 @@ void UEnsureTextureSubTypePresentAction::Apply_Implementation(TScriptInterface<I
             {
                 if (const auto Texture = Cast<UTexture2D>(Object); !Texture)
                 {
-                    UE_LOG(RuleRanger,
-                           Warning,
-                           TEXT("%s: Attempt to run on Object %s that is not a Texture2D instance."),
-                           *GetClass()->GetName(),
-                           *Object->GetName());
+                    LogError(Object, TEXT("Attempt to run on Object that is not a Texture2D instance."));
                 }
                 else
                 {
@@ -78,11 +72,7 @@ void UEnsureTextureSubTypePresentAction::Apply_Implementation(TScriptInterface<I
         }
         else
         {
-            UE_LOG(RuleRanger,
-                   Error,
-                   TEXT("%s: Action has not specified NameConventionsTable property and will "
-                        "not be applied as a result."),
-                   *GetClass()->GetName());
+            LogError(Object, TEXT("Action can not run as has not specified NameConventionsTable property."));
         }
     }
 }
@@ -111,7 +101,7 @@ void UEnsureTextureSubTypePresentAction::ResetCacheIfTableModified(UObject* Obje
 
 void UEnsureTextureSubTypePresentAction::ResetNameConventionsCache()
 {
-    UE_LOG(RuleRanger, VeryVerbose, TEXT("%s: Resetting the Name Conventions Cache"), *GetClass()->GetName());
+    LogInfo(nullptr, TEXT("Resetting the Name Conventions Cache."));
 
     NameConventionsCache.Empty();
     FCoreUObjectDelegates::OnObjectModified.Remove(OnObjectModifiedDelegateHandle);
@@ -135,11 +125,7 @@ void UEnsureTextureSubTypePresentAction::RebuildNameConventionsCacheIfNecessary(
         }
         for (auto NameConventionEntry : NameConventionsCache)
         {
-            UE_LOG(RuleRanger,
-                   VeryVerbose,
-                   TEXT("%s: %d conventions in cache"),
-                   *GetClass()->GetName(),
-                   NameConventionsCache.Num());
+            LogInfo(nullptr, FString::Printf(TEXT("%d conventions in cache"), NameConventionsCache.Num()));
         }
     }
 }
@@ -177,10 +163,9 @@ TArray<ETextureSubType> UEnsureTextureSubTypePresentAction::ExtractSubTypes(cons
     return SubTypes;
 }
 
-void UEnsureTextureSubTypePresentAction::ApplyRuleToTextureWithSubTypes(
-    TScriptInterface<IRuleRangerActionContext>& ActionContext,
-    UTexture2D* Texture,
-    const TArray<ETextureSubType>& SubTypes)
+void UEnsureTextureSubTypePresentAction::ApplyRuleToTextureWithSubTypes(URuleRangerActionContext* ActionContext,
+                                                                        UTexture2D* Texture,
+                                                                        const TArray<ETextureSubType>& SubTypes)
 {
     check(!SubTypes.IsEmpty());
     int NumComponentsDeclared = 0;
@@ -237,10 +222,8 @@ void UEnsureTextureSubTypePresentAction::ApplyRuleToTextureWithSubTypes(
     {
         if (FTextureSubTypeUtil::DoesMetaDataMatch(Texture, SubTypes))
         {
-            UE_LOG(RuleRanger,
-                   VeryVerbose,
-                   TEXT("%s: Subtypes extracted, match the component size of textures and are encoded in MetaData."),
-                   *GetClass()->GetName());
+            LogInfo(Texture,
+                    TEXT("Subtypes extracted, match the component size of textures and are encoded in MetaData."));
         }
         else if (ActionContext->IsDryRun())
         {

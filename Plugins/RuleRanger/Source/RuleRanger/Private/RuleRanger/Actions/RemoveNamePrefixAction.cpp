@@ -15,22 +15,18 @@
 #include "RemoveNamePrefixAction.h"
 #include "Editor.h"
 #include "RuleRanger/RuleRangerUtilities.h"
-#include "RuleRangerLogging.h"
 
-void URemoveNamePrefixAction::Apply_Implementation(TScriptInterface<IRuleRangerActionContext>& ActionContext,
-                                                   UObject* Object)
+void URemoveNamePrefixAction::Apply_Implementation(URuleRangerActionContext* ActionContext, UObject* Object)
 {
     if (IsValid(Object))
     {
         if (Prefix.IsEmpty())
         {
-            UE_LOG(RuleRanger,
-                   Error,
-                   TEXT("RemoveNamePrefixAction: Empty Prefix specified when attempting to remove Prefix from %s"),
-                   *Object->GetName());
+            LogError(Object, TEXT("Empty Prefix specified when attempting to remove Prefix."));
         }
         else
         {
+            // ReSharper disable once CppTooWideScopeInitStatement
             const FString OriginalName{ Object->GetName() };
             if (OriginalName.StartsWith(Prefix, bCaseSensitive ? ESearchCase::CaseSensitive : ESearchCase::IgnoreCase))
             {

@@ -35,8 +35,7 @@ class RULERANGER_API UFailAction final : public URuleRangerAction
     GENERATED_BODY()
 
 public:
-    virtual void Apply_Implementation(TScriptInterface<IRuleRangerActionContext>& ActionContext,
-                                      UObject* Object) override;
+    virtual void Apply_Implementation(URuleRangerActionContext* ActionContext, UObject* Object) override;
 
 private:
     /** The error message to emit */
@@ -45,7 +44,7 @@ private:
               Category = "Rule Ranger",
               meta = (AllowPrivateAccess, ExposeOnSpawn, MultiLine))
     FString Message{ "The object was not expected to match" };
-    /** SHould the error be a fatal error or a regular error */
+    /** Should the error be a fatal error or a regular error */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rule Ranger", meta = (AllowPrivateAccess, ExposeOnSpawn))
     bool bFatal{ false };
 };

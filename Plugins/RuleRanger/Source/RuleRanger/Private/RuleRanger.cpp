@@ -14,6 +14,7 @@
 #include "RuleRanger.h"
 #include "RuleRangerCommands.h"
 #include "RuleRangerContentBrowserExtensions.h"
+#include "RuleRangerDefaultEvents.h"
 #include "RuleRangerLogging.h"
 #include "RuleRangerMessageLog.h"
 #include "RuleRangerStyle.h"
@@ -36,6 +37,7 @@ void FRuleRangerModule::StartupModule()
         FRuleRangerStyle::ReloadTextures();
         FRuleRangerCommands::Register();
         FRuleRangerContentBrowserExtensions::Initialize();
+        FRuleRangerDefaultEvents::Initialize(this);
     }
     else
     {
@@ -50,6 +52,7 @@ void FRuleRangerModule::ShutdownModule()
     if (!IsRunningCommandlet())
     {
         // Remove integrations of RuleRanger into Editor UI
+        FRuleRangerDefaultEvents::Shutdown(this);
         FRuleRangerContentBrowserExtensions::Shutdown();
         FRuleRangerCommands::Unregister();
         FRuleRangerStyle::Shutdown();
