@@ -35,14 +35,24 @@ bool FTextureSubTypeNameConvention::DoesTextMatchAtIndex(const FString& InText, 
 }
 
 void UEnsureTextureSubTypePresentAction::ApplyRuleToTexture(URuleRangerActionContext* ActionContext,
-                                                            UTexture2D* const Texture)
+                                                            const UTexture2D* Texture)
 {
     if (const auto SubTypes = ExtractSubTypes(Texture->GetName()); SubTypes.IsEmpty())
     {
-        ActionContext->Error(NSLOCTEXT("RuleRanger",
-                                       "UnableToParseTextureSubTypes",
-                                       "Unable to parse texture subtypes. They could "
-                                       "be missing or formatted incorrectly"));
+        if (bNotifyIfNameConventionMissing)
+        {
+            ActionContext->Error(NSLOCTEXT("RuleRanger",
+                                           "UnableToParseTextureSubTypes",
+                                           "Unable to parse texture subtypes. They could "
+                                           "be missing or formatted incorrectly"));
+        }
+        else
+        {
+            LogInfo(Texture,
+                    TEXT("Unable to parse texture subtypes. They could be missing "
+                         "or formatted incorrectly. Assuming missing which is valid "
+                         "when action is configured with bNotifyIfNameConventionMissing=true."));
+        }
     }
     else
     {
@@ -52,29 +62,25 @@ void UEnsureTextureSubTypePresentAction::ApplyRuleToTexture(URuleRangerActionCon
 
 void UEnsureTextureSubTypePresentAction::Apply_Implementation(URuleRangerActionContext* ActionContext, UObject* Object)
 {
-    if (IsValid(Object))
+    if (IsValid(NameConventionsTable))
     {
-        if (IsValid(NameConventionsTable))
-        {
-            RebuildNameConventionsCacheIfNecessary();
+        RebuildNameConventionsCacheIfNecessary();
 
-            if (!NameConventionsCache.IsEmpty())
-            {
-                if (const auto Texture = Cast<UTexture2D>(Object); !Texture)
-                {
-                    LogError(Object, TEXT("Attempt to run on Object that is not a Texture2D instance."));
-                }
-                else
-                {
-                    ApplyRuleToTexture(ActionContext, Texture);
-                }
-            }
-        }
-        else
+        if (!NameConventionsCache.IsEmpty())
         {
-            LogError(Object, TEXT("Action can not run as has not specified NameConventionsTable property."));
+            const auto Texture = CastChecked<UTexture2D>(Object);
+            ApplyRuleToTexture(ActionContext, Texture);
         }
     }
+    else
+    {
+        LogError(Object, TEXT("Action can not run as has not specified NameConventionsTable property."));
+    }
+}
+
+UClass* UEnsureTextureSubTypePresentAction::GetExpectedType()
+{
+    return UTexture2D::StaticClass();
 }
 
 void UEnsureTextureSubTypePresentAction::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
@@ -164,8 +170,8 @@ TArray<ETextureSubType> UEnsureTextureSubTypePresentAction::ExtractSubTypes(cons
 }
 
 void UEnsureTextureSubTypePresentAction::ApplyRuleToTextureWithSubTypes(URuleRangerActionContext* ActionContext,
-                                                                        UTexture2D* Texture,
-                                                                        const TArray<ETextureSubType>& SubTypes)
+                                                                        const UTexture2D* Texture,
+                                                                        const TArray<ETextureSubType>& SubTypes) const
 {
     check(!SubTypes.IsEmpty());
     int NumComponentsDeclared = 0;

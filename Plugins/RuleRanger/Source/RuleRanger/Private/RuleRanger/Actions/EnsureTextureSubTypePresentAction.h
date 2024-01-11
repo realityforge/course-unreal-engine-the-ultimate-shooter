@@ -63,13 +63,15 @@ class RULERANGER_API UEnsureTextureSubTypePresentAction final : public URuleRang
 public:
     virtual void Apply_Implementation(URuleRangerActionContext* ActionContext, UObject* Object) override;
 
+    virtual UClass* GetExpectedType() override;
+
     virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
 
 protected:
-    void ApplyRuleToTexture(URuleRangerActionContext* ActionContext, UTexture2D* Texture);
+    void ApplyRuleToTexture(URuleRangerActionContext* ActionContext, const UTexture2D* Texture);
     void ApplyRuleToTextureWithSubTypes(URuleRangerActionContext* ActionContext,
-                                        UTexture2D* Texture,
-                                        const TArray<ETextureSubType>& SubTypes);
+                                        const UTexture2D* Texture,
+                                        const TArray<ETextureSubType>& SubTypes) const;
 
 private:
     /** The table that contains the object naming rules */

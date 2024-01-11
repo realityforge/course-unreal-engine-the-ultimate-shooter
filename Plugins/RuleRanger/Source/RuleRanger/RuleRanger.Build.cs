@@ -26,6 +26,7 @@ public class RuleRanger : ModuleRules
 			new[]
 			{
 				"AnimGraph",
+				"AssetTools",
 				"CoreUObject",
 				"BlueprintGraph",
 				"DataValidation",
@@ -34,6 +35,8 @@ public class RuleRanger : ModuleRules
 				"Engine",
 				"Projects", // IPluginManager
 				"MessageLog",
+				"NiagaraEditor",
+				"Niagara",
 				"Slate",
 				"SlateCore",
 				"UnrealEd"
