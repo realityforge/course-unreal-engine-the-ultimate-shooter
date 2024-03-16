@@ -8,7 +8,7 @@
     "Plugins/MaterialMelody": {
       "url": "https://github.com/realityforge/MaterialMelody.git",
       "branch": "main",
-      "revision": "163181a542fff811f5086603de59edc39f099662"
+      "revision": "bc588c0745c216ee9bfce77a9c9c3c5bc44785bc"
     },
     "Plugins/RuleRanger": {
       "url": "https://github.com/realityforge/RuleRanger.git",
