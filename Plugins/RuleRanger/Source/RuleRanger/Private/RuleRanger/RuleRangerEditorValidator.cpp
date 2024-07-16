@@ -56,8 +56,7 @@ bool URuleRangerEditorValidator::CanValidate_Implementation(const EDataValidatio
 bool URuleRangerEditorValidator::CanValidateAsset_Implementation(UObject* InAsset) const
 {
 
-    URuleRangerEditorSubsystem* SubSystem =
-        GEditor ? GEditor->GetEditorSubsystem<URuleRangerEditorSubsystem>() : nullptr;
+    const auto SubSystem = GEditor ? GEditor->GetEditorSubsystem<URuleRangerEditorSubsystem>() : nullptr;
     return SubSystem ? SubSystem->IsMatchingRulePresent(
                InAsset,
                [this](URuleRangerRule* Rule, UObject* InObject) { return WillRuleRun(Rule, InObject); })
@@ -109,7 +108,8 @@ bool URuleRangerEditorValidator::ProcessRule(TArray<FText>& ValidationErrors, UR
                *InObject->GetName(),
                *Rule->GetName());
 
-        ActionContext->ResetContext(InObject,
+        ActionContext->ResetContext(Rule,
+                                    InObject,
                                     bIsSave ? ERuleRangerActionTrigger::AT_Save
                                             : ERuleRangerActionTrigger::AT_Validate);
 

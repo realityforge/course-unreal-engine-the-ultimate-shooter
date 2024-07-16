@@ -18,30 +18,36 @@
 #include "RuleRangerAction.h"
 #include "CheckNiagaraEmitterCompileStatusAction.generated.h"
 
+class UNiagaraScript;
+
 /**
  * Action to check that the compile status of a Niagara Emitter is valid.
  */
-UCLASS(AutoExpandCategories = ("Rule Ranger"),
-       Blueprintable,
-       BlueprintType,
-       CollapseCategories,
-       DefaultToInstanced,
-       EditInlineNew)
+UCLASS(DisplayName = "Check Niagara Emitter Compile Status")
 class RULERANGER_API UCheckNiagaraEmitterCompileStatusAction final : public URuleRangerAction
 {
     GENERATED_BODY()
+
+    /** Should the action generate an error on "Unknown" Compile Status. */
+    UPROPERTY(EditAnywhere)
+    bool bErrorOnUnknown{ true };
+
+    /** Should the action generate an error on "UpToDateWithWarnings" Compile Status. */
+    UPROPERTY(EditAnywhere)
+    bool bErrorOnUpToDateWithWarnings{ true };
+
+    /**
+     * Validate that the script has been correctly compiled.
+     *
+     * @param ActionContext The ActionContext
+     * @param Object The Object being validated
+     * @param Script The Script to validate
+     * @return True if the script is valid, false otherwise
+     */
+    bool ValidateScript(URuleRangerActionContext* ActionContext, const UObject* Object, UNiagaraScript* Script) const;
 
 public:
     virtual void Apply_Implementation(URuleRangerActionContext* ActionContext, UObject* Object) override;
 
     virtual UClass* GetExpectedType() override;
-
-private:
-    /** Should the action generate an error on "Unknown" Compile Status. */
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rule Ranger", meta = (AllowPrivateAccess, ExposeOnSpawn))
-    bool bErrorOnUnknown{ true };
-
-    /** Should the action generate an error on "UpToDateWithWarnings" Compile Status. */
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rule Ranger", meta = (AllowPrivateAccess, ExposeOnSpawn))
-    bool bErrorOnUpToDateWithWarnings{ true };
 };
