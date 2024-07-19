@@ -17,15 +17,22 @@
 #include "CoreMinimal.h"
 #include "MaterialParametersActionBase.h"
 #include "RuleRangerAction.h"
-#include "EnsureMaterialParametersHaveDescriptionsAction.generated.h"
+#include "EnsureMaterialParameterNamesMatchRegexAction.generated.h"
 
 /**
- * Action to check that the parameters defined in the Material have descriptions.
+ * Action to check that the names of the parameters defined in the Material match a regex pattern.
  */
-UCLASS(DisplayName = "Ensure Material Parameters Have Descriptions")
-class RULERANGER_API UEnsureMaterialParametersHaveDescriptionsAction final : public UMaterialParametersActionBase
+UCLASS(DisplayName = "Ensure Material Parameter Names Match Regex")
+class RULERANGER_API UEnsureMaterialParameterNamesMatchRegexAction final : public UMaterialParametersActionBase
 {
     GENERATED_BODY()
+
+    /** The regex pattern that the parameter name is expected to match. */
+    UPROPERTY(EditAnywhere)
+    FString Pattern{ TEXT("^[A-Z][a-z0-9A-Z_]*$") };
+    /** A flag controlling whether matching is Case Sensitive or not. */
+    UPROPERTY(EditAnywhere)
+    bool bCaseSensitive{ true };
 
 protected:
     virtual void AnalyzeParameter(URuleRangerActionContext* ActionContext,

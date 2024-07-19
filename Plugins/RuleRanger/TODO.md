@@ -31,16 +31,32 @@ Shorthand notes of where to go next with this experiment:
   * Ensure that classes (C++ and Blueprint) have a "basename" that ends with Base rather than starts with Base. i.e. Prefer FooBase over BaseFoo
   * Ensure some name patterns (i.e. *Base) require (Abstract) UCLASS specifier
 * Material checks:
-  * Ensure parameters have group/categories
-  * Ensure parameters have descriptions
-  * Ensure parameters follow naming convention
   * Ensure that parameters of specific name/type exist on a material ... or a material property? (Useful when using to create dynamic material instance and use strings to match parameters)
   * Ensure that materials associated with Skeletons that have Material type animation curves, have materials with parameters that match.
-  * Ensure that there are no gangling nodes in material
+  * Ensure that there are no dangling nodes in material
   * If the material does not specify roughness value/texture then suggest enabling fully rough (as long as metadata "DefaultRoughnessAllowed" metadata key set)
   * If the material does not specify normal map then disable "Tangent Space Normals"
-  * Add rule to enforce setting of "Automatically set usage" setting
   * Add rules to check which materials usages are set
+  * Ensure that all Texture Sampler nodes have set the setting "Sampler Source" to "Shared: Wrap" or "Shared: Clamp" if
+    the associated Texture has the same sampler settings as the world. Use `FGLTFTextureUtilities::GetDefaultFilter(LODGroup)`
+    to derive textures effective filter setting. Or just copy the code:
+```c++
+TextureFilter FGLTFTextureUtilities::GetDefaultFilter(TextureGroup LODGroup)
+{
+	const UTextureLODSettings* TextureLODSettings = UDeviceProfileManager::Get().GetActiveProfile()->GetTextureLODSettings();
+	const ETextureSamplerFilter Filter = TextureLODSettings->GetTextureLODGroup(LODGroup).Filter;
+
+	switch (Filter)
+	{
+		case ETextureSamplerFilter::Point:             return TF_Nearest;
+		case ETextureSamplerFilter::Bilinear:          return TF_Bilinear;
+		case ETextureSamplerFilter::Trilinear:         return TF_Trilinear;
+		case ETextureSamplerFilter::AnisotropicPoint:  return TF_Trilinear; // A lot of engine code doesn't result in nearest
+		case ETextureSamplerFilter::AnisotropicLinear: return TF_Trilinear;
+		default:                                       return TF_MAX;
+	}
+}
+```
 * Native Class checks:
   * Add naming convention check for native classes/structs
   * Add naming convention check for native classes/structs properties and functions
