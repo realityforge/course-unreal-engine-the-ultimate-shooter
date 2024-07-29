@@ -23,7 +23,7 @@ protected:
 private:
     /** The Overall HUD Overlay Blueprint class */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Widgets, meta = (AllowPrivateAccess = "true"))
-    TSubclassOf<UUserWidget> HUDOverlayClass;
+    TSubclassOf<UUserWidget> HUDOverlayClass{ nullptr };
 
     // NOTE: I am presuming HUD overlay is in player controller ... simply because PlayerController is specific to
     // owner that is running client ... and not replicated across network
