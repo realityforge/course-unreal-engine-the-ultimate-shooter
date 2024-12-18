@@ -4,15 +4,15 @@ using UnrealBuildTool;
 
 public class ShooterTarget : TargetRules
 {
-	public ShooterTarget(TargetInfo Target) : base(Target)
-	{
-		bLegacyParentIncludePaths = false;
-		Type = TargetType.Game;
-		DefaultBuildSettings = BuildSettingsVersion.Latest;
-		CppStandard = CppStandardVersion.Default;
-		WindowsPlatform.bStrictConformanceMode = true;
-		IncludeOrderVersion = EngineIncludeOrderVersion.Latest;
+    public ShooterTarget(TargetInfo Target) : base(Target)
+    {
+        bLegacyParentIncludePaths = false;
+        Type = TargetType.Game;
+        DefaultBuildSettings = BuildSettingsVersion.Latest;
+        CppStandard = CppStandardVersion.Default;
+        WindowsPlatform.bStrictConformanceMode = true;
+        IncludeOrderVersion = EngineIncludeOrderVersion.Latest;
 
-		ExtraModuleNames.AddRange( new[] { "pelor" } );
-	}
+        ExtraModuleNames.AddRange(new[] { "pelor" });
+    }
 }

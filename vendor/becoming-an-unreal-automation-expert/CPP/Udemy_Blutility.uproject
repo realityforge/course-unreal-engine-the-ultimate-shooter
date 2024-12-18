@@ -1,22 +1,17 @@
 {
-	"FileVersion": 3,
-	"EngineAssociation": "4.24",
-	"Category": "",
-	"Description": "",
-	"Modules": [
-		{
-			"Name": "Udemy_Blutility",
-			"Type": "Runtime",
-			"LoadingPhase": "Default",
-			"AdditionalDependencies": [
-				"Blutility"
-			]
-		}
-	],
-	"Plugins": [
-		{
-			"Name": "EditorScriptingUtilities",
-			"Enabled": true
-		}
-	]
+    "FileVersion" : 3,
+        "EngineAssociation" :
+        "4.24",
+        "Category" :
+        "",
+        "Description" :
+        "",
+        "Modules" :
+        [ {
+            "Name" : "Udemy_Blutility",
+            "Type" : "Runtime",
+            "LoadingPhase" : "Default",
+            "AdditionalDependencies" : ["Blutility"]
+        } ],
+        "Plugins" : [ { "Name" : "EditorScriptingUtilities", "Enabled" : true } ]
 }
