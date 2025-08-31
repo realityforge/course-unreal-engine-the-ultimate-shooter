@@ -49,7 +49,7 @@ struct FPresentationLocation
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FEquipItemDelegate, int32, OldInventoryIndex, int32, NewInventoryIndex);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FHighlightIconDelegate, int32, InventoryIndex, bool, bStartAnimation);
 
-UCLASS()
+UCLASS(Abstract, meta = (RuleRangerDataOnly))
 class PELOR_API AShooterCharacter : public ACharacter
 {
     GENERATED_BODY()
