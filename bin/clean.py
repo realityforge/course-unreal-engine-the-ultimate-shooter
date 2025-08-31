@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 
 import os
 import shutil
-
+from pathlib import Path
 
 def delete_files_and_directories(paths):
     for path in paths:
@@ -36,8 +36,6 @@ def delete_files_and_directories(paths):
 
 
 paths_to_delete = [
-    "Plugins/RuleRanger/Binaries",
-    "Plugins/RuleRanger/Intermediate",
     "DerivedDataCache",
     "Binaries",
     "Intermediate",
@@ -46,3 +44,8 @@ paths_to_delete = [
 ]
 
 delete_files_and_directories(paths_to_delete)
+
+for plugin in Path("Plugins").iterdir():
+    if plugin.is_dir():
+        delete_files_and_directories([str(plugin / "Binaries").replace("\\", "/")])
+        delete_files_and_directories([str(plugin / "Intermediate").replace("\\", "/")])
