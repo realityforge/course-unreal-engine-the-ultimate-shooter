@@ -2,18 +2,11 @@
 
 Shorthand notes of where to go next with this experiment:
 
-* Consider incorporating naming conventions like Lyra. Although this may be a per-project thing.
-  - Phase_	-> Game Phase Abilities
-  - AbilitySet_ -> Ability Set
-  - InputData_ -> (Lyra) Input Config
-
 * Change the way that Texture conventions are driven so that suffix is driven by variant in NameConventions. Also change `DT_DefaultTextureConventions` so that ehy are driven by variants
 * Change naming convention so that if a variant is not specified but the type has variants and the name has a suffix that matches a variant then auto-set variant (i.e. importing a texture named `T_Blah_BC` will automatically set `BaseTexture`). Maybe add a flag per NameConvention row that allows auto-setting variant?
 
-* RuleRanger should ALSO invoke validation on each object ... otherwise problems highlighted via IsDataValid will be missed.
+* RuleRanger should ALSO invoke validation on each object ... otherwise problems highlighted via IsDataValid will be missed. Note that by default validation also invokes RuleRanger so we will need to guard this scenario and avoid duplicate invocations
 
-* Remove the "Actor/*" actions and replace with specific `IsDataValid()` implementations in each project. Maybe we expose the functionality as static utility functions.
-* Update NameConventions action to also grab data from context
 * Add concept of ExclusionSet that is a set of Rules and RuleSets that can be excluded? So we can have a common exclude for all ThirdParty stuff across projects?
 * Consider using a separate Plugin+module for Niagara checks so we can have a clean dependency tree.
 * Add rules so that we can enforce constraints about asset referencing.
@@ -24,6 +17,16 @@ Shorthand notes of where to go next with this experiment:
   * Rules about max number of elements in directory
   * Rules indicate which folders you are allowed to reference
   * Rules have a priority order
+  * NOTE `AssetReferenceRestrictions` plugin has similar function but at a high granularity
+    Possible Directory layout:
+    `Characters/[CharacterName]/Animations`
+    `Characters/[CharacterName]/Materials`
+    `Characters/[CharacterName]/Materials/Instances`
+    `Characters/[CharacterName]/Materials/Functions`
+    `Characters/[CharacterName]/Materials/Layers`
+    `Characters/[CharacterName]/Rigs`
+    `Characters/[CharacterName]/Textures`
+
 * Experiment rolling back treating rules/matchers/actions as assets and instead allow them as Blueprint classes
 * Support writing rules as blueprints and thus inlining matcher/action functionality into a single call?
 * Retargeters should be named as RTG_\[Source\]_To_\[Target\]
@@ -59,7 +62,7 @@ Shorthand notes of where to go next with this experiment:
   * Add requirement that Enumerators are documented
 * Add the ability to add an exception for a violation from within the MessageLog. Think "Click to exclude."
 * Material Function checks:
-  * Ensure that names fpr inputs match a pattern
+  * Ensure that names for inputs match a pattern
   * Ensure that descriptions for inputs present
   * Ensure that the override name matches a pattern if exposed to library
 * Material Parameter:
@@ -129,13 +132,3 @@ TextureFilter FGLTFTextureUtilities::GetDefaultFilter(TextureGroup LODGroup)
   * Ensure StaticMesh has valid/non-overlapping Lightmap UVs
   * Ensure StaticMesh has NO Lightmap UVs (when not using lightmass)
   * Ensure StaticMesh has UVs in Channel0 (for when material only uses world space coordinates)
-
-Add Action that applies a layout for textures based on metadata and types? Maybe something like:
-Possible Directory layout:
- `Characters/[CharacterName]/Animations`
- `Characters/[CharacterName]/Materials`
- `Characters/[CharacterName]/Materials/Instances`
- `Characters/[CharacterName]/Materials/Functions`
- `Characters/[CharacterName]/Materials/Layers`
- `Characters/[CharacterName]/Rigs`
- `Characters/[CharacterName]/Textures`

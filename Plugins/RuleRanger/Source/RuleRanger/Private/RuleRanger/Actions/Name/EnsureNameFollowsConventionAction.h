@@ -120,12 +120,20 @@ class RULERANGER_API UEnsureNameFollowsConventionAction : public URuleRangerActi
     GENERATED_BODY()
 
     /** The array of tables that contains the deprecated naming rules */
-    UPROPERTY(EditAnywhere, meta = (RequiredAssetDataTags = "RowStructure=/Script/RuleRanger.DeprecatedNameConvention"))
+    UPROPERTY(EditAnywhere,
+              meta = (RequiredAssetDataTags = "RowStructure=/Script/RuleRanger.DeprecatedNameConvention",
+                      ForceShowPluginContent = "true"))
     TArray<TObjectPtr<UDataTable>> DeprecatedConventionsTables;
 
     /** The array of tables that contains the object naming rules */
-    UPROPERTY(EditAnywhere, meta = (RequiredAssetDataTags = "RowStructure=/Script/RuleRanger.NameConvention"))
+    UPROPERTY(EditAnywhere,
+              meta = (RequiredAssetDataTags = "RowStructure=/Script/RuleRanger.NameConvention",
+                      ForceShowPluginContent = "true"))
     TArray<TObjectPtr<UDataTable>> NameConventionsTables;
+
+    /** Cache of DataTables from Config. */
+    UPROPERTY(Transient)
+    TArray<TObjectPtr<UDataTable>> ConfigConventionsTables;
 
     /** Should the action issue a message log when it attempts to process an object that has no naming convention? */
     UPROPERTY(EditAnywhere)
@@ -145,6 +153,9 @@ class RULERANGER_API UEnsureNameFollowsConventionAction : public URuleRangerActi
 
     /** Method to clear cache. */
     void ResetCaches();
+
+    /** Method to build ConfigConventionsTables. */
+    void RebuildConfigConventionsTables(const URuleRangerActionContext* ActionContext);
 
     /** Method to build convention cache if necessary. */
     void RebuildConventionCacheIfNecessary();

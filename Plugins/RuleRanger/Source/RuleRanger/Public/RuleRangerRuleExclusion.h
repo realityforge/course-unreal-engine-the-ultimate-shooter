@@ -15,37 +15,38 @@
 
 #include "RuleRangerRuleExclusion.generated.h"
 
+class URuleRangerConfig;
 class URuleRangerRule;
 class URuleRangerRuleSet;
 
 /**
  * Configuration indicating that one or more rules should be excluded when checking certain assets.
  */
-UCLASS(AutoExpandCategories = ("Rule Ranger"),
-       Blueprintable,
-       BlueprintType,
-       CollapseCategories,
-       DefaultToInstanced,
-       EditInlineNew)
-class RULERANGER_API URuleRangerRuleExclusion final : public UDataAsset
+USTRUCT(BlueprintType)
+struct FRuleRangerRuleExclusion final
 {
     GENERATED_BODY()
 
-public:
     /** A description indicating why the exclusion is in place. */
     UPROPERTY(EditDefaultsOnly, Category = "Rule Ranger")
     FText Description;
 
     /** A set of RuleSets that are excluded. */
-    UPROPERTY(EditDefaultsOnly, Category = "Rules", meta = (AllowAbstract = "false", DisplayThumbnail = "false"))
+    UPROPERTY(EditDefaultsOnly,
+              Category = "Rules",
+              meta = (AllowAbstract = "false", DisplayThumbnail = "false", ForceShowPluginContent = "true"))
     TArray<TObjectPtr<URuleRangerRuleSet>> RuleSets;
 
     /** A set of Rules that are excluded. */
-    UPROPERTY(EditDefaultsOnly, Category = "Rules", meta = (AllowAbstract = "false", DisplayThumbnail = "false"))
+    UPROPERTY(EditDefaultsOnly,
+              Category = "Rules",
+              meta = (AllowAbstract = "false", DisplayThumbnail = "false", ForceShowPluginContent = "true"))
     TArray<TObjectPtr<URuleRangerRule>> Rules;
 
     /** A set of objects that the exclusions apply to. */
-    UPROPERTY(EditDefaultsOnly, Category = "Rules", meta = (AllowAbstract = "false", DisplayThumbnail = "false"))
+    UPROPERTY(EditDefaultsOnly,
+              Category = "Rules",
+              meta = (AllowAbstract = "false", DisplayThumbnail = "false", ForceShowPluginContent = "true"))
     TArray<TObjectPtr<UObject>> Objects;
 
     /** A set of path prefixes that the exclusions apply to. */
@@ -53,4 +54,20 @@ public:
     TArray<FDirectoryPath> Dirs;
 
     bool ExclusionMatches(const UObject& Object, const FString& Path) const;
+
+#if WITH_EDITORONLY_DATA
+    friend URuleRangerConfig;
+
+    /** The transient title property to use in the editor. */
+    UPROPERTY(VisibleDefaultsOnly, Transient, meta = (EditCondition = false, EditConditionHides))
+    FString EditorFriendlyTitle;
+
+private:
+    /**
+     * Derive the transient title property for use in the editor.
+     */
+    void InitEditorFriendlyTitleProperty();
+
+    FString DeriveSuffix() const;
+#endif
 };
